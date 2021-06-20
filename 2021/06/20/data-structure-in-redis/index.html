@@ -13,11 +13,11 @@
 
     <title>
         
-          在JUnit中定制Runner - 伯爵在古堡
+          Redis中的数据结构 - 伯爵在古堡
         
     </title>
 
-    <link rel="canonical" href="https://blog.ranchocooper.com/2019/05/29/junit4-customer-runners/">
+    <link rel="canonical" href="https://blog.ranchocooper.com/2021/06/20/data-structure-in-redis/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -176,23 +176,21 @@
                             <i class="fa fa-tag"></i>
                         </span>
                         
-                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                          <a class="tag" href="/tags/#存储中间件" title="存储中间件">存储中间件</a>
                         
-                          <a class="tag" href="/tags/#JUnit" title="JUnit">JUnit</a>
-                        
-                          <a class="tag" href="/tags/#Runner" title="Runner">Runner</a>
+                          <a class="tag" href="/tags/#Redis" title="Redis">Redis</a>
                         
                     </div>
-                    <h1>在JUnit中定制Runner</h1>
-                    <h2 class="subheading">JUnit4 Customer Runners</h2>
+                    <h1>Redis中的数据结构</h1>
+                    <h2 class="subheading">data-structure-in-redis</h2>
                     <span class="meta">
                         Posted by Rancho on
-                        2019-05-29
+                        2021-06-20
                     </span>
 
-                    <span class="meta">Word Count 692，
+                    <span class="meta">Word Count 1.8k，
 
-                    3 min to read</span>
+                    6 min to read</span>
 
                 </div>
             </div>
@@ -211,24 +209,39 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文将快速介绍如何在<code>JUnit</code>测试框架中使用自定义<code>Runner</code>来运行单测<br>当前, 这需要配合<code>@RunWith</code>注解</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>首先, 添加项目依赖</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.12&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="实现Runner"><a href="#实现Runner" class="headerlink" title="实现Runner"></a>实现Runner</h2><p>JUnit框架提供了抽象类<code>Runner</code>, 它定义了两个抽象方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Description <span class="title">getDescription</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(RunNotifier var1)</span></span>;</span><br></pre></td></tr></table></figure>
-
-
-<p>另外, 它还需要实现<code>Describable</code>接口, 即实现<code>getDescription()</code> 方法<br>接下来我们实现一个<code>CustomerRunner</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.Description;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.Runner;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.notification.RunNotifier;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> rancho</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019-05-29</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerRunner</span> <span class="keyword">extends</span> <span class="title">Runner</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Class testedClass;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CustomerRunner</span><span class="params">(Class testedClass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.testedClass = testedClass;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * implements Describable interface</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Description</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Description <span class="title">getDescription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Description.createTestDescription(testedClass, <span class="string">"A Customer runner"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * invoke the target tested methods using reflection</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> notifier used for firing events that have information about the test progress</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(RunNotifier notifier)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"running the tests based on CustomerRunner"</span> + testedClass);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Object testedObject = testedClass.newInstance();</span><br><span class="line">            <span class="keyword">for</span> (Method method : testedClass.getMethods()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (method.isAnnotationPresent(Test<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">                    notifier.fireTestStarted(Description.createTestDescription(testedClass, method.getName()));</span><br><span class="line">                    method.invoke(testedObject);</span><br><span class="line">                    notifier.fireTestFinished(Description.createTestDescription(testedClass, method.getName()));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在这个实现类中, 我们定义了一个接受类参数的构造函数, 这是JUnit框架对Runner的规范. 单测运行时, JUnit会将目标类传给Runner的构造器.<br><code>getDescription</code>方法用于返回描述信息, 而最关键的就在于<code>run</code>方法实现, 通过反射来调用目标方法.<br>另外, 通过<code>run</code>方法的入参<code>RunNotifier</code>, 我们可以出发具有各种测试进度信息的事件. 这里我们仅在目标方法调用前后触发事件. 感兴趣的话可以自行翻下RunNotifier中定义的其他方法</p>
-<p>接下来, 我们随便写个测试用例来用下这个<code>Runner</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> rancho</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019-05-29</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RunWith</span>(CustomerRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">CustomerRunnerTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Calculator calculator = <span class="keyword">new</span> Calculator();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCalculator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"start Calculator"</span>);</span><br><span class="line">        assertEquals(<span class="string">"addition"</span>, <span class="number">8</span>, calculator.add(<span class="number">5</span>, <span class="number">3</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>Runner</code>是JUnit中的低级运行器, 相比之下, 其子类<code>ParentRunner</code>和<code>BlockJUnit4Runner</code>更加易于定制和扩展<br><code>ParentRunner</code>同样是个抽象类, 它会以分层的方式来运行测试<br>一般情况, 如果你想对Runner做定制, 从<code>BlockJUnit4Runner</code>来派生子类是不错的选择</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>通过定制JUnit Runner, 开发人员可以自由控制测试执行的整个过程. 一些流行的第三方Runner实现还有<code>SpringJUnit4ClassRunner</code>, <code>MockitoJUnitRunner</code>, <code>HierarchicalContextRunner</code>等<br>如果你想runwith multiple runner, 可以考虑从多个父类派生出新的子类Runner<br>而在PowerMock中, 这个问题是通过代理的方式解决的(<code>@PowerMockRunnerDelegate</code>), 也是个不错的思路</p>
-
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><h1 id="Redis为什么这么快"><a href="#Redis为什么这么快" class="headerlink" title="Redis为什么这么快?"></a>Redis为什么这么快?</h1><p>时至今日, 可以选择的数据库有很多, 为什么Redis能有这么突出的表现呢<br>一方面是因为它是内存数据库, 所有的操作都在内存上完成. 另一方面, 这要归功于它的数据结构.<br>Redis一共支持五种数据类型, 包括String(字符串), List(列表), Hash(哈希), Set(集合)和Sorted Set(有序集合). 而它们的底层实现数据结构其实有六种, 分别是简单动态字符串, 整数数组, 双向链表, 压缩列表, 哈希表和跳表. 它们和五种数据类型的对应关系如下图所示:</p>
+<p><img src="a.png" alt=""></p>
+<p>可以看到, String类型的底层只有一种数据结构, 而List/Hash/Set/Sorted Set都有两种底层实现结构. 通常情况下我们把这四种类型成为集合类型, 它们的特点是一个键对应了一个集合的数据.</p>
+<h1 id="如何组织键和值"><a href="#如何组织键和值" class="headerlink" title="如何组织键和值?"></a>如何组织键和值?</h1><p>为了实现从键到值的快速访问, Redis使用了一个哈希表来保存所有键值对. 一个哈希表其实就是一个数组, 数组的每个元素称为一个哈希桶, 每个哈希桶中保存了键值对数据. 哈希桶中的元素并不是值本身, 而是指向具体值的指针</p>
+<p><img src="b.png" alt=""></p>
+<p>使用哈希表最大的好处很明显, 就是可以让我们以O(1)的时间复杂度来快速找到键值对</p>
+<h1 id="为什么哈希操作变慢了"><a href="#为什么哈希操作变慢了" class="headerlink" title="为什么哈希操作变慢了?"></a>为什么哈希操作变慢了?</h1><p>但是, 当你往Redis中写入大量数据后, 可能会发现有的操作突然变慢了, 这是因为哈希表的潜在风险点 —- 哈希冲突问题和rehash操作可能带来的阻塞.</p>
+<p>Redis使用链式哈希来解决哈希冲突, 所谓链式哈希, 就是指同一个哈希桶中的多个元素用一个链表来保存, 它们之间依次用指针连接. </p>
+<p><img src="c.png" alt=""></p>
+<p>但即使如此, 仍然存在一个问题, 如果哈希表写入的数据越来越多, 哈希冲突也会越来越多, 这就导致某些哈希冲突链过长, 进而导致在这个链上查找元素耗时变长. 所以, Redis会对哈希表做rehash操作, 也及时增加现有的哈希桶数量, 让entry元素更加均匀地分散在哈希桶之间, 减少单个哈希桶中的元素数量, 从而减少哈希冲突的发生.</p>
+<p>为了使rehash操作更高效, Redis默认使用了两个全局哈希表. 一开始, 当你插入数据时, 默认使用哈希表1, 此时哈希表2并没有分配空间. 随着数据量增加, Redis开始执行rehash, 这个过程分为三步:</p>
+<pre><code>1. 为哈希表2分配更大的空间, 例如当前哈希表1的两倍大小
+2. 将哈希表1中的数据重新映射到哈希表2中
+3. 释放哈希表1的空间, 并留作下一次rehash时备用</code></pre><p>在这个过程中, 第二步涉及大量的数据拷贝, 如果一次性把哈希表1中的数据全都迁移到表2中, 会导致Redis线程阻塞. 为了避免这个问题, Redis采用了渐进式rehash. 简单来说, 就是在进行第二步数据拷贝时, Redis仍然正常处理客户端请求, 但是每处理一个请求, 就把对应的哈希桶上的所有entry拷贝到哈希表2中; 等处理下一个请求时, 再迁移对应数据</p>
+<p><img src="d.png" alt=""></p>
+<p>这样一来, 原本大量的迁移开销被分摊到了多次处理请求的过程中, 避免了耗时操作, 保证了数据的快速访问.</p>
+<h1 id="特殊的数据结构"><a href="#特殊的数据结构" class="headerlink" title="特殊的数据结构"></a>特殊的数据结构</h1><p>在集合类型的物种底层数据结构中, 压缩列表和跳表比较少见.</p>
+<h2 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h2><p>压缩列表实际上类似于一个数据, 和数组不同的是压缩列表在表头有三个字段<code>zlbytes</code>, <code>zltail</code>和<code>zllen</code>, 分别表示列表长度/列表尾部的偏移量和列表中的entry数量. 在压缩列表表尾还有一个<code>zlend</code>, 表示列表结束</p>
+<p><img src="e.png" alt=""></p>
+<p>在压缩列表中, 如果我们要查找第一个元素和最后一个元素, 可以通过表头的三个字段直接定位, 复杂度是O(1). 而查找其他元素时只能逐个遍历, 此时复杂度是O(N).</p>
+<h2 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h2><p>跳表是在链表的基础上, 增加了多级索引, 通过索引位置的快速跳转, 实现数据的快速定位, 如图所示</p>
+<p><img src="f.png" alt=""></p>
+<p>跳表的时间复杂度是O(logN)</p>
+<h1 id="不同操作的时间复杂度"><a href="#不同操作的时间复杂度" class="headerlink" title="不同操作的时间复杂度"></a>不同操作的时间复杂度</h1><h2 id="单元素操作"><a href="#单元素操作" class="headerlink" title="单元素操作"></a>单元素操作</h2><p>每一种集合类型对单个数据的增删改查操作的复杂度, 由实际集合所使用的数据结构决定. 例如对Hash类型而言, 使用压缩列表时, <code>HGET</code>/<code>HSET</code>和<code>HDEL</code>等操作的复杂度是O(N), 如果是对哈希表操作, 它们的复杂度就是O(1); 同样, 对Set类型来说, 当使用整数数组作为底层数据结构时, <code>SADD</code>/<code>SREM</code>/<code>SRANDMEMBER</code>等操作的复杂度是O(N), 当使用哈希表时, 复杂度就是O(1)</p>
+<h2 id="范围操作"><a href="#范围操作" class="headerlink" title="范围操作"></a>范围操作</h2><p>范围操作是指集合类型中的遍历操作, 可以返回集合中的所有数据比如Hash类型的<code>HGETALL</code>和Set类型的<code>SMEMBERS</code>, 或者是返回一个范围内的部分数据, 比如List类型的<code>LRANGE</code>和ZSet类型的<code>ZRANGE</code>, 这类操作的复杂度一般都是O(N), 我们应该尽量避免这类耗时操作</p>
+<p>不过Redis从2.8版本开始提供<code>SCAN</code>系列操作, 这类操作实现了渐进式遍历, 每次只返回有限数量的数据, 这样就避免了一次性返回所有元素而导致Redis阻塞.</p>
+<h2 id="统计操作"><a href="#统计操作" class="headerlink" title="统计操作"></a>统计操作</h2><p>这类操作一般复杂度都是O(1), 这是因为压缩列表/双向链表/整数数组等数据结构中专门记录了元素的个数统计, 因此可以高效地完成相关操作.</p>
+<h2 id="例外情况"><a href="#例外情况" class="headerlink" title="例外情况"></a>例外情况</h2><p>压缩列表和双向链表都会记录表头和表尾的偏移量, 这样一来, 对于List类型的<code>LPOP</code>/<code>RPOP</code>/<code>LPUSH</code>和<code>RPUSH</code>等操作而言, 它们的复杂度也只有O(1).</p>
+<h1 id="为什么使用整数数组和压缩列表"><a href="#为什么使用整数数组和压缩列表" class="headerlink" title="为什么使用整数数组和压缩列表?"></a>为什么使用整数数组和压缩列表?</h1><p>整数数组和压缩列表在查找的时间复杂度方面并没有很大的优势, 为什么Redis还会把它们作为底层数据结构呢? 这有两方面原因</p>
+<pre><code>1. 内存利用率, 数据和压缩列表都是紧凑的数据结构, 它们比链表占用更少的内存. 
+    Redis是内存数据库, 要做到尽可能的优化, 提高内存的利用率
+2. 数组对CPU高速缓存的支持更加友好, 所以Redis在设计时, 在集合数据量较小默认采用内存紧凑排列的方式存储, 同时利用CPU高速缓存不会降低访问速度. 
+    当数据元素超过设定阈值后, 避免查询时间复杂度过高, 转为哈希表和跳表来存储数据, 保证查询效率</code></pre>
 
                 <hr>
 
@@ -236,13 +249,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2021/06/19/advanced-algorithm-01/" data-toggle="tooltip" data-placement="top" title="算法进阶(01) - 数组、链表">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2018/12/27/understand-python-coroutine/" data-toggle="tooltip" data-placement="top" title="理解Python协程">Next Post &rarr;</a>
+                            <a href="/2021/06/19/advanced-algorithm-01/" data-toggle="tooltip" data-placement="top" title="算法进阶(01) - 数组、链表">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -289,11 +298,9 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                          <a class="tag" href="/tags/#存储中间件" title="存储中间件">存储中间件</a>
                         
-                          <a class="tag" href="/tags/#JUnit" title="JUnit">JUnit</a>
-                        
-                          <a class="tag" href="/tags/#Runner" title="Runner">Runner</a>
+                          <a class="tag" href="/tags/#Redis" title="Redis">Redis</a>
                         
                     </div>
                 </section>
@@ -333,8 +340,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "ranchocooper";
-    var disqus_identifier = "https://blog.ranchocooper.com/2019/05/29/junit4-customer-runners/";
-    var disqus_url = "https://blog.ranchocooper.com/2019/05/29/junit4-customer-runners/";
+    var disqus_identifier = "https://blog.ranchocooper.com/2021/06/20/data-structure-in-redis/";
+    var disqus_url = "https://blog.ranchocooper.com/2021/06/20/data-structure-in-redis/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

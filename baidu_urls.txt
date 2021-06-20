@@ -1,4 +1,5 @@
-https://blog.ranchocooper.com/2021/06/20/advanced-algorithm-01/
+https://blog.ranchocooper.com/2021/06/20/data-structure-in-redis/
+https://blog.ranchocooper.com/2021/06/19/advanced-algorithm-01/
 https://blog.ranchocooper.com/2019/05/29/junit4-customer-runners/
 https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/
 https://blog.ranchocooper.com/2018/11/08/drive-into-java-annotation/

@@ -13,11 +13,11 @@
 
     <title>
         
-          算法进阶 - 数组、链表 - 伯爵在古堡
+          算法进阶(01) - 数组、链表 - 伯爵在古堡
         
     </title>
 
-    <link rel="canonical" href="https://blog.ranchocooper.com/2021/06/20/advanced-algorithm-01/">
+    <link rel="canonical" href="https://blog.ranchocooper.com/2021/06/19/advanced-algorithm-01/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -179,11 +179,11 @@
                           <a class="tag" href="/tags/#算法" title="算法">算法</a>
                         
                     </div>
-                    <h1>算法进阶 - 数组、链表</h1>
+                    <h1>算法进阶(01) - 数组、链表</h1>
                     <h2 class="subheading">advanced-algorithm-array-and-list</h2>
                     <span class="meta">
                         Posted by Rancho on
-                        2021-06-20
+                        2021-06-19
                     </span>
 
                     <span class="meta">Word Count 841，
@@ -209,7 +209,7 @@
 
                 <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><h2 id="合并两个有序数组"><a href="#合并两个有序数组" class="headerlink" title="合并两个有序数组"></a>合并两个有序数组</h2><p><a href="https://leetcode-cn.com/problems/merge-sorted-array/" target="_blank" rel="noopener">LeetCode</a></p>
 <p>给你两个有序整数数组<code>nums1</code> 和 <code>nums2</code>，请你将 <code>nums2</code> 合并到<code>nums1</code>中，使 <code>nums1</code> 成为一个有序数组。</p>
-<p>初始化<code>nums1</code> 和 <code>nums2</code> 的元素数量分别为<code>m</code> 和 <code>n</code> 。你可以假设<code>nums1</code> 的空间大小等于<code>m + n</code>，这样它就有足够的空间保存来自 `nums2\ 的元素。</p>
+<p>初始化<code>nums1</code> 和 <code>nums2</code> 的元素数量分别为<code>m</code> 和 <code>n</code> 。你可以假设<code>nums1</code> 的空间大小等于<code>m + n</code>，这样它就有足够的空间保存来自 <code>nums2</code> 的元素。</p>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>nums1有足够空间容纳所有数组元素, 用k从m+n-1处开始向前遍历nums1, 然后分别用i, j从后往前遍历两个数组, 并将大的元素填入k的位置, 时间复杂度为O(n)</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">merge</span><span class="params">(nums1 []<span class="keyword">int</span>, m <span class="keyword">int</span>, nums2 []<span class="keyword">int</span>, n <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    i := m <span class="number">-1</span></span><br><span class="line">    j := n - <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> k := m + n - <span class="number">1</span>; k &gt;=<span class="number">0</span>; k-- &#123;</span><br><span class="line">        <span class="keyword">if</span> j &lt; <span class="number">0</span> || (i &gt; <span class="number">0</span> &amp;&amp; nums1[i] &gt;= nums2[j]) &#123;</span><br><span class="line">            nums1[k] = nums1[i]     </span><br><span class="line">            i--</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            nums1[k] = nums1[j]</span><br><span class="line">            j--</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -238,15 +238,15 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * type ListNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Next *ListNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hasCycle</span><span class="params">(head *ListNode)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    fast := head</span><br><span class="line">    <span class="keyword">for</span> fast != <span class="literal">nil</span> &amp;&amp; fast.Next != <span class="literal">nil</span> &#123;</span><br><span class="line">        fast = fast.Next.Next</span><br><span class="line">        head = head.Next</span><br><span class="line">        <span class="keyword">if</span> fast == head &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;     <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-
-
-
-
                 <hr>
 
                 
 
                 <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2021/06/20/data-structure-in-redis/" data-toggle="tooltip" data-placement="top" title="Redis中的数据结构">&larr; Previous Post</a>
+                        </li>
                     
                     
                         <li class="next">
@@ -337,8 +337,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "ranchocooper";
-    var disqus_identifier = "https://blog.ranchocooper.com/2021/06/20/advanced-algorithm-01/";
-    var disqus_url = "https://blog.ranchocooper.com/2021/06/20/advanced-algorithm-01/";
+    var disqus_identifier = "https://blog.ranchocooper.com/2021/06/19/advanced-algorithm-01/";
+    var disqus_url = "https://blog.ranchocooper.com/2021/06/19/advanced-algorithm-01/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

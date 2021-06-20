@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.ranchocooper.com/2021/06/20/advanced-algorithm-01/</loc>
+    <loc>https://blog.ranchocooper.com/2021/06/20/data-structure-in-redis/</loc>
     
-    <lastmod>2021-06-20T12:43:27.929Z</lastmod>
+    <lastmod>2021-06-20T18:37:32.498Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2021/06/19/advanced-algorithm-01/</loc>
+    
+    <lastmod>2021-06-20T18:01:18.229Z</lastmod>
     
   </url>
   
@@ -33,13 +40,6 @@
     <loc>https://blog.ranchocooper.com/archives/index.html</loc>
     
     <lastmod>2021-02-19T13:07:07.582Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
   </url>
   
@@ -100,13 +100,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/404.html</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ranchocooper.com/2017/07/26/pytest-fixtures/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
@@ -114,7 +107,21 @@
   </url>
   
   <url>
+    <loc>https://blog.ranchocooper.com/404.html</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
