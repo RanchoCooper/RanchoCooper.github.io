@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.ranchocooper.com/2021/06/22/advanced-algorithm-02/</loc>
+    
+    <lastmod>2021-06-23T02:33:34.467Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ranchocooper.com/2021/06/19/advanced-algorithm-01/</loc>
     
     <lastmod>2021-06-21T02:48:45.709Z</lastmod>
@@ -51,14 +58,14 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/06/24/understand-high-performance-python/</loc>
+    <loc>https://blog.ranchocooper.com/2018/06/13/singleton-in-python/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/06/13/singleton-in-python/</loc>
+    <loc>https://blog.ranchocooper.com/2019/05/29/junit4-customer-runners/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
@@ -72,14 +79,7 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/</loc>
+    <loc>https://blog.ranchocooper.com/2017/07/22/mysql-architecture/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
@@ -100,7 +100,14 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/07/22/mysql-architecture/</loc>
+    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
@@ -114,13 +121,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ranchocooper.com/2017/10/03/python-stdlib-04dates-and-times/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
@@ -128,7 +128,14 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2019/05/29/junit4-customer-runners/</loc>
+    <loc>https://blog.ranchocooper.com/2018/06/24/understand-high-performance-python/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
