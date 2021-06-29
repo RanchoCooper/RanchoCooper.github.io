@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.ranchocooper.com/2021/06/28/advanced-algorithm-03/</loc>
+    
+    <lastmod>2021-06-29T01:40:44.158Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ranchocooper.com/2021/06/22/advanced-algorithm-02/</loc>
     
-    <lastmod>2021-06-23T02:49:17.546Z</lastmod>
+    <lastmod>2021-06-23T02:50:28.850Z</lastmod>
     
   </url>
   
@@ -58,13 +65,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/06/13/singleton-in-python/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ranchocooper.com/2019/05/29/junit4-customer-runners/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
@@ -114,13 +114,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/404.html</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ranchocooper.com/2017/10/03/python-stdlib-04dates-and-times/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
@@ -128,7 +121,21 @@
   </url>
   
   <url>
+    <loc>https://blog.ranchocooper.com/404.html</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ranchocooper.com/2018/06/24/understand-high-performance-python/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2018/06/13/singleton-in-python/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
