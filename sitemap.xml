@@ -37,6 +37,13 @@
   </url>
   
   <url>
+    <loc>https://blog.ranchocooper.com/2017/07/20/hello-world/</loc>
+    
+    <lastmod>2021-06-20T11:50:03.224Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ranchocooper.com/tags/index.html</loc>
     
     <lastmod>2021-02-19T13:07:07.586Z</lastmod>
@@ -44,7 +51,7 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/06/29/whats-new-in-python-3-7/</loc>
+    <loc>https://blog.ranchocooper.com/2018/06/28/whats-new-in-python-3-7/</loc>
     
     <lastmod>2021-02-19T13:07:07.582Z</lastmod>
     
@@ -72,14 +79,35 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/07/20/hello-world/</loc>
+    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/07/22/mysql-architecture/</loc>
+    <loc>https://blog.ranchocooper.com/2017/09/30/python-stdlib-02collections/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2017/07/21/mysql-architecture/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2017/10/02/python-stdlib-04dates-and-times/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
@@ -93,34 +121,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/07/26/pytest-fixtures/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2017/10/03/python-stdlib-04dates-and-times/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ranchocooper.com/404.html</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
@@ -128,21 +128,21 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/06/24/understand-high-performance-python/</loc>
+    <loc>https://blog.ranchocooper.com/2018/06/23/understand-high-performance-python/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/06/13/singleton-in-python/</loc>
+    <loc>https://blog.ranchocooper.com/2017/07/25/pytest-fixtures/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/</loc>
+    <loc>https://blog.ranchocooper.com/2018/06/12/singleton-in-python/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     

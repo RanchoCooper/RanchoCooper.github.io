@@ -13,11 +13,11 @@
 
     <title>
         
-          容器数据类型 - Collections - 伯爵在古堡
+          MySQL架构 - 伯爵在古堡
         
     </title>
 
-    <link rel="canonical" href="https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/">
+    <link rel="canonical" href="https://blog.ranchocooper.com/2017/07/21/mysql-architecture/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -178,17 +178,17 @@
                         
                           <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
                         
-                          <a class="tag" href="/tags/#Python标准库" title="Python标准库">Python标准库</a>
+                          <a class="tag" href="/tags/#高性能MySQL" title="高性能MySQL">高性能MySQL</a>
                         
                     </div>
-                    <h1>容器数据类型 - Collections</h1>
-                    <h2 class="subheading">Cotainer Data Types</h2>
+                    <h1>MySQL架构</h1>
+                    <h2 class="subheading">MySQL Architecture</h2>
                     <span class="meta">
                         Posted by Rancho on
-                        2017-10-01
+                        2017-07-21
                     </span>
 
-                    <span class="meta">Word Count 972，
+                    <span class="meta">Word Count 963，
 
                     3 min to read</span>
 
@@ -209,46 +209,37 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><p><code>collections</code>模块包含多种数据结构的实现，扩展了其他模块中的相应结构。</p>
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><blockquote>
+<p>MySQL不够完美，但却足够灵活。</p>
+</blockquote>
+<p>MySQL最与众不同的特性是它的存储引擎架构，它将查询处理(Query Processing)于其他子系统单独隔离。这种处理和存储分离的设计可以在使用时根据环境特性来按需选择数据存储的方式。</p>
+<h1 id="逻辑架构"><a href="#逻辑架构" class="headerlink" title="逻辑架构"></a>逻辑架构</h1><p><img src="mysql-architecture.jpg" alt="逻辑架构"></p>
+<p>可以看到，其架构分为三层。三层的功能分别为：</p>
 <ul>
-<li>Counter：计数器</li>
-<li>defaultdict：带有默认值的字典。</li>
-<li>OrderedDict：记忆元素顺序的有序字典</li>
-<li>deque：双端队列，允许从任意一端增加或删除元素。</li>
-<li>namedtuple：生成可以使用名字来访问元素内容的tuple子类</li>
+<li>服务层：连接处理，授权认证，安全等大多数基于网络的工具都会提供的功能。</li>
+<li>核心层：查询解析，分析优化，缓存，以及跨存储引擎的功能(存储过程，触发器，视图等)。</li>
+<li>引擎层：存储引擎。类似各种文件系统，不同的存储引擎都有各自的优缺点。不同引擎间不会相互通信，仅仅响应上层的服务请求。引擎接口对外是透明的。</li>
 </ul>
-<h1 id="Counter"><a href="#Counter" class="headerlink" title="Counter"></a>Counter</h1><p>Counter作为一个容器，可以跟踪相同的值增加了多少次。Counter支持3种形式的初始化：调用Counter构造函数时提供元素序列或者一个包含键和技术的字典，还可以使用关键字参数将字符串名映射到计数。(默认行为会按照key来排序)</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line">Counter([<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'a'</span>, <span class="string">'c'</span>, <span class="string">'c'</span>])</span><br><span class="line">Counter(&#123;<span class="string">'a'</span>: <span class="number">5</span>, <span class="string">'b'</span>: <span class="number">1</span>, <span class="string">'c'</span>: <span class="number">3</span>&#125;)</span><br><span class="line">Counter(a=<span class="number">2</span>, b=<span class="number">1</span>, c=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># got the same results</span></span><br><span class="line"><span class="comment"># Counter(&#123;'a': 2, 'b': 1, 'c': 3&#125;)</span></span><br></pre></td></tr></table></figure>
-
-<p>如果不提供任何参数，可以构造一个空的Counter，然后通过<code>update</code>方法填充。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line">c = Counter()</span><br><span class="line"><span class="comment"># Counter()</span></span><br><span class="line"></span><br><span class="line">c.update(<span class="string">'abbcccdddd'</span>)</span><br><span class="line"><span class="comment"># Counter(&#123;'a': 1, 'b':2, 'c': 3, 'd':4&#125;)</span></span><br><span class="line"></span><br><span class="line">c.update(a=<span class="number">2</span>, d=<span class="number">5</span>, e=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># Counter(&#123;'a': 3, 'b':2, 'c': 3, 'd':9, 'e': 1&#125;)</span></span><br></pre></td></tr></table></figure>
-
-<p>一旦填充了Counter，可以通过字典API来获取它的值。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections importCounter</span><br><span class="line"></span><br><span class="line">c = Counter(<span class="string">'abcdaab'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> letter <span class="keyword">in</span> <span class="string">'abcde'</span>:</span><br><span class="line">    print(<span class="string">'&#123;0&#125;: &#123;1&#125;'</span>.format(letter, c[letter]))</span><br></pre></td></tr></table></figure>
-<p>对于未知的元素，Counter不会产生KeyError。如果在输入中没有找到某个值，其计数为0。<br><code>elements</code>方法返回一个迭代器，返回Counter记录的所有元素，不过不能保证元素的顺序不变。<br><code>most_common</code>方法生成一个序列，返回计数最大的N项元素，如果不提供参数，则会按频度排序返回所有列表。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> letter, count <span class="keyword">in</span> c.most_common(<span class="number">3</span>):</span><br><span class="line">    print(<span class="string">'&#123;&#125;: &#123;&#125;'</span>.format(letter, count))</span><br></pre></td></tr></table></figure>
-
-<p>另外，Counter实例还支持算数和集合操作。每次执行一个操作会生成一个新的Counter，并且计数为0或者为负数的元素会被删除。</p>
-<h1 id="defaultdict"><a href="#defaultdict" class="headerlink" title="defaultdict"></a>defaultdict</h1><p>内建字典包含<code>setdefault</code>方法来获取默认值，而defaultdict会在初始化容器时就让调用者提前指定默认值。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line">d1 = defaultdict(int)</span><br><span class="line">d2 = defaultdict(partial(int, <span class="number">2</span>))</span><br><span class="line">d3 = defaultdict(partial(defaultdict, partial(int, <span class="number">3</span>)))</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="OrderedDict"><a href="#OrderedDict" class="headerlink" title="OrderedDict"></a>OrderedDict</h1><p>OrderedDict其实是字典的子类，它可以记住往字典中增加元素的顺序</p>
-<p>需要注意的时，OrderedDict在检查相等性时，除了查看其内容，也会考虑元素增加的顺序</p>
-<h1 id="deque"><a href="#deque" class="headerlink" title="deque"></a>deque</h1><p>双端队列支持从任意一端增加和删除元素。栈和队列实际上就是双端队列的退化形式，其输入和输出都限制在一端。由于deque是一种序列容器，因此同样支持list的一些操作，如用<code>__getitem__</code>检查内容，确定长度，以及通过匹配标识从序列中删除某元素。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line">d = deque(<span class="string">'abcdefg'</span>)</span><br><span class="line">print(len(d))</span><br><span class="line">print(d[<span class="number">0</span>])</span><br><span class="line">print(d[<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line">d.remove(<span class="string">'a'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>从左端或右端填充数据</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">d1 = deque()</span><br><span class="line">d1.extend(<span class="string">'abc'</span>)</span><br><span class="line">d1.append(<span class="string">'efg'</span>)</span><br><span class="line">d1.pop()</span><br><span class="line"></span><br><span class="line">d2 = deque()</span><br><span class="line">d2.extendleft(<span class="string">'abc'</span>)</span><br><span class="line">d2.appendleft(<span class="string">'efg'</span>)</span><br><span class="line">d2.popleft()</span><br></pre></td></tr></table></figure>
-
-<p>还可以按任意方向<strong>旋转</strong>从而跳过一些元素。<br>你可以形象地把deque中的元素想象成是刻在拨号盘上数字，当参数为负数，则逆时针(左旋)转动，否则为顺时针转动(右旋)。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d.rotate(<span class="number">2</span>)</span><br><span class="line">d.rotate(<span class="number">-2</span>)</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="namedtuple"><a href="#namedtuple" class="headerlink" title="namedtuple"></a>namedtuple</h1><p>内建tuple使用数值索引来访问成员，一旦tuple中的字段变多，而且在代码实现中，可能元组的构造和使用相距很远，就很容易导致错误。namedtuple除了指定数值索引外，还回指定名字。在内存使用方面，namedtupel和内建元组同样高效。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"></span><br><span class="line">person = namedtuple(<span class="string">'person'</span>, <span class="string">'name age gender'</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'type of person: '</span>, type(person))</span><br><span class="line"></span><br><span class="line">rancho = person(name=<span class="string">'rancho'</span>, age=<span class="number">20</span>, gender=<span class="string">'male'</span>)</span><br><span class="line">print(rancho)</span><br></pre></td></tr></table></figure>
-
-<p>默认情况下，namedtuple定义字段时是不允许重复的，如果非要这么做，可以将<code>rename</code>参数设置为<code>True</code></p>
+<p>每个客户端连接都会在服务器进程中拥有一个线程，在该连接中进行的查询操作只会在这个单独的线程环境中执行。5.5之后支持线程池插件，可以通过少量线程来处理大量连接。响应一个查询请求时，MySQL会解析查询，创建内部解析树，并对其进行各种优化，包括重写查询，决定表的读取顺序，以及选择适合的索引。对SELECT查询，会在解析之前检查查询缓存(Query Cache)。如果能找到对应的查询，便不再进行查询解析，优化和执行等过程，直接返回查询缓存中的结果。</p>
+<h1 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h1><p>当有多个查询在同一时刻修改数据，就会产生并发控制的问题。这个问题通过实现共享锁和排他锁即可解决，即读锁和写锁。读锁是互不干扰的，即保证了多个查询可以同时读取同一个资源。而写锁则会则塞其他读锁和写锁对资源的访问，这样才能避免同时写入数据的发生。</p>
+<p>实现锁带来的另一个问题是加锁需要耗费额外资源，获得锁，检查锁，释放锁等操作，都会增加系统的开销。锁粒度越小，系统的并发程度就越高。良好的锁策略，应该是在锁开销和数据安全性之间寻求平衡。</p>
+<p>表锁和行锁是数据库中常见的两种锁策略。</p>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><p>一个运行良好的事务处理系统，应该具备ACID特性。</p>
+<ul>
+<li>原子性(atomicity)：事务是最小的工作单元，其中的操作要么全部执行，要么中途失败，全部回滚。</li>
+<li>一致性(consistency)：保证事务状态的独立，不存在逻辑上的混杂。</li>
+<li>隔离性(isolation)：在事务完成之前，对外不可见。</li>
+<li>持久性(durability)：保证事务一旦提交，其修改便能存至数据库。</li>
+</ul>
+<p>SQL标准中定义了四种隔离级别：</p>
+<ul>
+<li>未提交读：修改而未提交的事务，对外可见。(脏读)</li>
+<li>提交读：当事务提交后，其修改才对外可见。大部分数据库的默认隔离级别。(不可重复读，在同一事务中先后执行同样的查询，结果可能不一致)</li>
+<li>可重复读：保证在同一事务多次读取同样记录的结果是一致的。(解决了脏读，但无法解决幻读)</li>
+<li>可串行化：最高级别的隔离，通过强制事务串行执行，避免了幻读。实际中一般不考虑。</li>
+</ul>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>InnoDB是MySQL的默认事务型引擎，此外它还内建多种引擎，支持插件式的引擎API。</p>
+<p>面对不同需求和应用场景要选择合适引擎。</p>
 
 
                 <hr>
@@ -258,12 +249,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2017/10/01/python-stdlib-02array/" data-toggle="tooltip" data-placement="top" title="固定类型数据序列 - Array">&larr; Previous Post</a>
+                            <a href="/2017/07/25/pytest-fixtures/" data-toggle="tooltip" data-placement="top" title="『译』测试固件那些事">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2017/07/26/pytest-fixtures/" data-toggle="tooltip" data-placement="top" title="『译』测试固件那些事">Next Post &rarr;</a>
+                            <a href="/2017/07/20/hello-world/" data-toggle="tooltip" data-placement="top" title="伯爵修炼的地方">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -312,7 +303,7 @@
                        
                           <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
                         
-                          <a class="tag" href="/tags/#Python标准库" title="Python标准库">Python标准库</a>
+                          <a class="tag" href="/tags/#高性能MySQL" title="高性能MySQL">高性能MySQL</a>
                         
                     </div>
                 </section>
@@ -352,8 +343,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "ranchocooper";
-    var disqus_identifier = "https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/";
-    var disqus_url = "https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/";
+    var disqus_identifier = "https://blog.ranchocooper.com/2017/07/21/mysql-architecture/";
+    var disqus_url = "https://blog.ranchocooper.com/2017/07/21/mysql-architecture/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

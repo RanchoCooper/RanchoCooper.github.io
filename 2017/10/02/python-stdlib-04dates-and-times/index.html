@@ -13,11 +13,11 @@
 
     <title>
         
-          『译』测试固件那些事 - 伯爵在古堡
+          时间和日期 - 伯爵在古堡
         
     </title>
 
-    <link rel="canonical" href="https://blog.ranchocooper.com/2017/07/26/pytest-fixtures/">
+    <link rel="canonical" href="https://blog.ranchocooper.com/2017/10/02/python-stdlib-04dates-and-times/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -178,19 +178,19 @@
                         
                           <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
                         
-                          <a class="tag" href="/tags/#pytest" title="pytest">pytest</a>
+                          <a class="tag" href="/tags/#Python标准库" title="Python标准库">Python标准库</a>
                         
                     </div>
-                    <h1>『译』测试固件那些事</h1>
-                    <h2 class="subheading">Pytest fixtures explicit, modular, scalable</h2>
+                    <h1>时间和日期</h1>
+                    <h2 class="subheading">Dates and Times</h2>
                     <span class="meta">
                         Posted by Rancho on
-                        2017-07-26
+                        2017-10-02
                     </span>
 
-                    <span class="meta">Word Count 825，
+                    <span class="meta">Word Count 1.3k，
 
-                    3 min to read</span>
+                    5 min to read</span>
 
                 </div>
             </div>
@@ -209,33 +209,38 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><p>测试固件的目的是提供一个固定的基线。在此基础上，测试可以可靠且反复地执行。pytest fixture对典型的xUnit风格的setup/teardown功能提供了显著的改进。</p>
-<h1 id="Fixtures-as-Function-arguments"><a href="#Fixtures-as-Function-arguments" class="headerlink" title="Fixtures as Function arguments"></a>Fixtures as Function arguments</h1><p>通过参数传递，测试函数能够接收固件对象。pytest fixture基于setup/teardown等xUnit风格上做了令人兴奋的改进：</p>
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><p>不同于int、float和str，Python没有包含对应日期和时间的内置类型，不过提供了3个相应模块，可以采用多种表示管理日期和时间值。</p>
 <ul>
-<li>固件具有显式名称，通过在参数列表中声明它们，便能在测试函数、模块、类或整个项目中激活。</li>
-<li>固件以模块化的方式实现，因为每个固件都会触发特定的功能，它自己也可以使用其他的固件。</li>
-<li>固件管理十分灵活，从简单的单元到复杂的功能测试，并且允许根据配置和组件选项将固件参数化，并在类，模块或整个测试会话中重用固件。</li>
+<li><code>time</code>模块由底层C库提供与时间相关的函数。它包含一些函数用于获取时钟时间和处理器运行时间，还提供了基本的解析和字符串格式化工具。</li>
+<li><code>datetime</code>模块为日期、时间以及日期时间提供了一个高层接口。datetime中的类支持算术、比较和时区配置。</li>
+<li><code>calendar</code>模块可以创建周、月和年的格式化表示。它还可以计算重复事件、给定日期是周几，以及其他基于日历的值。</li>
 </ul>
-<p>此外，pytest继续支持经典的xUnit风格设置。你可以混合使用这两种风格，也可以逐步地从经典到新风格。<br>另外，基于unittest和nosed的项目也能很容易扩展为pytest</p>
-<h1 id="Fixtures-as-Function-arguments-1"><a href="#Fixtures-as-Function-arguments-1" class="headerlink" title="Fixtures as Function arguments"></a>Fixtures as Function arguments</h1><p>测试函数可以通过传递参数来接收固件对象。对于每个参数名称，都对应了该名称的固件函数提供的固件对象。固件的注册是通过 <code>@pytest.fixture</code>来注册的。让我们看一个简单的包含fixture和测试函数的测试模块:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of ./test_smtpsimple.py</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">smtp</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">import</span> smtplib</span><br><span class="line">    <span class="keyword">return</span> smtplib.SMTP(<span class="string">"smtp.gmail.com"</span>, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_ehlo</span><span class="params">(smtp)</span>:</span></span><br><span class="line">    response, msg = smtp.ehlo()</span><br><span class="line">    <span class="keyword">assert</span> response == <span class="number">250</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span> <span class="comment"># for demo purposes</span></span><br></pre></td></tr></table></figure>
+<h1 id="时钟时间-time"><a href="#时钟时间-time" class="headerlink" title="时钟时间 - time"></a>时钟时间 - time</h1><p><code>time</code>模块提供了一些用于管理日期和时间的C库函数。由于它绑定到底层C实现，一些细节(比如纪元开始时间和支持的最大日期)会特定于特定平台。</p>
+<h2 id="壁挂钟时间"><a href="#壁挂钟时间" class="headerlink" title="壁挂钟时间"></a>壁挂钟时间</h2><p><code>time</code>函数是time模块的核心函数之一，它会返回一个从纪元开始至今的浮点秒数。浮点数的表示对时间的存储和比较很有用，但是想要生成人类刻度的表示就差强人意了。如果你想记录或者打印时间，<code>ctime</code>可能更有用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">t = time.time()</span><br><span class="line">print(t)</span><br><span class="line">print(time.ctime())</span><br><span class="line">print(time.ctime(t + <span class="number">20</span>))</span><br></pre></td></tr></table></figure>
 
-<p>在这里， 我们在<code>test_ehlo</code>测试函数的参数列表中显式传入了所需的 <code>smtp</code>固件。pytest会发现并调用被标记为<code>smtp</code>的<code>@pytest.fixture</code></p>
-<h2 id="Sharing-a-fixture-across-tests-in-a-module-or-class-or-session"><a href="#Sharing-a-fixture-across-tests-in-a-module-or-class-or-session" class="headerlink" title="Sharing a fixture across tests in a module or class or session"></a>Sharing a fixture across tests in a module or class or session</h2><p>如果你想复用声明的fixture，只需在声明时显式指定其作用域即可</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(scope='function')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function_only_modular_smtp</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(scope='module')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">module_shared_smtp</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(scope='class')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">class_shared_smtp</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture(scope='session')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">whole_testing_shared_smtp</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h2 id="处理器时间"><a href="#处理器时间" class="headerlink" title="处理器时间"></a>处理器时间</h2><p><code>clock</code>的返回值反映了程序的实际使用CPU(运行)时间，应当用于性能测试、基准测试等。值得注意的是，如果程序什么也没做，这时候处理器时钟是不会走动的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    print(<span class="string">"%s %0.2f %0.2f"</span> % (time.ctime(), time.time(), time.clock()))</span><br><span class="line">    print(<span class="string">"sleeping"</span>, i)</span><br><span class="line">    time.sleep(i)</span><br></pre></td></tr></table></figure>
+<p>在这个例子里，每次循环仅仅进入睡眠，几乎没做什么工作。这样一来，两个挂壁时间在增加，而clock始终没发生变化。</p>
+<h2 id="时间组成"><a href="#时间组成" class="headerlink" title="时间组成"></a>时间组成</h2><p>有些情况下需要将时间存储为过去了多少秒，还有的情况需要访问一个日期的各个字段(年、月等)。time模块定义了<code>struct_time</code>来维护日期和时间值。gmtime函数会返回UTC格式的当前时间，而localtime则会返回应用了当前时区的当前时间。mktime会取一个struct_time实例，并将其转换回浮点数表示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_struct</span><span class="params">(t)</span>:</span></span><br><span class="line">    print(<span class="string">'tm_year: '</span>, t.tm_year)</span><br><span class="line">    print(<span class="string">'tm_mon: '</span>, t.tm_mon)</span><br><span class="line">    print(<span class="string">'tm_mday: '</span>, t.tm_mday)       <span class="comment"># day in month</span></span><br><span class="line">    print(<span class="string">'tm_hour: '</span>, t.tm_hour)</span><br><span class="line">    print(<span class="string">'tm_min: '</span>, t.tm_min)</span><br><span class="line">    print(<span class="string">'tm_sec: '</span>, t.tm_sec)</span><br><span class="line">    print(<span class="string">'tm_wday: '</span>, t.tm_wday)       <span class="comment"># day in week</span></span><br><span class="line">    print(<span class="string">'tm_yday: '</span>, t.tm_yday)       <span class="comment"># day in year</span></span><br><span class="line">    print(<span class="string">'tm_isdst: '</span>, t.tm_isdst)     <span class="comment"># DST flag</span></span><br><span class="line">    print(<span class="string">'tm_zone: '</span>, t.tm_zone)       <span class="comment"># local time zone</span></span><br><span class="line">    print(<span class="string">'tm_gmtoff: '</span>, t.tm_gmtoff)</span><br><span class="line"></span><br><span class="line">show_struct(time.gmtime())</span><br><span class="line">show_struct(time.localtime())</span><br><span class="line">print(<span class="string">'mktime: '</span>, time.mktime(time.localtime()))</span><br></pre></td></tr></table></figure>
 
-<h1 id="Fixture-finalization-executing-teardown-code"><a href="#Fixture-finalization-executing-teardown-code" class="headerlink" title="Fixture finalization/ executing teardown code"></a>Fixture finalization/ executing teardown code</h1><p>不同于unittest中通过定义teardown函数的方式，pytest中只需通过<code>yield</code>关键字就能完成teardown工作</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(scope="module")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">smtp</span><span class="params">()</span>:</span></span><br><span class="line">    smtp = smtplib.SMTP(<span class="string">"smtp.gmail.com"</span>, <span class="number">587</span>, timeout=<span class="number">5</span>)  <span class="comment"># do something</span></span><br><span class="line">    <span class="keyword">yield</span> smtp  <span class="comment"># provide the fixture value</span></span><br><span class="line">    print(<span class="string">"teardown smtp"</span>)    <span class="comment"># do the teardown thing</span></span><br><span class="line">    smtp.close()</span><br></pre></td></tr></table></figure>
+<h2 id="处理时区"><a href="#处理时区" class="headerlink" title="处理时区"></a>处理时区</h2><p>确定当前时间的函数有一个前提，即已经设置了时区。时区的设置可能由应用程序设置，也可以使用系统的默认时区。修改时区不会改变具体的当前时间，只是改变了当前时间的表示(仅仅做了转换)。</p>
+<p>要改变时区，需要设置环境变量TZ，然后调用tzset。设置时区时可以指定很多细节，甚至详细到日光的开始和结束时间。不过，通常的做法是使用时区名，并由底层库推导出其他信息。下面我们来简单地修改时区</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_zone_info</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'TZ: '</span>, os.environ.get(<span class="string">'TZ'</span>, <span class="string">'(not set yet)'</span>))</span><br><span class="line">    print(<span class="string">'tzname: '</span>, time.tzname)</span><br><span class="line">    print(<span class="string">'zone: %d (%d)'</span> % (time.timezone, time.timezone / <span class="number">3600</span>))</span><br><span class="line">    print(<span class="string">'DST: '</span>, time.daylight)</span><br><span class="line">    print(<span class="string">'Time: '</span>, time.ctime())</span><br><span class="line"></span><br><span class="line">print(<span class="string">'Default:'</span>)</span><br><span class="line">show_zone_info()</span><br><span class="line"></span><br><span class="line">ZONES = [<span class="string">'GMT'</span>, <span class="string">'Europe/Amsterdam'</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> zone <span class="keyword">in</span> ZONES:</span><br><span class="line">    os.environ[<span class="string">'TZ'</span>] = zone</span><br><span class="line">    time.tzset()</span><br><span class="line">    print(zone, <span class="string">': '</span>)</span><br><span class="line">    show_zone_info()</span><br></pre></td></tr></table></figure>
 
-<p>如果你的teardown包含复杂的工作，也可以选择下面这种方式。<br>通过向固件传入<code>request</code>对象，便能内省测试上下文。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(scope="module")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">smtp</span><span class="params">(request)</span>:</span></span><br><span class="line">    smtp = smtplib.SMTP(<span class="string">"smtp.gmail.com"</span>, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fin</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">"teardown smtp"</span>)</span><br><span class="line">        smtp.close()</span><br><span class="line">    request.addfinalizer(fin)</span><br><span class="line">    <span class="keyword">return</span> smtp  <span class="comment"># provide the fixture value</span></span><br></pre></td></tr></table></figure>
-<p>不同于第一种方式，<code>addfinalizer</code>方法支持注册多个finalizer并且能保证代码一定被执行(yield只是一种语法糖，并不能保证这一点)</p>
-<h1 id="Fixtures-can-introspect-the-requesting-test-context"><a href="#Fixtures-can-introspect-the-requesting-test-context" class="headerlink" title="Fixtures can introspect the requesting test context"></a>Fixtures can introspect the requesting test context</h1><p>如刚才展示的，<code>request</code>对象允许在定义固件时访问其上下文。假设我们的smtp需要动态地获取服务器，它的单元测试代码可能如下所示</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">smtpserver = <span class="string">'mail.python.org'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_showhelo</span><span class="params">(smtp)</span>:</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span>, smtp.helo()</span><br></pre></td></tr></table></figure>
+<h2 id="解析和格式化时间"><a href="#解析和格式化时间" class="headerlink" title="解析和格式化时间"></a>解析和格式化时间</h2><p>工具函数strptime(parsed)和strftime(formatted)可以在struct_time和是兼职字符串表示之间转换</p>
+<h1 id="日期和时间值管理-datetime"><a href="#日期和时间值管理-datetime" class="headerlink" title="日期和时间值管理 - datetime"></a>日期和时间值管理 - datetime</h1><h2 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h2><p>时间值用<code>time</code>类表示，time实例包含hour、minute、second和microsecond属性，还可以包含时区信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">t = datetime.time(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">print(t)</span><br><span class="line">print(t.hour)</span><br><span class="line">print(t.minute)</span><br><span class="line">print(t.second)</span><br><span class="line">print(t.microsecond)</span><br><span class="line">print(t.tzinfo)</span><br><span class="line"></span><br><span class="line">print(datetime.time.min, datetime.time.max, datetime.time.resolution)</span><br></pre></td></tr></table></figure>
 
-<p>在定义固件时，通过<code>request</code>便能动态获取到这个值</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(scope='module')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">smtp</span><span class="params">(request)</span>:</span></span><br><span class="line">    server = getattr(request.module, <span class="string">'smtpserver'</span>, <span class="string">'smtp.gmail.com'</span>) <span class="comment"># default value</span></span><br><span class="line">    smtp = smtplib.SMTP(server, <span class="number">587</span>, timeout=<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">yield</span> smtp</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">"finalizing %s (%s)"</span> % (smtp, server))</span><br><span class="line">    smtp.close()</span><br></pre></td></tr></table></figure>
+<h2 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h2><p>日历日期值用<code>date</code>类表示，date实例包含year、month和day属性。使用<code>today</code>类方法很容易能穿件一个表示当前日期的日期实例。today类的<code>ctime</code>方法可以获得格式化的时间表示，而<code>timetuple</code>则返回today实例的struct_time结构。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">today = datetime.date.today()</span><br><span class="line">print(today)</span><br><span class="line">print(<span class="string">'ctime: '</span>, today.ctime())</span><br><span class="line">tt = today.timetuple()</span><br><span class="line">print(<span class="string">'tuple: tm_year = '</span>, tt.tm_year)</span><br></pre></td></tr></table></figure>
 
+<p>另外，<code>datetime.date.fromordinal</code>和<code>datetime.date.fromtimestamp</code>分别可以将天数和时戳转换成对应的日期结构。</p>
+<h2 id="timedelta"><a href="#timedelta" class="headerlink" title="timedelta"></a>timedelta</h2><p>通过对两个datetime对象使用算数运算，或者结合使用<code>datetime</code>和<code>timedelta</code>，可以根据得到将来或过去的日期。比如，两个日期相减可以生成一个timedelta，对日期进行timedelta运算可以生成另一个日期。</p>
+<p>实际上，通过<code>datetime.datetime.combine</code>方法，你可以将一个datetime.date实例和一个datetime.time相组合。</p>
+<h1 id="处理日期-calendar"><a href="#处理日期-calendar" class="headerlink" title="处理日期 - calendar"></a>处理日期 - calendar</h1><p>calendar模块实现了一些类来处理日期，管理面向年、月和周的值。通过prmonth方法可以生成一个月的格式化的文本日历输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line"></span><br><span class="line">c = calendar.TextCalendar(calendar.SUNDAY)      <span class="comment"># 配置每周的起始日</span></span><br><span class="line">c.prmonth(<span class="number">2017</span>, <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
 
 
                 <hr>
@@ -245,12 +250,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2017/10/01/python-stdlib-02collections/" data-toggle="tooltip" data-placement="top" title="容器数据类型 - Collections">&larr; Previous Post</a>
+                            <a href="/2018/02/28/a-simple-object-model/" data-toggle="tooltip" data-placement="top" title="『译』构建基本对象模型">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2017/07/22/mysql-architecture/" data-toggle="tooltip" data-placement="top" title="MySQL架构">Next Post &rarr;</a>
+                            <a href="/2017/10/01/python-stdlib-02array/" data-toggle="tooltip" data-placement="top" title="固定类型数据序列 - Array">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -299,7 +304,7 @@
                        
                           <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
                         
-                          <a class="tag" href="/tags/#pytest" title="pytest">pytest</a>
+                          <a class="tag" href="/tags/#Python标准库" title="Python标准库">Python标准库</a>
                         
                     </div>
                 </section>
@@ -339,8 +344,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "ranchocooper";
-    var disqus_identifier = "https://blog.ranchocooper.com/2017/07/26/pytest-fixtures/";
-    var disqus_url = "https://blog.ranchocooper.com/2017/07/26/pytest-fixtures/";
+    var disqus_identifier = "https://blog.ranchocooper.com/2017/10/02/python-stdlib-04dates-and-times/";
+    var disqus_url = "https://blog.ranchocooper.com/2017/10/02/python-stdlib-04dates-and-times/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
