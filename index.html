@@ -190,6 +190,29 @@
 
 <div class="post-preview">
 
+    <a href="/2021/06/28/io-module-in-redis/">
+        <h2 class="post-title">
+            Redis中的高性能IO模型
+        </h2>
+        <h3 class="post-subtitle">
+            IO Module In Redis
+        </h3>
+        <div class="post-content-preview">
+            本文主要探讨一个Redis中的经典问题: 为什么单线程的Redis能这么快?
+首先, 要厘清一个事实, 我们通常所说的Redis是单线程, 主要是指Redis的网络IO和键值对读写都是由一个线程来完成的. 而Redis的其他功能, 比如持久化、异步删除、集群数据同步等, 其实是由额外的线程执行的. 所以, 严格来说Redis并不是单线程的
+Redis为什么用单线程多线程的开销日常写程序, 经......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Rancho on
+        2021-06-28
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2021/06/28/advanced-algorithm-03/">
         <h2 class="post-title">
             算法进阶(03) - 前缀和、差分、双指针扫描
@@ -426,28 +449,6 @@ co......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/06/12/singleton-in-python/">
-        <h2 class="post-title">
-            Python 单例模式
-        </h2>
-        <h3 class="post-subtitle">
-            Singleton in Python
-        </h3>
-        <div class="post-content-preview">
-            单例模式单例模式(Singleton Pattern)是最常见的一种软件设计模式, 该模式的主要目的是保证一个类在程序生命周期内只有一个实例存在.
-比如, 某个服务器程序的配置信息存放在一个文件中, 客户端通过一个AppConfig的类来读取配置文件的信息. 如果在程序运行期间, 有很多地方都需要使用配置文件的内容, 也就是说, 很多地方都需要创建AppConfig对象的实例, 这就导致系统......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Rancho on
-        2018-06-12
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -489,7 +490,11 @@ co......
                             
                         
                             
+                            <a href="/tags/#存储中间件" title="存储中间件" rel="2">存储中间件</a>
+                            
                         
+                            
+                            <a href="/tags/#Redis" title="Redis" rel="2">Redis</a>
                             
                         
                             
