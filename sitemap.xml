@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.ranchocooper.com/2021/07/09/advanced-algorith-07/</loc>
+    
+    <lastmod>2021-07-10T11:43:16.250Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ranchocooper.com/2021/07/06/advanced-algorith-06/</loc>
     
     <lastmod>2021-07-09T06:42:07.163Z</lastmod>
@@ -100,13 +107,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/10/02/python-stdlib-04dates-and-times/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
@@ -114,21 +114,14 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/02/28/a-simple-object-model/</loc>
+    <loc>https://blog.ranchocooper.com/2017/10/02/python-stdlib-04dates-and-times/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/09/30/python-stdlib-02collections/</loc>
-    
-    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2018/06/12/singleton-in-python/</loc>
+    <loc>https://blog.ranchocooper.com/2017/07/25/pytest-fixtures/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
@@ -149,14 +142,21 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/404.html</loc>
+    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/</loc>
+    <loc>https://blog.ranchocooper.com/2017/09/30/python-stdlib-02collections/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/404.html</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
@@ -170,7 +170,14 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2017/07/25/pytest-fixtures/</loc>
+    <loc>https://blog.ranchocooper.com/2018/06/12/singleton-in-python/</loc>
+    
+    <lastmod>2021-02-19T13:07:07.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2018/02/28/a-simple-object-model/</loc>
     
     <lastmod>2021-02-19T13:07:07.578Z</lastmod>
     
