@@ -405,9 +405,9 @@
     
     
     
-      <category term="语言特性" scheme="https://blog.ranchocooper.com/tags/%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7/"/>
-    
       <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
+    
+      <category term="语言特性" scheme="https://blog.ranchocooper.com/tags/%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7/"/>
     
   </entry>
   
@@ -459,9 +459,9 @@
     
       <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
-      <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
-    
       <category term="设计模式" scheme="https://blog.ranchocooper.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+      <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
     
   </entry>
   
