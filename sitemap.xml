@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.ranchocooper.com/2018/11/08/drive-into-java-annotation/</loc>
+    
+    <lastmod>2021-12-14T13:19:32.561Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2018/06/29/whats-new-in-python-3-7/</loc>
+    
+    <lastmod>2021-12-14T13:19:32.545Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2018/06/13/singleton-in-python/</loc>
+    
+    <lastmod>2021-12-14T13:19:32.532Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/</loc>
+    
+    <lastmod>2021-12-14T13:19:32.523Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ranchocooper.com/2021/12/14/best-practices-for-design-REST-APIs/</loc>
     
     <lastmod>2021-12-14T12:53:15.999Z</lastmod>
@@ -30,21 +58,7 @@
   </url>
   
   <url>
-    <loc>https://blog.ranchocooper.com/2018/06/29/whats-new-in-python-3-7/</loc>
-    
-    <lastmod>2021-09-13T12:43:49.247Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ranchocooper.com/2018/06/24/understand-high-performance-python/</loc>
-    
-    <lastmod>2021-09-13T12:43:49.244Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/</loc>
     
     <lastmod>2021-09-13T12:43:49.244Z</lastmod>
     
@@ -59,13 +73,6 @@
   
   <url>
     <loc>https://blog.ranchocooper.com/2017/10/03/python-stdlib-04dates-and-times/</loc>
-    
-    <lastmod>2021-09-13T12:43:49.243Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2018/06/13/singleton-in-python/</loc>
     
     <lastmod>2021-09-13T12:43:49.243Z</lastmod>
     
@@ -124,13 +131,6 @@
     <loc>https://blog.ranchocooper.com/2021/08/28/interview-2021/</loc>
     
     <lastmod>2021-09-13T12:43:49.239Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ranchocooper.com/2018/11/08/drive-into-java-annotation/</loc>
-    
-    <lastmod>2021-09-13T12:43:49.238Z</lastmod>
     
   </url>
   
