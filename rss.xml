@@ -6,7 +6,7 @@
   <link href="/rss.xml" rel="self"/>
   
   <link href="https://blog.ranchocooper.com/"/>
-  <updated>2021-09-13T12:43:49.239Z</updated>
+  <updated>2021-12-14T12:53:15.999Z</updated>
   <id>https://blog.ranchocooper.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>设计REST APIs之最佳实践</title>
+    <link href="https://blog.ranchocooper.com/2021/12/14/best-practices-for-design-REST-APIs/"/>
+    <id>https://blog.ranchocooper.com/2021/12/14/best-practices-for-design-REST-APIs/</id>
+    <published>2021-12-14T12:50:44.000Z</published>
+    <updated>2021-12-14T12:53:15.999Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>2021面试合集</title>
@@ -496,33 +519,6 @@
     <id>https://blog.ranchocooper.com/2017/10/03/python-stdlib-04dates-and-times/</id>
     <published>2017-10-03T05:20:16.000Z</published>
     <updated>2021-09-13T12:43:49.243Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
-    
-      <category term="Python标准库" scheme="https://blog.ranchocooper.com/tags/Python%E6%A0%87%E5%87%86%E5%BA%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>固定类型数据序列 - Array</title>
-    <link href="https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/"/>
-    <id>https://blog.ranchocooper.com/2017/10/01/python-stdlib-02array/</id>
-    <published>2017-10-01T07:41:27.000Z</published>
-    <updated>2021-09-13T12:43:49.242Z</updated>
     
     <summary type="html">
     

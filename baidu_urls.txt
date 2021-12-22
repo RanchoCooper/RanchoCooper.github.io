@@ -1,3 +1,4 @@
+https://blog.ranchocooper.com/2021/12/14/best-practices-for-design-REST-APIs/
 https://blog.ranchocooper.com/2021/08/28/interview-2021/
 https://blog.ranchocooper.com/2021/08/14/golang-context-tips/
 https://blog.ranchocooper.com/2021/07/10/advanced-algorith-07/

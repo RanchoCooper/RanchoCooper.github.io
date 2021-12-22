@@ -13,11 +13,11 @@
 
     <title>
         
-          About - 伯爵在古堡
+          设计REST APIs之最佳实践 - 伯爵在古堡
         
     </title>
 
-    <link rel="canonical" href="https://blog.ranchocooper.com/about/">
+    <link rel="canonical" href="https://blog.ranchocooper.com/2021/12/14/best-practices-for-design-REST-APIs/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -154,225 +154,116 @@
 
 
     <!-- Main Content -->
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/about-bg.jpg') center center no-repeat">
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('header.jpeg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>About</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">不知所云的自画像</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                    </div>
+                    <h1>设计REST APIs之最佳实践</h1>
+                    <h2 class="subheading">Best Practices For REST APIs</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2021-12-14
+                    </span>
+
+                    <span class="meta">Word Count 0，
+                    1 min to read</span>
+
                 </div>
             </div>
         </div>
     </div>
 </header>
 
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
-
-<!-- USE SIDEBAR -->
     <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><blockquote>
-<p>孤独旅行客，终生学习者。<br>主业程序员，副业文艺男。</p>
-</blockquote>
-<ul>
-<li>现状: Backend Engineer</li>
-<li>产地: CQUPT</li>
-<li>品种: 计算机科学与技术</li>
-<li>爱好: 魔方, 音乐, 羽毛球</li>
-<li>追剧: 秦时明月, 生活大爆炸, 权力的游戏</li>
-<li>最喜欢的专业书籍: 深入理解计算机系统</li>
-<li>最喜欢的社科书籍: 站在两个世界的边缘</li>
-</ul>
-<br>
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css">
 
+                <hr>
 
-                <!-- 如果开启评论功能 -->
                 
-                    <hr>
 
+                <ul class="pager">
                     
-
                     
-                    <!-- disqus 评论框 start -->
-                    <div class="comment">
-                        <div id="disqus_thread" class="disqus-thread"></div>
-                    </div>
-                    <!-- disqus 评论框 end -->
+                        <li class="next">
+                            <a href="/2021/08/28/interview-2021/" data-toggle="tooltip" data-placement="top" title="2021面试合集">Next Post &rarr;</a>
+                        </li>
                     
+                </ul>
 
+                
 
-                    
-
-                    
-                    <!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
-                    <script type="text/javascript">
-                        /* * * CONFIGURATION VARIABLES * * */
-                        var disqus_shortname = "ranchocooper";
-                        var disqus_identifier = "https://blog.ranchocooper.com/about/index.html";
-                        var disqus_url = "https://blog.ranchocooper.com/about/index.html";
-
-                        (function() {
-                            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                        })();
-
-                    </script>
-                    <!-- disqus 公共JS代码 end -->
-                    
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
                 
 
             </div>
-    <!-- Sidebar Container -->
+    <!-- Side Catalog Container -->
+        
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
                 sidebar-container
-            ">
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
                 <section>
                     <!-- no hr -->
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
-                        
-                            
-                            <a href="/tags/#算法" title="算法" rel="7">算法</a>
-                            
-                        
-                            
-                            <a href="/tags/#存储中间件" title="存储中间件" rel="2">存储中间件</a>
-                            
-                        
-                            
-                            <a href="/tags/#Redis" title="Redis" rel="2">Redis</a>
-                            
-                        
-                            
-                            <a href="/tags/#编程札记" title="编程札记" rel="11">编程札记</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#Python标准库" title="Python标准库" rel="3">Python标准库</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#Python" title="Python" rel="3">Python</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
+                       
                     </div>
                 </section>
                 
-
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-
-                        
-                            <img src="/img/avatar.jpg" />
-                        
-
-                        
-                            <p>爱和死亡，留给上帝。</p>
-                        
-
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                            
-                                <li>
-                                    <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa  fa-stack-1x fa-inverse">知</i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-
-                            
-
-                            
-                                <li>
-                                    <a target="_blank" href="https://www.facebook.com/RanchoCooper">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-
-                            
-                                <li>
-                                    <a target="_blank"  href="https://github.com/RanchoCooper">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-
-                            
-                            
-                                <li>
-                                    <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-                        </ul>
-                    </div>
-                </section>
 
                 <!-- Friends Blog -->
                 
@@ -396,9 +287,66 @@
                 </ul>
                 
             </div>
-        
+
+        </div>
     </div>
-</div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2021/12/14/best-practices-for-design-REST-APIs/";
+    var disqus_url = "https://blog.ranchocooper.com/2021/12/14/best-practices-for-design-REST-APIs/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->
@@ -593,6 +541,78 @@
 
 
 <!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 <!-- Side Catalog -->
