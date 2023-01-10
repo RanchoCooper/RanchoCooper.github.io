@@ -3,7 +3,7 @@
   <title>Rancho</title>
   <icon>https://blog.ranchocooper.com/icon.png</icon>
   <subtitle>爱和死亡留给上帝</subtitle>
-  <link href="/rss.xml" rel="self"/>
+  <link href="https://blog.ranchocooper.com/rss.xml" rel="self"/>
   
   <link href="https://blog.ranchocooper.com/"/>
   <updated>2021-09-13T12:43:49.239Z</updated>
@@ -23,21 +23,19 @@
     <published>2021-08-27T23:57:56.000Z</published>
     <updated>2021-09-13T12:43:49.239Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;前言&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;前言&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="面经" scheme="https://blog.ranchocooper.com/tags/%E9%9D%A2%E7%BB%8F/"/>
+    <category term="面经" scheme="https://blog.ranchocooper.com/tags/%E9%9D%A2%E7%BB%8F/"/>
     
   </entry>
   
@@ -48,23 +46,21 @@
     <published>2021-08-13T16:55:07.000Z</published>
     <updated>2021-09-13T12:43:49.239Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程语言" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    <category term="编程语言" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
     
-      <category term="Golang" scheme="https://blog.ranchocooper.com/tags/Golang/"/>
+    <category term="Golang" scheme="https://blog.ranchocooper.com/tags/Golang/"/>
     
   </entry>
   
@@ -75,21 +71,19 @@
     <published>2021-07-09T20:40:21.000Z</published>
     <updated>2021-09-13T12:43:49.234Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
@@ -100,21 +94,19 @@
     <published>2021-07-06T14:12:55.000Z</published>
     <updated>2021-09-13T12:43:49.233Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;树&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;树&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
@@ -125,21 +117,19 @@
     <published>2021-07-02T23:44:55.000Z</published>
     <updated>2021-09-13T12:43:49.235Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;基础知识&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;基础知识&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
@@ -150,21 +140,19 @@
     <published>2021-06-30T09:33:32.000Z</published>
     <updated>2021-09-13T12:43:49.235Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;基础知识&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;基础知识&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
@@ -175,23 +163,21 @@
     <published>2021-06-29T06:54:03.000Z</published>
     <updated>2021-09-13T12:43:49.240Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="存储中间件" scheme="https://blog.ranchocooper.com/tags/%E5%AD%98%E5%82%A8%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    <category term="存储中间件" scheme="https://blog.ranchocooper.com/tags/%E5%AD%98%E5%82%A8%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
     
-      <category term="Redis" scheme="https://blog.ranchocooper.com/tags/Redis/"/>
+    <category term="Redis" scheme="https://blog.ranchocooper.com/tags/Redis/"/>
     
   </entry>
   
@@ -202,21 +188,19 @@
     <published>2021-06-28T10:20:13.000Z</published>
     <updated>2021-09-13T12:43:49.234Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;前缀和&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;前缀和&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
@@ -227,21 +211,19 @@
     <published>2021-06-22T11:26:20.000Z</published>
     <updated>2021-09-13T12:43:49.234Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;时间复杂度&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;时间复杂度&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
@@ -252,23 +234,21 @@
     <published>2021-06-20T18:09:51.000Z</published>
     <updated>2021-09-13T12:43:49.235Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="存储中间件" scheme="https://blog.ranchocooper.com/tags/%E5%AD%98%E5%82%A8%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    <category term="存储中间件" scheme="https://blog.ranchocooper.com/tags/%E5%AD%98%E5%82%A8%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
     
-      <category term="Redis" scheme="https://blog.ranchocooper.com/tags/Redis/"/>
+    <category term="Redis" scheme="https://blog.ranchocooper.com/tags/Redis/"/>
     
   </entry>
   
@@ -279,21 +259,19 @@
     <published>2021-06-19T20:58:29.000Z</published>
     <updated>2021-09-13T12:43:49.234Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;数组&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;数组&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
+    <category term="算法" scheme="https://blog.ranchocooper.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
@@ -304,25 +282,23 @@
     <published>2019-05-29T07:56:22.000Z</published>
     <updated>2021-09-13T12:43:49.241Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
+    <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
-      <category term="JUnit" scheme="https://blog.ranchocooper.com/tags/JUnit/"/>
+    <category term="JUnit" scheme="https://blog.ranchocooper.com/tags/JUnit/"/>
     
-      <category term="Runner" scheme="https://blog.ranchocooper.com/tags/Runner/"/>
+    <category term="Runner" scheme="https://blog.ranchocooper.com/tags/Runner/"/>
     
   </entry>
   
@@ -333,25 +309,23 @@
     <published>2018-12-27T14:40:02.000Z</published>
     <updated>2021-12-14T13:19:32.523Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;概述&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;概述&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
+    <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
-      <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
+    <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
     
-      <category term="协程" scheme="https://blog.ranchocooper.com/tags/%E5%8D%8F%E7%A8%8B/"/>
+    <category term="协程" scheme="https://blog.ranchocooper.com/tags/%E5%8D%8F%E7%A8%8B/"/>
     
   </entry>
   
@@ -362,25 +336,23 @@
     <published>2018-11-07T17:00:39.000Z</published>
     <updated>2021-12-14T13:19:32.561Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
+    <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
-      <category term="Java" scheme="https://blog.ranchocooper.com/tags/Java/"/>
+    <category term="Java" scheme="https://blog.ranchocooper.com/tags/Java/"/>
     
-      <category term="注解" scheme="https://blog.ranchocooper.com/tags/%E6%B3%A8%E8%A7%A3/"/>
+    <category term="注解" scheme="https://blog.ranchocooper.com/tags/%E6%B3%A8%E8%A7%A3/"/>
     
   </entry>
   
@@ -391,23 +363,21 @@
     <published>2018-06-29T02:44:25.000Z</published>
     <updated>2021-12-14T13:19:32.545Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
+    <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
     
-      <category term="语言特性" scheme="https://blog.ranchocooper.com/tags/%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7/"/>
+    <category term="语言特性" scheme="https://blog.ranchocooper.com/tags/%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7/"/>
     
   </entry>
   
@@ -418,21 +388,19 @@
     <published>2018-06-24T06:31:44.000Z</published>
     <updated>2021-09-13T12:43:49.244Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;前言&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;前言&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
+    <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
   </entry>
   
@@ -443,25 +411,23 @@
     <published>2018-06-13T02:36:15.000Z</published>
     <updated>2021-12-14T13:19:32.532Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;单例模式&quot;&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;h1 id=&quot;单例模式&quot;&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
+    <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
-      <category term="设计模式" scheme="https://blog.ranchocooper.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <category term="设计模式" scheme="https://blog.ranchocooper.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
-      <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
+    <category term="Python" scheme="https://blog.ranchocooper.com/tags/Python/"/>
     
   </entry>
   
@@ -472,21 +438,19 @@
     <published>2018-02-28T08:27:17.000Z</published>
     <updated>2021-09-13T12:43:49.232Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;p&gt;&lt;strong&gt;&lt;a
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css&quot;&gt;&lt;p&gt;&lt;strong&gt;&lt;a</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
+    <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
   </entry>
   
@@ -497,23 +461,21 @@
     <published>2017-10-03T05:20:16.000Z</published>
     <updated>2021-09-13T12:43:49.243Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
+    <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
-      <category term="Python标准库" scheme="https://blog.ranchocooper.com/tags/Python%E6%A0%87%E5%87%86%E5%BA%93/"/>
+    <category term="Python标准库" scheme="https://blog.ranchocooper.com/tags/Python%E6%A0%87%E5%87%86%E5%BA%93/"/>
     
   </entry>
   
@@ -524,23 +486,21 @@
     <published>2017-10-01T07:41:27.000Z</published>
     <updated>2021-09-13T12:43:49.242Z</updated>
     
-    <summary type="html">
     
       
       
         
         
-          &lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text&amp;#x2F;css&quot;</summary>
         
       
     
-    </summary>
     
     
     
-      <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
+    <category term="编程札记" scheme="https://blog.ranchocooper.com/tags/%E7%BC%96%E7%A8%8B%E6%9C%AD%E8%AE%B0/"/>
     
-      <category term="Python标准库" scheme="https://blog.ranchocooper.com/tags/Python%E6%A0%87%E5%87%86%E5%BA%93/"/>
+    <category term="Python标准库" scheme="https://blog.ranchocooper.com/tags/Python%E6%A0%87%E5%87%86%E5%BA%93/"/>
     
   </entry>
   

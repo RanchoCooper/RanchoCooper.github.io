@@ -56,7 +56,7 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
 </head>
 
 
@@ -97,7 +97,7 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -111,7 +111,7 @@
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -210,8 +210,8 @@ gRPC连接的四种模式
 
 
 如何做超时控制
-context.WithTimeout/context.WithDeadline + time.After
-context.WithTimeo......
+context.WithTimeout&#x2F;context.WithDeadline + time.After
+context.With......
         </div>
     </a>
     <p class="post-meta">
@@ -258,16 +258,16 @@ context.WithTimeo......
             DFS VS BFSDFS更适合搜索树形状态空间
 
 递归本身就会产生树的结构
-可以用一个全局变量维护状态较为复杂的信息(子集/排列)
+可以用一个全局变量维护状态较为复杂的信息(子集&#x2F;排列)
 不需要队列, 节省空间
 
 BFS适合求最小代价、最少步数之类的题目
 
 BFS是按层次序搜索, 任意时刻队列中至多只有两层
 
-在状态空间为一般的图时(需要判重), DFS/BFS均可
+在状态空间为一般的图时(需要判重), DFS&#x2F;BFS均可
 实战电话号码的字母组合LeetCode
-给定一个仅包含数字 2-9 的字符串，......
+给定一个仅包含数字......
         </div>
     </a>
     <p class="post-meta">
@@ -313,11 +313,11 @@ BFS是按层次序搜索, 任意时刻队列中至多只有两层
             基础知识递归的时间复杂度
 指数型: k^n (子集, 大体积背包问题)
 排列型: n! (全排列, 旅行商, N皇后)
-组合型: n!/(m!(n-m)!) (组合选数)
+组合型: n!&#x2F;(m!(n-m)!) (组合选数)
 
 递归子集LeetCode
 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
-解题思路按数组index递归找出子集, 把找......
+解题思路按数组index递归找出子......
         </div>
     </a>
     <p class="post-meta">
@@ -344,8 +344,10 @@ BFS是按层次序搜索, 任意时刻队列中至多只有两层
 Hash函数, 输入关键码, 返回对应数据的索引
 
 对外表现可以通过关键码直接访问, 如
-hash_table[key] = value实际上是对key进行了一次哈希运算之后, 从数据结构中定位到value    
-dat......
+hash_table[key] = value
+
+实际上是对key进行了一次哈希运算之后, 从数据结构中定位到value    
+d......
         </div>
     </a>
     <p class="post-meta">
@@ -391,12 +393,12 @@ Redis为什么用单线程多线程的开销日常写程序, 经......
         <div class="post-content-preview">
             前缀和对于一维数组A
 
-前缀和数组: S[i] = S[i - 1] + A[i]
-字段和: Sum[l, r] = S[r] - S[l - 1]
+前缀和数组: S[i] &#x3D; S[i - 1] + A[i]
+字段和: Sum[l, r] &#x3D; S[r] - S[l - 1]
 当A中元素都是非负数时, 前缀和数组S单调递增
 
 统计「优美子数组」LeetCode
-给你一个整数数组 nums 和一个整数 k。如果某个 连续 子数组中恰好有 k 个奇数数字，我们就认为这个子数组是「优美子数组」。请返回这个数组中「优美子数组......
+给你一个整数数组 nums 和一个整数 k。如果某个 连续 子数组中恰好有 k 个奇数数字，我们就认为这个子数组是「优美子数组」。请返回这......
         </div>
     </a>
     <p class="post-meta">
@@ -417,20 +419,19 @@ Redis为什么用单线程多线程的开销日常写程序, 经......
             Advanced Algorithm - Stack And Queue
         </h3>
         <div class="post-content-preview">
-            时间复杂度栈/队列
-push(入栈/入队): O(1)
-pop(出栈/出队): O(1)
-access(访问栈顶/访问队头): O(1)
+            时间复杂度栈&#x2F;队列
+push(入栈&#x2F;入队): O(1)
+pop(出栈&#x2F;出队): O(1)
+access(访问栈顶&#x2F;访问队头): O(1)
 
 双端队列
-队头/队尾的插入/删除/访问, 都是O(1)
+队头&#x2F;队尾的插入&#x2F;删除&#x2F;访问, 都是O(1)
 
 优先队列
 访问最值: O(1)
 插入: 一般是O(logN), 一些高级的数据结构可以做到O(1)
 取最值: O(logN)
-
-实战用切片实现栈因为Golang中没有现成的栈可以开箱即用, 这里用......
+......
         </div>
     </a>
     <p class="post-meta">
@@ -529,17 +530,17 @@ access(访问栈顶/访问队头): O(1)
                             
                         
                             
+                        
+                            
+                        
+                            
                             <a href="/tags/#Python标准库" title="Python标准库" rel="3">Python标准库</a>
                             
                         
                             
                         
                             
-                        
-                            
                             <a href="/tags/#Python" title="Python" rel="3">Python</a>
-                            
-                        
                             
                         
                             
@@ -733,7 +734,7 @@ access(访问栈顶/访问队头): O(1)
                     <span style="display: inline-block; margin: 5px;">
                         <i class="fa fa-copyright"></i>
                     </span>
-                    2017-2022
+                    2017-2023
                     <br>
                     Rancho.
                     <br>
