@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          容器数据类型 - Collections - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                        
+                          <a class="tag" href="/tags/#Python标准库" title="Python标准库">Python标准库</a>
+                        
+                    </div>
+                    <h1>容器数据类型 - Collections</h1>
+                    <h2 class="subheading">Cotainer Data Types</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2017-10-01
+                    </span>
+
+                    <span class="meta">Word Count 1k，
+                    4 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><p><code>collections</code>模块包含多种数据结构的实现，扩展了其他模块中的相应结构。</p>
+<ul>
+<li>Counter：计数器</li>
+<li>defaultdict：带有默认值的字典。</li>
+<li>OrderedDict：记忆元素顺序的有序字典</li>
+<li>deque：双端队列，允许从任意一端增加或删除元素。</li>
+<li>namedtuple：生成可以使用名字来访问元素内容的tuple子类</li>
+</ul>
+<h1 id="Counter"><a href="#Counter" class="headerlink" title="Counter"></a>Counter</h1><p>Counter作为一个容器，可以跟踪相同的值增加了多少次。Counter支持3种形式的初始化：调用Counter构造函数时提供元素序列或者一个包含键和技术的字典，还可以使用关键字参数将字符串名映射到计数。(默认行为会按照key来排序)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line">Counter([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;c&#x27;</span>])</span><br><span class="line">Counter(&#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>&#125;)</span><br><span class="line">Counter(a=<span class="number">2</span>, b=<span class="number">1</span>, c=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># got the same results</span></span><br><span class="line"><span class="comment"># Counter(&#123;&#x27;a&#x27;: 2, &#x27;b&#x27;: 1, &#x27;c&#x27;: 3&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<p>如果不提供任何参数，可以构造一个空的Counter，然后通过<code>update</code>方法填充。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line">c = Counter()</span><br><span class="line"><span class="comment"># Counter()</span></span><br><span class="line"></span><br><span class="line">c.update(<span class="string">&#x27;abbcccdddd&#x27;</span>)</span><br><span class="line"><span class="comment"># Counter(&#123;&#x27;a&#x27;: 1, &#x27;b&#x27;:2, &#x27;c&#x27;: 3, &#x27;d&#x27;:4&#125;)</span></span><br><span class="line"></span><br><span class="line">c.update(a=<span class="number">2</span>, d=<span class="number">5</span>, e=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># Counter(&#123;&#x27;a&#x27;: 3, &#x27;b&#x27;:2, &#x27;c&#x27;: 3, &#x27;d&#x27;:9, &#x27;e&#x27;: 1&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<p>一旦填充了Counter，可以通过字典API来获取它的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections importCounter</span><br><span class="line"></span><br><span class="line">c = Counter(<span class="string">&#x27;abcdaab&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> letter <span class="keyword">in</span> <span class="string">&#x27;abcde&#x27;</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&#123;0&#125;: &#123;1&#125;&#x27;</span>.<span class="built_in">format</span>(letter, c[letter]))</span><br></pre></td></tr></table></figure>
+<p>对于未知的元素，Counter不会产生KeyError。如果在输入中没有找到某个值，其计数为0。<br><code>elements</code>方法返回一个迭代器，返回Counter记录的所有元素，不过不能保证元素的顺序不变。<br><code>most_common</code>方法生成一个序列，返回计数最大的N项元素，如果不提供参数，则会按频度排序返回所有列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> letter, count <span class="keyword">in</span> c.most_common(<span class="number">3</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&#123;&#125;: &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(letter, count))</span><br></pre></td></tr></table></figure>
+
+<p>另外，Counter实例还支持算数和集合操作。每次执行一个操作会生成一个新的Counter，并且计数为0或者为负数的元素会被删除。</p>
+<h1 id="defaultdict"><a href="#defaultdict" class="headerlink" title="defaultdict"></a>defaultdict</h1><p>内建字典包含<code>setdefault</code>方法来获取默认值，而defaultdict会在初始化容器时就让调用者提前指定默认值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line">d1 = defaultdict(<span class="built_in">int</span>)</span><br><span class="line">d2 = defaultdict(partial(<span class="built_in">int</span>, <span class="number">2</span>))</span><br><span class="line">d3 = defaultdict(partial(defaultdict, partial(<span class="built_in">int</span>, <span class="number">3</span>)))</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="OrderedDict"><a href="#OrderedDict" class="headerlink" title="OrderedDict"></a>OrderedDict</h1><p>OrderedDict其实是字典的子类，它可以记住往字典中增加元素的顺序</p>
+<p>需要注意的时，OrderedDict在检查相等性时，除了查看其内容，也会考虑元素增加的顺序</p>
+<h1 id="deque"><a href="#deque" class="headerlink" title="deque"></a>deque</h1><p>双端队列支持从任意一端增加和删除元素。栈和队列实际上就是双端队列的退化形式，其输入和输出都限制在一端。由于deque是一种序列容器，因此同样支持list的一些操作，如用<code>__getitem__</code>检查内容，确定长度，以及通过匹配标识从序列中删除某元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line">d = deque(<span class="string">&#x27;abcdefg&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(d))</span><br><span class="line"><span class="built_in">print</span>(d[<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(d[-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">d.remove(<span class="string">&#x27;a&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从左端或右端填充数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">d1 = deque()</span><br><span class="line">d1.extend(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">d1.append(<span class="string">&#x27;efg&#x27;</span>)</span><br><span class="line">d1.pop()</span><br><span class="line"></span><br><span class="line">d2 = deque()</span><br><span class="line">d2.extendleft(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">d2.appendleft(<span class="string">&#x27;efg&#x27;</span>)</span><br><span class="line">d2.popleft()</span><br></pre></td></tr></table></figure>
+
+<p>还可以按任意方向<strong>旋转</strong>从而跳过一些元素。<br>你可以形象地把deque中的元素想象成是刻在拨号盘上数字，当参数为负数，则逆时针(左旋)转动，否则为顺时针转动(右旋)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d.rotate(<span class="number">2</span>)</span><br><span class="line">d.rotate(-<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="namedtuple"><a href="#namedtuple" class="headerlink" title="namedtuple"></a>namedtuple</h1><p>内建tuple使用数值索引来访问成员，一旦tuple中的字段变多，而且在代码实现中，可能元组的构造和使用相距很远，就很容易导致错误。namedtuple除了指定数值索引外，还回指定名字。在内存使用方面，namedtupel和内建元组同样高效。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"></span><br><span class="line">person = namedtuple(<span class="string">&#x27;person&#x27;</span>, <span class="string">&#x27;name age gender&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;type of person: &#x27;</span>, <span class="built_in">type</span>(person))</span><br><span class="line"></span><br><span class="line">rancho = person(name=<span class="string">&#x27;rancho&#x27;</span>, age=<span class="number">20</span>, gender=<span class="string">&#x27;male&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(rancho)</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，namedtuple定义字段时是不允许重复的，如果非要这么做，可以将<code>rename</code>参数设置为<code>True</code></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/10/01/python-stdlib-02array/" data-toggle="tooltip" data-placement="top" title="固定类型数据序列 - Array">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/07/26/pytest-fixtures/" data-toggle="tooltip" data-placement="top" title="『译』测试固件那些事">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                        
+                          <a class="tag" href="/tags/#Python标准库" title="Python标准库">Python标准库</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/";
+    var disqus_url = "https://blog.ranchocooper.com/2017/10/01/python-stdlib-02collections/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Golang Context的好坏与使用建议 - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2021/08/14/golang-context-tips/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#编程语言" title="编程语言">编程语言</a>
+                        
+                          <a class="tag" href="/tags/#Golang" title="Golang">Golang</a>
+                        
+                    </div>
+                    <h1>Golang Context的好坏与使用建议</h1>
+                    <h2 class="subheading">Golang Context Tips</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2021-08-14
+                    </span>
+
+                    <span class="meta">Word Count 1.5k，
+                    6 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><p><code>context</code>的设计在Golang中算是一个比较有争议的话题。<code>context</code>不是银弹，它解决了一些问题的同时，也有不少让人诟病的缺点。本文主要探讨一下<code>context</code>的优缺点以及一些使用建议。</p>
+<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><p>由于主观上我也不是很喜欢context的设计，所以我们就从缺点先开始吧。</p>
+<h2 id="到处都是context"><a href="#到处都是context" class="headerlink" title="到处都是context"></a>到处都是context</h2><p>根据<code>context</code>使用的官方建议，<code>context</code>应当出现在函数的第一个参数上。这就直接导致了代码中到处都是<code>context</code>。作为函数的调用者，即使你不打算使用<code>context</code>的功能，你也必须传一个占位符——<code>context.Background()</code>或<code>context.TODO()</code>。这无疑是一种<code>code smell</code>，特别是对于有代码洁癖程序员来说，传递这么多无意义的参数是简直是令人无法接受的。</p>
+<h2 id="context-Value——没有约束的自由是危险的"><a href="#context-Value——没有约束的自由是危险的" class="headerlink" title="context.Value——没有约束的自由是危险的"></a>context.Value——没有约束的自由是危险的</h2><p><code>context.Value</code>几乎就是一个 <code>map[interface&#123;&#125;]interface&#123;&#125;</code>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Context <span class="keyword">interface</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    Value(key <span class="keyword">interface</span>&#123;&#125;) <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="可读性很差"><a href="#可读性很差" class="headerlink" title="可读性很差"></a>可读性很差</h2><p>可读性差也是自由带来的代价，在学习阅读Go代码的时候，看到<code>context</code>是令人头疼的一件事。如果文档注释的不够清晰，你几乎无法得知<code>context.Value</code>里究竟包含什么内容，更不谈如何正确的使用这些内容了。</p>
+<h1 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h1><h2 id="统一了cancelation的实现方法"><a href="#统一了cancelation的实现方法" class="headerlink" title="统一了cancelation的实现方法"></a>统一了cancelation的实现方法</h2><p>许多文章都说<code>context</code>解决了goroutine的cancelation问题，但实际上，我觉得cancelation的实现本身不算是一个问题，利用关闭<code>channel</code>的广播特性，实现cancelation是一件比较简单的事情，举个栗子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Cancel触发一个取消</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Cancel</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> &lt;-c: <span class="comment">//已经取消过了, 防止重复close</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="built_in">close</span>(c)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DoSomething做一些耗时操作，可以被cancel取消。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoSomething</span><span class="params">(cancel <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;, arg Arg)</span></span>  &#123;</span><br><span class="line">    rs := <span class="built_in">make</span>(<span class="keyword">chan</span> Result)</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        rs &lt;- xxx  <span class="comment">//返回处理结果</span></span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> &lt;-cancel:</span><br><span class="line">            log.Println(<span class="string">&quot;取消了&quot;</span>)</span><br><span class="line">        <span class="keyword">case</span> result := &lt;-rs:</span><br><span class="line">            log.Println(<span class="string">&quot;处理完成&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者你也可以把用于取消的channel放到结构体里：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Task <span class="keyword">struct</span>&#123;</span><br><span class="line">    Arg Arg</span><br><span class="line">    cancel <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125; <span class="comment">//取消channel</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// NewTask 根据参数新建一个Task</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewTask</span><span class="params">(arg Arg)</span></span> *Task&#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;Task&#123;</span><br><span class="line">        Arg:arg ,</span><br><span class="line">        cancel:<span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Cancel触发一个取消</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Task)</span></span> Cancel() &#123;</span><br><span class="line">    <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> &lt;-t.c: <span class="comment">//已经取消过了, 防止重复close</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="built_in">close</span>(t.c)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DoSomething做一些耗时操作，可以被cancel取消。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Task)</span></span> DoSomething() &#123;</span><br><span class="line">    rs := <span class="built_in">make</span>(<span class="keyword">chan</span> Result)</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        rs &lt;- xxx</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> &lt;-t.cancel:</span><br><span class="line">            log.Println(<span class="string">&quot;取消了&quot;</span>)</span><br><span class="line">        <span class="keyword">case</span> result := &lt;-rs:</span><br><span class="line">            log.Println(<span class="string">&quot;处理完成&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// t := NewTask(arg)</span></span><br><span class="line"><span class="comment">// t.DoSomething()</span></span><br></pre></td></tr></table></figure>
+
+<p>可见，对cancelation的实现也是多种多样的。一千个程序员由可能写出一千种实现方式。不过幸亏有<code>context</code>统一了cancelation的实现，不然怕是每引用一个库，你都得额外学习一下它的cancelation机制了。我认为这是context最大的优点，也是最大的功劳。gopher们只要看到函数中有<code>context</code>，就知道如何取消该函数的执行。如果想要实现cancelation，就会优先考虑<code>context</code>。</p>
+<h2 id="提供了一种不那么优雅，但是有效的传值方式"><a href="#提供了一种不那么优雅，但是有效的传值方式" class="headerlink" title="提供了一种不那么优雅，但是有效的传值方式"></a>提供了一种不那么优雅，但是有效的传值方式</h2><p><code>context.Value</code>是一把双刃剑，上文中提到了它的缺点，但只要运用得当，缺点也可以变优点。<code>map[interface&#123;&#125;]interface&#123;&#125;</code>的属性决定了它几乎能存任何内容，如果某方法需要cancelation的同时，还需要能接收调用方传递的任何数据，那<code>context.Value</code>还是十分有效的方式。如何“运用得当”请参考下面的使用建议。</p>
+<h1 id="context使用建议"><a href="#context使用建议" class="headerlink" title="context使用建议"></a>context使用建议</h1><h2 id="需要cancelation的时候才考虑context"><a href="#需要cancelation的时候才考虑context" class="headerlink" title="需要cancelation的时候才考虑context"></a>需要cancelation的时候才考虑context</h2><p><code>context</code>主要就是两大功能，cancelation和<code>context.Value</code>。如果你仅仅是需要在goroutine之间传值，请不要使用<code>context</code>。因为在Go的世界里，<code>context</code>一般默认都是能取消的，一个不能取消的<code>context</code>很容易被调用方误解。</p>
+<pre><code>一个不能取消的context是没有灵魂的。
+</code></pre>
+<h2 id="context-Value能不用就不用"><a href="#context-Value能不用就不用" class="headerlink" title="context.Value能不用就不用"></a>context.Value能不用就不用</h2><p><code>context.Value</code>内容的存取应当由库的使用者来负责。如果是库内部自身的数据流转，那么请不要使用<code>context.Value</code>，因为这部分数据通常是固定的，可控的。假设某系统中的鉴权模块，需要一个字符串<code>token</code>来鉴权，对比下面两种实现方式，显然是显示将<code>token</code>作为参数传递更清晰。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用context</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">IsAdminUser</span><span class="params">(ctx context.Context)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">    x := token.GetToken(ctx)</span><br><span class="line">    userObject := auth.AuthenticateToken(x)</span><br><span class="line">    <span class="keyword">return</span> userObject.IsAdmin() || userObject.IsRoot()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不用context</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">IsAdminUser</span><span class="params">(token <span class="type">string</span>, authService AuthService)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    userObject := authService.AuthenticateToken(token)</span><br><span class="line">    <span class="keyword">return</span> userObject.IsAdmin() || userObject.IsRoot()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以，请忘了<code>request-scoped</code>吧，把<code>context.Value</code>想象成是<code>user-scoped</code>——让用户，也就是库的调用者来决定在<code>context.Value</code>里面放什么。</p>
+<h2 id="使用NewContext和FromContext对来存取context"><a href="#使用NewContext和FromContext对来存取context" class="headerlink" title="使用NewContext和FromContext对来存取context"></a>使用NewContext和FromContext对来存取context</h2><p>不要直接使用<code>context.WithValue()</code>和<code>context.Value(&quot;key&quot;)</code>来存取数据，将<code>context.Value</code>的存取做一层封装能有效降低代码冗余，增强代码可读性同时最大限度的防止一些粗心的错误。</p>
+<h2 id="如果使用context-Value，请注释清楚"><a href="#如果使用context-Value，请注释清楚" class="headerlink" title="如果使用context.Value，请注释清楚"></a>如果使用context.Value，请注释清楚</h2><p>上面提到，<code>context.Value</code>可读性是十分差的，所以我们不得不用文档和注释的方式来进行弥补。至少列举所有可能的<code>context.Value</code>以及它们的get&#x2F;set方法（<code>NewContext(),FromContext()</code>），尽可能的列举函数入参与<code>context.Value</code>之间的关系，给阅读或维护你代码的人多一份关爱。</p>
+<h2 id="封装以减少context-TODO-或context-Background"><a href="#封装以减少context-TODO-或context-Background" class="headerlink" title="封装以减少context.TODO()或context.Background()"></a>封装以减少context.TODO()或context.Background()</h2><p>对于那些提供了<code>context</code>的方法，但作为调用方我们并不使用的，还是不得不传<code>context.TODO()</code>或<code>context.Background()</code>。如果你不能忍受大量无用的<code>context</code>在代码中扩散，可以对这些方法做一层封装：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设有如下查询方法，但我们几乎不使用其提供的context</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">QueryContext</span><span class="params">(ctx context.Context, query <span class="type">string</span>, args []NamedValue)</span></span> (Rows, <span class="type">error</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 封装一下</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Query</span><span class="params">(query <span class="type">string</span>, args []NamedValue)</span></span> (Rows, <span class="type">error</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> QueryContext(context.Background(), query, args)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2021/08/28/interview-2021/" data-toggle="tooltip" data-placement="top" title="2021面试合集">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2021/07/10/advanced-algorith-07/" data-toggle="tooltip" data-placement="top" title="算法进阶(07) - DFS、BFS">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#编程语言" title="编程语言">编程语言</a>
+                        
+                          <a class="tag" href="/tags/#Golang" title="Golang">Golang</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2021/08/14/golang-context-tips/";
+    var disqus_url = "https://blog.ranchocooper.com/2021/08/14/golang-context-tips/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>

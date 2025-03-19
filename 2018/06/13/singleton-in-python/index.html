@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Python 单例模式 - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2018/06/13/singleton-in-python/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                          <a class="tag" href="/tags/#Python" title="Python">Python</a>
+                        
+                    </div>
+                    <h1>Python 单例模式</h1>
+                    <h2 class="subheading">Singleton in Python</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2018-06-13
+                    </span>
+
+                    <span class="meta">Word Count 1.6k，
+                    6 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><p>单例模式(Singleton Pattern)是最常见的一种软件设计模式, 该模式的主要目的是<code>保证一个类在程序生命周期内只有一个实例存在</code>.</p>
+<p>比如, 某个服务器程序的配置信息存放在一个文件中, 客户端通过一个<code>AppConfig</code>的类来读取配置文件的信息. 如果在程序运行期间, 有很多地方都需要使用配置文件的内容, 也就是说, 很多地方都需要创建<code>AppConfig</code>对象的实例, 这就导致系统中存在多个<code>AppConfig</code>的实例对象, 而这样会严重浪费内存资源, 尤其是在配置文件内容很多的情况下. 事实上, 类似<code>AppConfig</code>这样的类, 我们希望在程序运行期间只存在一个实例对象. </p>
+<p>在Python中, 有以下方法可以实现单例模式:</p>
+<ul>
+<li>使用模块</li>
+<li>使用装饰器</li>
+<li>使用类</li>
+<li>基于<code>__new__</code></li>
+<li>基于<code>metaclass</code></li>
+</ul>
+<h1 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h1><h2 id="使用模块"><a href="#使用模块" class="headerlink" title="使用模块"></a>使用模块</h2><p>Python的模块本身就是天然的单例模式, 因为在模块第一次导入时, 就会生成<code>.pyc</code>文件. 当第二次导入时, 就会直接加载<code>.pyc</code>, 而不是再次加载模块代码. 因此, 我们只需要把相关的函数和数据定义在一个模块中, 就可以得到一个单例对象了. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># singleton_module.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">singleton = Singleton()</span><br></pre></td></tr></table></figure>
+
+<p>在模块中将实例化对象存入变量, 使用时在其他文件中导入即可. 这种方式简单易实现. 得于斯者毁于斯, 因为这种实现方式依赖模块的一次性导入, 如果通过<code>imp.reload</code>重新加载模块, 就会重新实例化对象, 因此并非可靠的单例模式最佳实践.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> singleton_module <span class="keyword">import</span> singleton</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用装饰器"><a href="#使用装饰器" class="headerlink" title="使用装饰器"></a>使用装饰器</h2><p>装饰器可以动态修改类或函数的功能, 我们通过创建类装饰器来管理实例化对象, 使其只能生成唯一实例, 同样可以实现单例模式.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">singleton</span>(<span class="params">cls</span>):</span><br><span class="line">    instances = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">    @wraps(<span class="params">cls</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getinstance</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> instances:</span><br><span class="line">            instances[cls] = cls(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> instances[cls]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> getinstance</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@singleton</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MySingletonClass</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>我们定义一个装饰器, 它在内部维护<code>类: 实例</code>字典, 如果键<code>cls</code>不存在, 则进行实例化, 并将创建的对象作为值存入该字典, 否则直接返回<code>instances[cls]</code>.<br>Note: <strong>不支持多线程</strong></p>
+<h2 id="使用类"><a href="#使用类" class="headerlink" title="使用类"></a>使用类</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">instance</span>(<span class="params">cls, *args, **kwargs</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(Singleton, <span class="string">&quot;_instance&quot;</span>):</span><br><span class="line">            Singleton._instance = Singleton(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> Singleton._instance</span><br></pre></td></tr></table></figure>
+
+<p>使用多线程, 探究其是否是线程安全的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">task</span>():</span><br><span class="line">    obj = Singleton.instance()</span><br><span class="line">    <span class="built_in">print</span>(obj)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    t = threading.Thread(target=task)</span><br><span class="line">    t.start()</span><br></pre></td></tr></table></figure>
+
+<p>实测结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10b0d8f98&gt;</span><br></pre></td></tr></table></figure>
+
+<p>乍一看是线程安全的, 实则不然, 因为执行速度过快, 第一个线程其他线程启动前就已经完成了实例的创建工作, 所以其他线程会复用这个实例. 但如果我们在类的<code>__init__</code>方法中加入一些IO操作, 这样一来, 在时序上, 第一个对象的创建要比其他线程的启动要晚, 这样其他线程就会去创建自己的实例对象.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>再次执行代码, 会发现每个线程独会分别创建自己的实例. 由此可见, 这种单例模式的实现方式无法支撑多线程.<br>对于线程安全问题, 解决办法就是<strong>加锁</strong><br>未加锁的代码并发执行, 而加锁代码串行执行, 虽然牺牲了运行速度, 但保证了数据安全.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    _instance_lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">instance</span>(<span class="params">cls, *args, **kwargs</span>):</span><br><span class="line">        <span class="keyword">with</span> Singleton._instance_lock:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(Singleton, <span class="string">&#x27;_instance&#x27;</span>):</span><br><span class="line">                cls._instance = cls(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br></pre></td></tr></table></figure>
+
+<p>实测结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br><span class="line">&lt;__main__.Singleton object at 0x10ae53e48&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这样一来, 我们就实现了线程安全的单例模式.</p>
+<h3 id="改进装饰器"><a href="#改进装饰器" class="headerlink" title="改进装饰器"></a>改进装饰器</h3><p>同样, 我们可以对装饰器方案也加上线程锁, 来实现线程安全</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">singleton</span>(<span class="params">cls</span>):</span><br><span class="line">    instances = &#123;&#125;</span><br><span class="line">    instances_lock = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">    @wraps(<span class="params">cls</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getinstance</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> instances_lock:</span><br><span class="line">            instances_lock[cls] = threading.Lock()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> instances_lock[cls]:</span><br><span class="line">            <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> instances:</span><br><span class="line">                instances[cls] = cls(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> instances[cls]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> getinstance</span><br><span class="line"></span><br><span class="line"><span class="meta">@singleton</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MySingletonClass</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>通过线程锁, 我们就得到了两种线程安全的单例模式实现方案.<br>横向对比, 如果我们需要定义多个单例类, 装饰器方案可以最大程度地复用代码.</p>
+<h2 id="基于-new"><a href="#基于-new" class="headerlink" title="基于__new__"></a>基于<code>__new__</code></h2><p>在Python中实例化一个对象时, 实际上是执行类的<code>__new__</code>方法, 得到实例对象后, 才会执行<code>__init__</code>方法进行对象初始化<br>而在上面的类实现方式中, 要求我们必须通过<code>obj = Singleton.instance()</code>来实例化对象, 所以更完美的方案是重载<code>__new__</code>方法.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    _instance_lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, *args, **kwargs</span>):</span><br><span class="line">        <span class="keyword">with</span> cls._instance_lock:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(cls, <span class="string">&#x27;_instance&#x27;</span>):</span><br><span class="line">                cls._instance = <span class="built_in">super</span>(Singleton, cls).__new__(cls)</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">obj1 = Singleton()</span><br><span class="line">obj2 = Singleton()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">task</span>():</span><br><span class="line">    <span class="built_in">print</span>(Singleton())</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    t = threading.Thread(target=task)</span><br><span class="line">    t.start()</span><br></pre></td></tr></table></figure>
+
+<h2 id="基于metaclass"><a href="#基于metaclass" class="headerlink" title="基于metaclass"></a>基于metaclass</h2><blockquote>
+<p>元类(参考: <a target="_blank" rel="noopener" href="http://blog.jobbole.com/21351/">深刻理解Python中的元类</a>)是用于创建类对象的类, 类对象创建实例对象时, 一定会调用<code>__call__</code>方法. 因此在调用<code>__call__</code>时, 保证始终只创建一个实例即可</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span>(<span class="title class_ inherited__">type</span>):</span><br><span class="line">    _instance_lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">cls, *args, **kwargs</span>):</span><br><span class="line">        <span class="built_in">print</span>(cls)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(cls, <span class="string">&#x27;_instance&#x27;</span>):</span><br><span class="line">            cls._instance = <span class="built_in">super</span>(Singleton, cls).__call__(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MySingleton</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    __metaclass__ = Singleton</span><br><span class="line"></span><br><span class="line">c = MySingleton()</span><br></pre></td></tr></table></figure>
+
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>昨天面了小红书基础框架部, 面试中被问到单例模式的实现, 虽然给出了主要的三种实现方案, 但面试官问及线程安全时, 脑子一片空白, 特此补充下这方面的知识.</p>
+<p>本篇主要参考资料:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/huchong/p/8244279.html">Python中单例模式的几种实现方式及优化</a></li>
+<li><a target="_blank" rel="noopener" href="http://python.jobbole.com/87791/">Python创建单例模式的三种方式</a></li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/06/24/understand-high-performance-python/" data-toggle="tooltip" data-placement="top" title="理解高性能Python">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/02/28/a-simple-object-model/" data-toggle="tooltip" data-placement="top" title="『译』构建基本对象模型">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                          <a class="tag" href="/tags/#Python" title="Python">Python</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2018/06/13/singleton-in-python/";
+    var disqus_url = "https://blog.ranchocooper.com/2018/06/13/singleton-in-python/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>

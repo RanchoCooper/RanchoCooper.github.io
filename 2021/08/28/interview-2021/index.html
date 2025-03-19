@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          2021面试合集 - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2021/08/28/interview-2021/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#面经" title="面经">面经</a>
+                        
+                    </div>
+                    <h1>2021面试合集</h1>
+                    <h2 class="subheading">Interview 2021</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2021-08-28
+                    </span>
+
+                    <span class="meta">Word Count 5.2k，
+                    18 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>八月份出去面试了一波，本文整理了上海一二线主流公司的面经(Golang后端)。</p>
+<h1 id="面经"><a href="#面经" class="headerlink" title="面经"></a>面经</h1><p>仅提供部分问题的答案，自行按需查阅资料。</p>
+<h2 id="B站"><a href="#B站" class="headerlink" title="B站"></a>B站</h2><h3 id="B站一面"><a href="#B站一面" class="headerlink" title="B站一面"></a>B站一面</h3><ul>
+<li>gRPC连接的四种模式<ul>
+<li>简单RPC</li>
+<li>服务端流式RPC</li>
+<li>客户端流式RPC</li>
+<li>双向流式RPC</li>
+</ul>
+</li>
+<li>如何做超时控制<ul>
+<li>context.WithTimeout&#x2F;context.WithDeadline + time.After</li>
+<li>context.WithTimeout&#x2F;context.WithDeadline + time.NewTimer</li>
+<li>channel + time.After&#x2F;time.NewTimer</li>
+</ul>
+</li>
+<li>context的实现机制</li>
+<li>Redis应用, 页面中有一个活动页的uv人数, 一般使用什么数据类型<ul>
+<li>set<ul>
+<li>压缩链表&#x2F;哈希表(去重)</li>
+</ul>
+</li>
+<li>zset<ul>
+<li>跳表(主要作用是提高检索效率, 里面的key值是哈希值) + 哈希(去重)</li>
+<li>压缩列表(数据量小的时候)</li>
+</ul>
+</li>
+<li>set获取当前元素个数的时间复杂度是多少<ul>
+<li>O(1)</li>
+</ul>
+</li>
+<li>如果使用bitmap来做去重和uv统计, 是否合理<ul>
+<li>位数不一定满足</li>
+<li>空间利用率可能不高</li>
+<li>统计的复杂度是O(N)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>MySQL<ul>
+<li>用户表的建表语句, 包括索引&#x2F;字段定义</li>
+<li>uid的唯一约束</li>
+<li>select * from tb_user where uid &#x3D; xxx for update<ul>
+<li><ol>
+<li>uid存在</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>uid不存在, 间隙锁, 防止幻读的场景, 会锁表</li>
+</ol>
+<ul>
+<li>处理方式: 在事务开启之前要保证这条记录存在, 先进行一次搜索, 检查这条记录是否存在</li>
+<li>布隆过滤器的问题: 结果不一定准确</li>
+</ul>
+</li>
+<li>update加的是行锁(互斥锁, 不是共享锁)</li>
+<li>insert加表锁</li>
+<li>innodb引擎的锁机制依赖于什么<ul>
+<li>加锁机制是针对索引的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>user表增加sex字段, 并加索引, 是否会使用索引<ul>
+<li>不会. 使用索引的话涉及回表, 查出的结果集很大, 每条记录都需要回表, 回表意味着随机IO</li>
+<li>IO效率低的原因<ul>
+<li>寻道时间</li>
+<li>旋转时间</li>
+</ul>
+</li>
+<li>10%左右会弃用索引</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>网络<ul>
+<li>浏览器中输入网址, 经历了哪些网络过程<ul>
+<li>TCP为什么需要三次握手</li>
+<li>三次握手中能否携带应用层数据(比如HTTP报文)<ul>
+<li>TCP是双工协议</li>
+<li>前两次握手后, 单向通道已经建立, 在第三次握手时就可以携带HTTP报文</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>HTTP2<ul>
+<li>HTTP2解决了HTTP中的哪些问题<ul>
+<li>减小体积, 但是丧失了可读性</li>
+<li>解决了慢启动问题</li>
+<li>多路复用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>设计模式<ul>
+<li>策略模式</li>
+</ul>
+</li>
+<li>实现斐波那契数列<ul>
+<li>递归带来函数栈的开销(N^2)</li>
+<li>记忆化搜索</li>
+</ul>
+</li>
+</ul>
+<h3 id="B站二面"><a href="#B站二面" class="headerlink" title="B站二面"></a>B站二面</h3><ul>
+<li>挑有技术难点的业务项目</li>
+<li>介绍下Redis单线程模型是如何运行的, 优缺点</li>
+<li>Redis6.0多线程如何实现的?</li>
+<li>单线程模型对CPU利用率不高, 如何改造来解决这个问题?</li>
+<li>对于SQLselect * from table wher x&#x3D;1 and y&#x3D;2 order by z, 如何添加索引<ul>
+<li>画一下联合索引的节点是如何存储的</li>
+</ul>
+</li>
+<li>介绍一个做过的项目</li>
+<li>双端用户, 按用户和商户分库分表, 如果做数据聚合的检索, 如何设计</li>
+<li>kafka模型</li>
+<li>kafka出现部分节点不可用, 如何设计兜底方案</li>
+<li>线上接口超时了, 排查的思路?</li>
+</ul>
+<h2 id="币安"><a href="#币安" class="headerlink" title="币安"></a>币安</h2><h3 id="币安一面"><a href="#币安一面" class="headerlink" title="币安一面"></a>币安一面</h3><ul>
+<li>算法题: 求数组中的最大的unique数</li>
+<li>Go服务优雅退出</li>
+<li>MySQL什么时候会锁表<ul>
+<li>锁的类型<ul>
+<li>表级锁, 开销小, 加锁快, 不会出现死锁</li>
+<li>行级锁, 开销大, 加锁慢, 会出现死锁</li>
+<li>页面锁</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>介绍下ACID<ul>
+<li>原子性</li>
+<li>事务隔离</li>
+<li>持久性</li>
+<li>一致性</li>
+</ul>
+</li>
+<li>介绍Golang CAS</li>
+<li>MySQL隔离级别<ul>
+<li>未提交读</li>
+<li>不可重复读</li>
+<li>可重复读</li>
+<li>串行化</li>
+</ul>
+</li>
+</ul>
+<h3 id="币安二面"><a href="#币安二面" class="headerlink" title="币安二面"></a>币安二面</h3><ul>
+<li>自我介绍</li>
+<li>算法题<ul>
+<li>升序二维数组中第K大的元素</li>
+<li>getMinRout</li>
+</ul>
+</li>
+<li>Golang GC算法<ul>
+<li>三色标记的具体过程?</li>
+<li>写屏障?</li>
+</ul>
+</li>
+<li>Golang内存分配<ul>
+<li>TCMalloc 具体?</li>
+<li>内存分配的步骤?</li>
+<li>线性分配器&#x2F;空闲链表分配器?</li>
+<li>微对象&#x2F;小对象&#x2F;大对象   16B, 32KB</li>
+</ul>
+</li>
+<li>Golang GC&#x2F;GMP模型的演进?</li>
+<li>详细描述GMP模型</li>
+<li>Goroutine的调度时机<ul>
+<li>Go关键字</li>
+<li>runtime.GoSched</li>
+<li>GC</li>
+<li>系统调用</li>
+<li>内存同步访问(atomic&#x2F;mutex&#x2F;channel)</li>
+</ul>
+</li>
+<li>举例哪些操作系统操作会导致的Goroutine抢占</li>
+<li>系统调用包括哪些<ul>
+<li>进程控制</li>
+<li>文件管理</li>
+<li>设备管理</li>
+<li>信息维护</li>
+<li>通信</li>
+<li>保护</li>
+</ul>
+</li>
+<li>如何完成抢占(抢占的过程)?</li>
+<li>抢占是同步还是异步的?<ul>
+<li>1.14加入了异步抢占</li>
+<li>给协程发信号量(UNG的信号量)</li>
+<li>g0, g1?</li>
+</ul>
+</li>
+</ul>
+<h3 id="币安三面"><a href="#币安三面" class="headerlink" title="币安三面"></a>币安三面</h3><ul>
+<li>自我介绍</li>
+<li>简介有技术难点的业务项目</li>
+<li>算法<ul>
+<li>getSubArray</li>
+</ul>
+</li>
+<li>DDD的核心</li>
+<li>分库分表的改造</li>
+<li>监控</li>
+<li>Redis高性能的原因</li>
+<li>LRU的实现原理</li>
+<li>遇到不熟悉的需求, 怎么处理</li>
+<li>方案上有分歧, 怎么处理</li>
+<li>可能延期的情况下, 怎么处理</li>
+</ul>
+<h2 id="得物"><a href="#得物" class="headerlink" title="得物"></a>得物</h2><h3 id="得物一面"><a href="#得物一面" class="headerlink" title="得物一面"></a>得物一面</h3><ul>
+<li>Golang和Java相比, 有什么缺点</li>
+<li>Java中好的组件如果用Golang迁移, 会有什么问题</li>
+<li>如何设计一个Golang DDD微服务框架</li>
+<li>如何看点框架化带来的性能损失的问题</li>
+<li>Golang&#x2F;Java&#x2F;Python中的垃圾回收机制</li>
+<li>MySQL B+树, Redis跳表</li>
+<li>解释下聚合索引</li>
+<li>Golang协程原理</li>
+<li>Golang中channel的锁</li>
+<li>PostgreSQL与MySQL对比</li>
+<li>多租户</li>
+</ul>
+<h3 id="得物二面"><a href="#得物二面" class="headerlink" title="得物二面"></a>得物二面</h3><ul>
+<li>订单锁的业务场景</li>
+<li>使用分布式锁有什么注意点</li>
+<li>如何保证cache和db的数据一致性</li>
+<li>如何避免缓存击穿<ul>
+<li>SingleFlight</li>
+<li>分布式锁, 不建议, 自研组件很难保证确实只有一个请求进行修改</li>
+<li>队列, 回写cache时对队列里的cache miss回写操作, 并检查cache是否已存在, 已存在则跳过</li>
+<li>lease</li>
+</ul>
+</li>
+<li>如何解决缓存穿透</li>
+<li>如何提升业务稳定性<ul>
+<li>事前</li>
+<li>事后</li>
+<li>其他?</li>
+</ul>
+</li>
+<li>限流有哪几种方式<ul>
+<li>计数器</li>
+<li>漏桶</li>
+<li>令牌桶算法</li>
+</ul>
+</li>
+<li>Context.WithValue的缺点</li>
+<li>Context.Timeout的实现<ul>
+<li>如何传递超时信号</li>
+</ul>
+</li>
+<li>map是否是并发安全的</li>
+<li>介绍CAS</li>
+<li>自旋锁和互斥锁的区别</li>
+<li>对已关闭的channel进行读写, 是否有问题<ul>
+<li>可以读, 返回false和或默认值0</li>
+<li>写入会直接panic: send on closed channel</li>
+</ul>
+</li>
+<li>Redis的有序集合是如何实现的<ul>
+<li>跳表 + 哈希</li>
+<li>压缩列表</li>
+</ul>
+</li>
+<li>聚簇索引的特点</li>
+<li>索引失效有哪些场景<ul>
+<li>避免or&#x2F;not in&#x2F; !&#x3D; &#x2F; &lt;&gt; 等操作</li>
+<li>使用了SQL内置函数</li>
+<li>where子句中order by是否使用了索引</li>
+</ul>
+</li>
+<li>解释下跳表和B+树</li>
+</ul>
+<h3 id="得物95线一面"><a href="#得物95线一面" class="headerlink" title="得物95线一面"></a>得物95线一面</h3><ul>
+<li>分库分表如何解决查询</li>
+<li>Prometheus</li>
+<li>Prometheus埋点数据是推还是拉</li>
+<li>Golang 高并发设计&#x2F;调度过程</li>
+<li>介绍MySQL事务</li>
+<li>MySQL如何修改隔离级别<ul>
+<li>set global.tx_isolation&#x3D;’READ-COMMITED’;</li>
+<li>或者修改my.cnf文件 transaction-isolation&#x3D;Read-Committed</li>
+</ul>
+</li>
+<li>Redis数据结构</li>
+<li>Redis持久化</li>
+<li>Redis中的原子操作有哪些</li>
+<li>grpc所使用的网络协议?有哪些<ul>
+<li>HTTP2是二进制协议, 所以丧失了可读性</li>
+<li>HTTP2多路复用, HTTP长连接复用</li>
+<li>grpc四种连接方式的区别? server stream和stream rpc的区别?</li>
+<li>grpc如何读取&#x2F;传输数据, 如何保证数据顺序</li>
+</ul>
+</li>
+</ul>
+<h2 id="TapTap"><a href="#TapTap" class="headerlink" title="TapTap"></a>TapTap</h2><h3 id="TapTap一面"><a href="#TapTap一面" class="headerlink" title="TapTap一面"></a>TapTap一面</h3><ul>
+<li>自我介绍</li>
+<li>Golang里做依赖注入 loc</li>
+<li>依赖注入的好处是什么</li>
+<li>Redis分布式锁</li>
+<li>缓存击穿是什么, 如何解决<ul>
+<li>SingleFlight</li>
+<li>分布式锁, 不建议, 自研组件很难保证确实只有一个请求进行修改</li>
+<li>队列, 回写cache时对队列里的cache miss回写操作, 并检查cache是否已存在, 已存在则跳过</li>
+<li>lease</li>
+</ul>
+</li>
+<li>Redis内存满了会怎么样<ul>
+<li>Redis配置最大使用内存(配置文件&#x2F;通过命令实时修改)</li>
+<li>LRU内存置换, 通过随机采样法淘汰数据, 每次随机出5个key, 从里面淘汰掉最近最少使用的key. Redis3.0中还会维护一个候选池, 将随机选取的key放入池中, 放满后将访问时间最大的进行移除</li>
+<li>如何解决<ul>
+<li>增加内存</li>
+<li>使用内存淘汰策略</li>
+<li>Redis集群</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Redis缓存淘汰机制<ul>
+<li>Redis会为每个key中额外增加内存空间用于存储每个key的使用时间, 大小是3字节</li>
+<li>Redis4.0中新增LFU算法(最近频繁被使用)<ul>
+<li>核心思想是根据key最近被访问的频率进行淘汰</li>
+</ul>
+</li>
+<li>六种淘汰策略<ul>
+<li>默认策略是当内存大小达到阈值, 所有申请内存的指令都会报错</li>
+<li>lru(allkeys&#x2F;volatile)</li>
+<li>random(allkeys&#x2F;volatile)</li>
+<li>ttl</li>
+</ul>
+</li>
+<li>如果Redis中的数据有明显的冷热特性, 推荐使用allkeys-lru. 如果所有数据访问频率大致一样, 可以用allkeys-random</li>
+</ul>
+</li>
+<li>Redis删除过期键策略<ul>
+<li>定时删除, 对内存最友好</li>
+<li>惰性删除</li>
+<li>定期删除</li>
+</ul>
+</li>
+<li>如何做LRU</li>
+<li>Golang GC机制<ul>
+<li>什么情况下会频繁GC<ul>
+<li>内存使用量持续增长</li>
+<li>小对象分配多</li>
+</ul>
+</li>
+<li>GC的触发机制<ul>
+<li>手动  runtime.gc()</li>
+<li>定期 默认2min触发一次gc</li>
+<li>阈值 内存扩大一倍时, 触发</li>
+</ul>
+</li>
+<li>如果优化来减少GC开销</li>
+<li>如何让对象创建在栈上而不是堆上<ul>
+<li>Go语言不同于C, 没有明确的堆栈区分, 具体分配到哪里由编译器自行决定. 一般情况下, 大对象或者存在引用(取地址)的对象会分配在堆上.</li>
+<li>反汇编查看内存分配情况<ul>
+<li>go tool compile -S main.go 分析汇编代码中是否调用了runtime.newobject</li>
+</ul>
+</li>
+<li>逃逸分析<ul>
+<li>go build -gcflags ‘-m -l’ main.go</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Golang内存对齐</li>
+<li>协程和线程的区别<ul>
+<li>为什么内存开销这么大</li>
+</ul>
+</li>
+<li>服务降级</li>
+<li>算法题<ul>
+<li>动规题<ul>
+<li>GetSteps</li>
+</ul>
+</li>
+<li>top k问题(堆排)</li>
+</ul>
+</li>
+</ul>
+<h2 id="小红书"><a href="#小红书" class="headerlink" title="小红书"></a>小红书</h2><h3 id="小红书面经"><a href="#小红书面经" class="headerlink" title="小红书面经"></a>小红书面经</h3><ul>
+<li>算法题<ul>
+<li>LRU</li>
+<li>删除链表的倒数第K个节点</li>
+</ul>
+</li>
+<li>Redis Cluster集群出现热点key或者大key怎么办<ul>
+<li>big key<ul>
+<li>危害<ul>
+<li>Redis阻塞, 操作单个big key耗时久, 后面请求会被阻塞</li>
+<li>cluster中胡造成内存空间不均匀</li>
+<li>过期时可能阻塞</li>
+</ul>
+</li>
+<li>排查: –bigkeys</li>
+<li>big key处理<ul>
+<li>删除bigkey, 异步删除需要Redis4.0支持</li>
+<li>拆分</li>
+<li>不用Redis, 改MongoDB</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>热key<ul>
+<li>如何发现热点<ul>
+<li>业务经验, 预估</li>
+<li>做数据统计, 在客户端进行收集</li>
+<li>redis自带的命令 hotkeys&#x2F;monitor</li>
+</ul>
+</li>
+<li>解决办法<ul>
+<li>利用二级缓存</li>
+<li>备份热key</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>MySQL什么情况下会锁住整张表<ul>
+<li>insert时全表锁, 因为要生成主键字段&#x2F;索引等; update是行级锁</li>
+</ul>
+</li>
+<li>MySQL锁<ul>
+<li>表级锁</li>
+<li>行级锁</li>
+<li>页面锁</li>
+</ul>
+</li>
+<li>MySQL的行锁有几种<ul>
+<li>排它锁</li>
+<li>共享锁</li>
+</ul>
+</li>
+<li>MySQL索引, 为什么不适用hashmap</li>
+<li>覆盖索引原理, 使用uuid的问题</li>
+<li>缓存数据怎么和db保持同步</li>
+<li>缓存雪崩&#x2F;击穿&#x2F;穿透的解决办法</li>
+<li>限流怎么做<ul>
+<li>计数器</li>
+<li>令牌桶算法</li>
+<li>漏桶</li>
+</ul>
+</li>
+<li>消息幂等性怎么保证<ul>
+<li>利用数据库的唯一约束实现幂等</li>
+<li>去重表</li>
+<li>利用Redis原子性</li>
+<li>多版本控制(乐观锁)</li>
+</ul>
+</li>
+<li>乱序消息怎么解决<ul>
+<li>消息序列号</li>
+<li>借鉴TCP中ACK机制, 只有被确认的消息才可以被消费</li>
+</ul>
+</li>
+</ul>
+<h3 id="小红书一面"><a href="#小红书一面" class="headerlink" title="小红书一面"></a>小红书一面</h3><ul>
+<li>自我介绍</li>
+<li>项目经历, 挑亮点项目<ul>
+<li>项目业务简介</li>
+<li>项目技术架构</li>
+<li>主要负责的内容</li>
+</ul>
+</li>
+<li>Golang内存分布<ul>
+<li>静态区</li>
+<li>栈区</li>
+<li>堆区</li>
+<li>常量区</li>
+<li>代码区</li>
+</ul>
+</li>
+<li>Java static关键字</li>
+<li>Java GC过程简介</li>
+<li>Redis中的数据结构<ul>
+<li>简单动态字符串</li>
+<li>整形数组</li>
+<li>压缩列表</li>
+<li>双向链表</li>
+<li>哈希表</li>
+<li>跳表</li>
+</ul>
+</li>
+<li>zset<ul>
+<li>跳表(主要作用是提高检索效率, 里面的key值是哈希值) + 哈希(去重)</li>
+<li>压缩列表(数据量小的时候)</li>
+</ul>
+</li>
+<li>Redis持久化方式<ul>
+<li>AOF</li>
+<li>RDB</li>
+<li>Redis4.0混合方式</li>
+</ul>
+</li>
+<li>Redis选举算法?<ul>
+<li>集群方案: cluster&#x2F;sentinel</li>
+</ul>
+</li>
+<li>对MVCC的理解</li>
+<li>MySQL锁机制<ul>
+<li>insert上表锁</li>
+<li>update上行锁</li>
+</ul>
+</li>
+<li>MySQL中三种log的区别<ul>
+<li>binlog<ul>
+<li>二进制数据</li>
+<li>MySQL server层实现的</li>
+<li>适用于主从同步和数据恢复</li>
+</ul>
+</li>
+<li>redo log<ul>
+<li>循环队列, 大小固定</li>
+<li>innodb引擎独有</li>
+<li>适用于crash safe崩溃恢复</li>
+</ul>
+</li>
+<li>undo log<ul>
+<li>保证原子性, 要么全成功要么全失败</li>
+<li>主要记录的是数据的逻辑变化</li>
+<li>MVCC多版本实现的关键(并发控制通过锁来实现)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>项目中重试&#x2F;降级&#x2F;熔断的实现</li>
+<li>限流的实现方案<ul>
+<li>计数器</li>
+<li>漏桶算法</li>
+<li>令牌桶算法</li>
+</ul>
+</li>
+<li>令牌桶算法的过程</li>
+<li>Redis为什么使用跳表而不使用B+树<ul>
+<li>内存利用率</li>
+</ul>
+</li>
+<li>算法题<ul>
+<li>动规题</li>
+<li>threeSum</li>
+</ul>
+</li>
+</ul>
+<h2 id="UCloud"><a href="#UCloud" class="headerlink" title="UCloud"></a>UCloud</h2><h3 id="UCloud一面"><a href="#UCloud一面" class="headerlink" title="UCloud一面"></a>UCloud一面</h3><ul>
+<li>自我介绍</li>
+<li>项目架构介绍</li>
+<li>介绍Golang GMP模型</li>
+<li>介绍Golang GC</li>
+</ul>
+<h3 id="UCloud二面"><a href="#UCloud二面" class="headerlink" title="UCloud二面"></a>UCloud二面</h3><ul>
+<li>自我介绍</li>
+<li>Golang和Java对比, 优劣势</li>
+<li>线程和Goroutine的区别</li>
+<li>早期Goroutine调度存在的问题<ul>
+<li>全局锁的性能问题</li>
+<li>早起是非抢占式调度</li>
+</ul>
+</li>
+<li>操作系统进程的通信方式, 各自的特点是什么<ul>
+<li>信号量(不适用于网络场景, 需要编程语言的支持)</li>
+<li>管道 (适合数据量大的场景)</li>
+<li>消息队列</li>
+<li>共享内存</li>
+</ul>
+</li>
+<li>亿级大表分库分表介绍</li>
+<li>如何防止SQL注入<ul>
+<li>预编译语句集</li>
+<li>使用正则表达式过滤传入的参数</li>
+<li>字符串过滤</li>
+<li>检查非法字符</li>
+</ul>
+</li>
+<li>GET和POST的区别?<ul>
+<li>网络传输上有区别吗</li>
+<li>GET请求参数长度的限制是哪一端做的</li>
+</ul>
+</li>
+<li>socket</li>
+<li>TCP和UDP的区别</li>
+<li>死锁是什么, 如何避免(宏观机制)<ul>
+<li>引起死锁的关键?</li>
+</ul>
+</li>
+<li>Golang中IOTA的原理?</li>
+<li>Java中String能否派生类</li>
+<li>Golang中接口的推断是静态的还是动态的?</li>
+<li>Golang中的error处理</li>
+<li>日志如何打<ul>
+<li>如何串联打日志(调用的链路都能统一打, 标识出来)</li>
+</ul>
+</li>
+<li>日志链路跟踪</li>
+<li>运维部署</li>
+</ul>
+<h3 id="UCloud三面"><a href="#UCloud三面" class="headerlink" title="UCloud三面"></a>UCloud三面</h3><ul>
+<li>自我介绍</li>
+<li>如何部署</li>
+<li>监控</li>
+<li>性能<ul>
+<li>压测</li>
+<li>可观测性</li>
+</ul>
+</li>
+<li>遇到的线上问题, 如何排查, 如何解决的</li>
+<li>提交读是否影响性能</li>
+<li>Linux如何查看端口是否被占用<ul>
+<li>lsof</li>
+<li>netstat</li>
+</ul>
+</li>
+<li>删文件发现空间未释放<ul>
+<li>惰性删除</li>
+<li>资源未释放</li>
+<li>软链</li>
+</ul>
+</li>
+<li>Golang如何限制使用的CPU数量</li>
+<li>Golang的core文件如何调试?</li>
+<li>算法题<ul>
+<li>日志文件分析</li>
+<li>负责均衡, 一致性哈希</li>
+<li>链表反转</li>
+</ul>
+</li>
+</ul>
+<h2 id="触宝"><a href="#触宝" class="headerlink" title="触宝"></a>触宝</h2><h3 id="触宝一面"><a href="#触宝一面" class="headerlink" title="触宝一面"></a>触宝一面</h3><ul>
+<li>自我介绍</li>
+<li>手写Redis实现分布式锁</li>
+<li>介绍channel</li>
+<li>channel是否线程安全</li>
+<li>Golang的GC过程</li>
+<li>什么情况下GC压力会比较大, 对服务性能产生影响</li>
+<li>Golang常用的包管理方法, 项目结构如何设计</li>
+<li>ETCD是否用过</li>
+<li>ETCD和zookeeper的异同?</li>
+<li>Redis的数据结构有哪几种</li>
+<li>Redis事务的执行过程?</li>
+<li>Redis哈希的实现原理和时间复杂度</li>
+<li>Golang里有哪些锁<ul>
+<li>互斥锁</li>
+<li>读写锁</li>
+<li>自旋锁</li>
+</ul>
+</li>
+<li>map是否线程安全</li>
+<li>sync.map为什么是线程安全</li>
+<li>sync.map的数据结构</li>
+<li>Goroutine太多的问题</li>
+<li>如何限制Goroutine的数量</li>
+<li>操作系统<ul>
+<li>Linux中软中断机制?</li>
+<li>Linux在哪些情况下可能导致CPU物理核的使用不均匀?</li>
+<li>Linux单台机器可打开的文件句柄数量是多少, 如何查看, 如何调整?</li>
+<li>Linux压缩文件相关的操作</li>
+<li>文件如何移动</li>
+</ul>
+</li>
+<li>项目经历</li>
+<li>通用能力类的主观问题<ul>
+<li>遇到过什么线上问题&#x2F;trouble shouting</li>
+<li>多部门协作时困难的点</li>
+<li>发现一个功能点不符合预期, 链路比较复杂. 涉及多部门, 如何推进解决</li>
+<li>线上反馈的问题, 并不是你own的, 怎么处理 (相关的人又在休假)</li>
+<li>如何看待技术视角和产品视角, 怎么理解用户意识和客户意识</li>
+<li>项目管理如何做的</li>
+<li>在工作中犯过的错误</li>
+<li>如何保证线上稳定性</li>
+<li>如何实施压测</li>
+</ul>
+</li>
+</ul>
+<h2 id="滴滴"><a href="#滴滴" class="headerlink" title="滴滴"></a>滴滴</h2><h2 id="滴滴一面"><a href="#滴滴一面" class="headerlink" title="滴滴一面"></a>滴滴一面</h2><ul>
+<li>自我介绍</li>
+<li>如何更好的转语言</li>
+<li>如何做Java&#x2F;Golang技术选型, 考虑哪些点</li>
+<li>项目经历</li>
+<li>MySQL删除时如何释放空间(空间的回收)</li>
+<li>微服务和DDD的区别</li>
+<li>为何决定使用DDD</li>
+<li>架构原则<ul>
+<li>单一职责</li>
+<li>依赖倒置</li>
+<li>接口隔离原则, 面向接口而不是依赖实现</li>
+<li>开闭原则</li>
+<li>里式替换</li>
+<li>迪米特法则, 最少知识原则</li>
+</ul>
+</li>
+<li>算法<ul>
+<li>isValid</li>
+<li>twoSum</li>
+<li>threeSum</li>
+</ul>
+</li>
+</ul>
+<h3 id="滴滴二面"><a href="#滴滴二面" class="headerlink" title="滴滴二面"></a>滴滴二面</h3><ul>
+<li>介绍工作经历, 遇到的挑战</li>
+<li>缓存的应用场景, 如何更新</li>
+<li>算法题<ul>
+<li>[]string中第一列升序, 第二列按数字降序排列</li>
+<li>follow up, 假设数据量很大, 几百个G的待排数据, 内存只有几个G<ul>
+<li>map reduce</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>最近看的技术书籍</li>
+</ul>
+<h2 id="Shopee"><a href="#Shopee" class="headerlink" title="Shopee"></a>Shopee</h2><h3 id="Shopee一面"><a href="#Shopee一面" class="headerlink" title="Shopee一面"></a>Shopee一面</h3><ul>
+<li>自我介绍</li>
+<li>算法题<ul>
+<li>rangeReverse List</li>
+<li>时间复杂度分析</li>
+</ul>
+</li>
+<li>如何实现哈希表</li>
+<li>进程和线程的区别</li>
+<li>进程间的通信方式</li>
+<li>多线程情况下, 计数器的实现会存在什么问题<ul>
+<li>如何保证线程安全</li>
+</ul>
+</li>
+<li>高并发的场景下, 加锁会带来性能开销, 如何解决?</li>
+<li>MySQL里的事务用来做什么</li>
+<li>MySQL里的索引用来做什么, 为什么要索引, 如何实现, 数据如何组织</li>
+<li>抖音首页推荐, 如何保证新的推荐是用户没有看过的</li>
+<li>布隆过滤器</li>
+</ul>
+<h3 id="Shopee-SG一面"><a href="#Shopee-SG一面" class="headerlink" title="Shopee SG一面"></a>Shopee SG一面</h3><ul>
+<li>自我介绍</li>
+<li>算法题<ul>
+<li>LRU实现</li>
+</ul>
+</li>
+</ul>
+<h3 id="Shopee-SG二面"><a href="#Shopee-SG二面" class="headerlink" title="Shopee SG二面"></a>Shopee SG二面</h3><ul>
+<li>自我介绍</li>
+<li>算法题<ul>
+<li>实现一个HashMap，需要解决哈希冲突</li>
+<li>存在的复杂度退化为O(N)的性能问题, 如何解决</li>
+</ul>
+</li>
+<li>Golang hashmap如何实现</li>
+<li>Golang Goroutine的实现</li>
+<li>Golang如何调度, 如何绑定</li>
+<li>MySQL的事务隔离级别</li>
+<li>innodb默认隔离级别, 如何实现的<ul>
+<li>DB follow up问题(略)</li>
+</ul>
+</li>
+<li>唯一ID的生成<ul>
+<li>UUID</li>
+<li>Redis原子操作</li>
+<li>雪花算法</li>
+</ul>
+</li>
+<li>业务架构设计</li>
+<li>项目架构介绍</li>
+<li>GC调优</li>
+</ul>
+<h3 id="Shopee-SG三面"><a href="#Shopee-SG三面" class="headerlink" title="Shopee SG三面"></a>Shopee SG三面</h3><ul>
+<li>算法题<ul>
+<li>找出两个数组中相同的元素</li>
+</ul>
+</li>
+<li>Golang示例代码闭包问题分析, 如何解决</li>
+<li>Golang开发过程中遇到的问题(坑)</li>
+<li>碰到的性能问题</li>
+<li>DB优化</li>
+</ul>
+<h2 id="米哈游"><a href="#米哈游" class="headerlink" title="米哈游"></a>米哈游</h2><h3 id="米哈游一面"><a href="#米哈游一面" class="headerlink" title="米哈游一面"></a>米哈游一面</h3><ul>
+<li>重点项目介绍, 遇到过的问题</li>
+<li>如何做容量预估</li>
+<li>context包的使用场景</li>
+<li>已关闭channel进行读写, nil的channel进行读写</li>
+<li>如何限制Goroutine数量</li>
+<li>并发读&#x2F;写是否有问题, 并发append元素是否有问题</li>
+<li>哪些场景会导致内存泄漏</li>
+<li>聚簇索引&#x2F;非聚簇索引, 非叶子节点存放的是什么</li>
+<li>索引覆盖</li>
+<li>悲观锁和乐观锁</li>
+<li>表锁&#x2F;行锁</li>
+<li>索引优化</li>
+<li>分库分表</li>
+<li>Redis锁的弊端</li>
+</ul>
+<h2 id="字节"><a href="#字节" class="headerlink" title="字节"></a>字节</h2><h3 id="字节一面"><a href="#字节一面" class="headerlink" title="字节一面"></a>字节一面</h3><ul>
+<li>自我介绍</li>
+<li>业务项目</li>
+<li>算法题<ul>
+<li>前序和中序构建二叉树</li>
+</ul>
+</li>
+</ul>
+<h3 id="字节二面"><a href="#字节二面" class="headerlink" title="字节二面"></a>字节二面</h3><ul>
+<li>项目经历</li>
+<li>架构设计</li>
+<li>算法</li>
+</ul>
+<h3 id="字节三面"><a href="#字节三面" class="headerlink" title="字节三面"></a>字节三面</h3><ul>
+<li>项目介绍，现场画流程图</li>
+<li>算法<ul>
+<li>地铁寻路&#x2F;时间统计</li>
+</ul>
+</li>
+</ul>
+<h2 id="美团"><a href="#美团" class="headerlink" title="美团"></a>美团</h2><h3 id="美团一面"><a href="#美团一面" class="headerlink" title="美团一面"></a>美团一面</h3><ul>
+<li>自我介绍</li>
+<li>离职原因</li>
+<li>k8s中有哪些网络模式?</li>
+<li>k8s CPU使用模式request和limit的区别?</li>
+<li>kafka的数据可靠性的保证?</li>
+<li>Redis布隆过滤器的使用场景</li>
+<li>Redis击破模型?</li>
+<li>Redis集群方案, 各自的优点?<ul>
+<li>cluster, 可扩展性</li>
+<li>sentinel, 高可用, master宕机, 自动将slave升级为master</li>
+</ul>
+</li>
+<li>Golang内存逃逸<ul>
+<li>Goroutine逃逸</li>
+<li>字符串截取, 共享内存</li>
+<li>子切片引用</li>
+<li>函数数组传参时</li>
+</ul>
+</li>
+<li>分库分表方案</li>
+<li>业务项目的技术难点</li>
+<li>API幂等设计</li>
+<li>gRPC的优点?</li>
+<li>JSON+gRPC的方案是否可行?</li>
+<li>Istio如何实现gRPC流量控制?</li>
+<li>HTTP2的特点?</li>
+<li>thrift和grpc的对比?</li>
+<li>xorm和gorm的对比?</li>
+<li>设计一个ORM, 有哪些重要的模块</li>
+<li>DB中的一张表在gorm中是什么样的数据结构</li>
+<li>MVC和MVP的区别? </li>
+<li>gin middleware<ul>
+<li>鉴权如何实现</li>
+</ul>
+</li>
+</ul>
+<h2 id="腾讯"><a href="#腾讯" class="headerlink" title="腾讯"></a>腾讯</h2><h3 id="腾讯电商一面"><a href="#腾讯电商一面" class="headerlink" title="腾讯电商一面"></a>腾讯电商一面</h3><ul>
+<li>自我介绍</li>
+<li>项目经历, 业务流程&#x2F;架构简介</li>
+<li>BFF是什么, 和网关的区别是什么</li>
+<li>Redis哈希是如何实现的</li>
+<li>一般来说哈希map有几种实现方式</li>
+<li>Redis什么情况下触发渐进式哈希</li>
+<li>Redis是否使用集群, 集群如何保证高可用</li>
+<li>Redis集群的选举算法?</li>
+<li>Redis扩容时如何保证数据的一致性?</li>
+<li>Redis集群数据是如何分布的? 如何决定一个key存放在哪个节点上<ul>
+<li>sharding方式有哪些</li>
+</ul>
+</li>
+<li>Redis大key&#x2F;热key的解决办法</li>
+<li>MySQL事务的隔离级别<ul>
+<li>未提交读</li>
+<li>不可重复读</li>
+<li>可重复读</li>
+<li>串行化</li>
+</ul>
+</li>
+<li>可重复和不可重复的区别</li>
+<li>幻读?</li>
+<li>MySQL如何实现可重复读(MVCC)</li>
+<li>算法题<ul>
+<li>三数最接近的target</li>
+</ul>
+</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Golang内存泄漏<ul>
+<li>Goroutine泄漏<ul>
+<li>Goroutine栈本身锁占用空间</li>
+<li>Goroutine堆的占用空间</li>
+<li>如何判断: 检测Goroutine数量, 观察是否持续增长</li>
+</ul>
+</li>
+<li>排查方式<ul>
+<li>pprof<ul>
+<li>top</li>
+<li>list</li>
+<li>traces</li>
+</ul>
+</li>
+<li>监控工具, 观察内存使用量的走势</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Prometheus metrics类型<ul>
+<li>Counter计数器</li>
+<li>Gauge仪表盘</li>
+<li>histogram和summary 分布数据分布情况</li>
+</ul>
+</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2025/03/20/go-hexagonal/" data-toggle="tooltip" data-placement="top" title="Go Hexagonal 项目架构设计与实现深度解析">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2021/08/14/golang-context-tips/" data-toggle="tooltip" data-placement="top" title="Golang Context的好坏与使用建议">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#面经" title="面经">面经</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2021/08/28/interview-2021/";
+    var disqus_url = "https://blog.ranchocooper.com/2021/08/28/interview-2021/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>

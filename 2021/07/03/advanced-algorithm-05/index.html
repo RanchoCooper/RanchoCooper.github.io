@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          算法进阶(05) - 递归、分治 - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2021/07/03/advanced-algorithm-05/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#算法" title="算法">算法</a>
+                        
+                    </div>
+                    <h1>算法进阶(05) - 递归、分治</h1>
+                    <h2 class="subheading">Advanced Algorith - Recursion And Divide</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2021-07-03
+                    </span>
+
+                    <span class="meta">Word Count 1.9k，
+                    8 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="递归的时间复杂度"><a href="#递归的时间复杂度" class="headerlink" title="递归的时间复杂度"></a>递归的时间复杂度</h2><ul>
+<li>指数型: k^n (子集, 大体积背包问题)</li>
+<li>排列型: n! (全排列, 旅行商, N皇后)</li>
+<li>组合型: n!&#x2F;(m!(n-m)!) (组合选数)</li>
+</ul>
+<h1 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h1><h2 id="子集"><a href="#子集" class="headerlink" title="子集"></a>子集</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subsets/">LeetCode</a></p>
+<p>给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>按数组index递归找出子集, 把找出的子集放入全局变量中. 每个元素在或不在子集中, 所以要分两种情况进行递归: 元素不在子集中, 直接index++; 元素在子集中, 将该元素添加到全局变量set中, 并且在递归后还原状态. 终止条件为index &#x3D; nums.size</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">subsets</span><span class="params">(nums []<span class="type">int</span>)</span></span> [][]<span class="type">int</span> &#123;    </span><br><span class="line">    ans := <span class="built_in">make</span>([][]<span class="type">int</span>, <span class="number">0</span>)    </span><br><span class="line">    set := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">var</span> findSubSet <span class="function"><span class="keyword">func</span><span class="params">([]<span class="type">int</span>, <span class="type">int</span>)</span></span> </span><br><span class="line">    findSubSet = <span class="function"><span class="keyword">func</span><span class="params">(nums []<span class="type">int</span>, index <span class="type">int</span>)</span></span> &#123; </span><br><span class="line">        <span class="comment">// 递归终止条件       </span></span><br><span class="line">        <span class="keyword">if</span> index == <span class="built_in">len</span>(nums) &#123;</span><br><span class="line">            <span class="comment">// 完成一次递归, 将当前set加入ans中            </span></span><br><span class="line">            <span class="comment">//注意这里需要对set进行一次copy </span></span><br><span class="line">            ans = <span class="built_in">append</span>(ans, <span class="built_in">append</span>([]<span class="type">int</span>(<span class="literal">nil</span>), set...))</span><br><span class="line">            <span class="keyword">return</span> </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="comment">// 元素不在子集中, 继续递归      </span></span><br><span class="line">        findSubSet(nums, index+<span class="number">1</span>) </span><br><span class="line">        <span class="comment">// 元素在子集中, 将当前元素加入set中      </span></span><br><span class="line">        set = <span class="built_in">append</span>(set, nums[index]) </span><br><span class="line">        findSubSet(nums, index+<span class="number">1</span>)</span><br><span class="line">        <span class="comment">// 还原set      </span></span><br><span class="line">        set = set[:<span class="built_in">len</span>(set)<span class="number">-1</span>] </span><br><span class="line">    &#125; </span><br><span class="line">    findSubSet(nums, <span class="number">0</span>) </span><br><span class="line">    <span class="keyword">return</span> ans&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combinations/">LeetCode</a><br>给定两个整数 n 和 k，返回 1 … n 中所有可能的 k 个数的组合。示例:输入: n &#x3D; 4, k &#x3D; 2输出:[  [2,4],  [3,4],  [2,3],  [1,2],  [1,3],  [1,4],]</p>
+<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>这题与上道题类似, 组合是子集的一部分, 即集合内的元素数量刚好为k</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">combine</span><span class="params">(n <span class="type">int</span>, k <span class="type">int</span>)</span></span> [][]<span class="type">int</span> &#123; </span><br><span class="line">    ans := <span class="built_in">make</span>([][]<span class="type">int</span>, <span class="number">0</span>)  </span><br><span class="line">    set := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">0</span>)  </span><br><span class="line">    <span class="keyword">var</span> findCombine <span class="function"><span class="keyword">func</span><span class="params">(<span class="type">int</span>)</span></span>  </span><br><span class="line">    findCombine = <span class="function"><span class="keyword">func</span><span class="params">(index <span class="type">int</span>)</span></span> &#123; </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(set) &gt; k || index + n - index + <span class="number">1</span> &lt; k &#123;   </span><br><span class="line">            <span class="comment">// 当前元素个数已大于k, 或者即使剩余元素全部选上, 都不够k个            </span></span><br><span class="line">            <span class="comment">//提前退出      </span></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">if</span> index == n + <span class="number">1</span> &#123;    </span><br><span class="line">            <span class="comment">// 子集中元素个数为k         </span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(set) == k &#123;     </span><br><span class="line">                ans = <span class="built_in">append</span>(ans, <span class="built_in">append</span>([]<span class="type">int</span>&#123;&#125;, set...))  </span><br><span class="line">            &#125;   </span><br><span class="line">            <span class="keyword">return</span>     </span><br><span class="line">        &#125;</span><br><span class="line">        findCombine(index + <span class="number">1</span>)  </span><br><span class="line">        set = <span class="built_in">append</span>(set, index)</span><br><span class="line">        findCombine(index + <span class="number">1</span>)    </span><br><span class="line">        set = set[:<span class="built_in">len</span>(set) - <span class="number">1</span>] </span><br><span class="line">    &#125;</span><br><span class="line">    findCombine(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="全排列"><a href="#全排列" class="headerlink" title="全排列"></a>全排列</h2><p>给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。示例 1：输入：nums &#x3D; [1,2,3]输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]示例 2：输入：nums &#x3D; [0,1]输出：[[0,1],[1,0]]示例 3：输入：nums &#x3D; [1]输出：[[1]]</p>
+<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><p>同上, 递归遍历每一层, 不过每一层不在是选择或不选择, 而是nums中的n个数作为候选项, 因此在递归内部需要迭代nums中的每个元素</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">permute</span><span class="params">(nums []<span class="type">int</span>)</span></span> [][]<span class="type">int</span> &#123;</span><br><span class="line">    ans := <span class="built_in">make</span>([][]<span class="type">int</span>, <span class="number">0</span>)    </span><br><span class="line">    used := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">int</span>]<span class="type">bool</span>, <span class="number">0</span>) </span><br><span class="line">    cur := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">0</span>)  </span><br><span class="line">    <span class="keyword">var</span> findPermute <span class="function"><span class="keyword">func</span><span class="params">(<span class="type">int</span>)</span></span>  </span><br><span class="line">    findPermute = <span class="function"><span class="keyword">func</span><span class="params">(index <span class="type">int</span>)</span></span> &#123;  </span><br><span class="line">        <span class="keyword">if</span> index == <span class="built_in">len</span>(nums) &#123;      </span><br><span class="line">            ans = <span class="built_in">append</span>(ans, <span class="built_in">append</span>([]<span class="type">int</span>&#123;&#125;, cur...))      </span><br><span class="line">            <span class="keyword">return</span>      </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">for</span> _, i := <span class="keyword">range</span> nums &#123;  </span><br><span class="line">            <span class="keyword">if</span> used[i] == <span class="literal">false</span> &#123;    </span><br><span class="line">                used[i] = <span class="literal">true</span>      </span><br><span class="line">                cur = <span class="built_in">append</span>(cur, i)     </span><br><span class="line">                findPermute(index+<span class="number">1</span>)  </span><br><span class="line">                used[i] = <span class="literal">false</span>  </span><br><span class="line">                cur = cur[:<span class="built_in">len</span>(cur) - <span class="number">1</span>]      </span><br><span class="line">            &#125;        </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    findPermute(<span class="number">0</span>)   </span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="翻转二叉树"><a href="#翻转二叉树" class="headerlink" title="翻转二叉树"></a>翻转二叉树</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/invert-binary-tree/">LeetCode</a> </p>
+<p>翻转一棵二叉树。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node. </span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123; </span></span><br><span class="line"><span class="comment"> *     Val int </span></span><br><span class="line"><span class="comment"> *     Left *TreeNode </span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125; </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">invertTree</span><span class="params">(root *TreeNode)</span></span> *TreeNode &#123; </span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;     </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>   </span><br><span class="line">    &#125; </span><br><span class="line">    invertTree(root.Left)  </span><br><span class="line">    invertTree(root.Right)   </span><br><span class="line">    root.Left, root.Right = root.Right, root.Left </span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">    root&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证二叉搜索树"><a href="#验证二叉搜索树" class="headerlink" title="验证二叉搜索树"></a>验证二叉搜索树</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/validate-binary-search-tree/">LeetCode</a><br>给定一个二叉树，判断其是否是一个有效的二叉搜索树。假设一个二叉搜索树具有如下特征：</p>
+<ul>
+<li>节点的左子树只包含小于当前节点的数。</li>
+<li>节点的右子树只包含大于当前节点的数。</li>
+<li>所有左子树和右子树自身必须也是二叉搜索树。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node. </span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123; </span></span><br><span class="line"><span class="comment"> *     Val int </span></span><br><span class="line"><span class="comment"> *     Left *TreeNode </span></span><br><span class="line"><span class="comment"> *     Right *TreeNode </span></span><br><span class="line"><span class="comment"> * &#125; </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;math&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> NodeInfo <span class="keyword">struct</span> &#123;</span><br><span class="line">    min, max <span class="type">int64</span>    </span><br><span class="line">    isValid <span class="type">bool</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValidBST</span><span class="params">(root *TreeNode)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">    r := isValid(root)  </span><br><span class="line">    <span class="keyword">return</span> r.isValid</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isValid</span><span class="params">(root *TreeNode)</span></span> *NodeInfo &#123; </span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> &amp;NodeInfo&#123;       </span><br><span class="line">            min: math.MaxInt64,</span><br><span class="line">            max: math.MinInt64,</span><br><span class="line">            isValid: <span class="literal">true</span>,  </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    left := isValid(root.Left)  </span><br><span class="line">    right := isValid(root.Right)</span><br><span class="line">    <span class="keyword">var</span> result NodeInfo </span><br><span class="line">    </span><br><span class="line">    result.max = <span class="type">int64</span>(math.Max(<span class="type">float64</span>(root.Val), math.Max(<span class="type">float64</span>(left.max), <span class="type">float64</span>(right.max))))  </span><br><span class="line">    result.min = <span class="type">int64</span>(math.Min(<span class="type">float64</span>(root.Val), math.Min(<span class="type">float64</span>(left.min), <span class="type">float64</span>(right.min))))  </span><br><span class="line">    result.isValid = left.isValid &amp;&amp; right.isValid &amp;&amp;              </span><br><span class="line">                        left.max &lt; <span class="type">int64</span>(root.Val) &amp;&amp; <span class="type">int64</span>(root.Val) &lt; right.min </span><br><span class="line">    <span class="keyword">return</span> &amp;result&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二叉树的最大深度"><a href="#二叉树的最大深度" class="headerlink" title="二叉树的最大深度"></a>二叉树的最大深度</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/">LeetCode</a><br>给定一个二叉树，找出其最大深度。二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。说明: 叶子节点是指没有子节点的节点。</p>
+<h3 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h3><p>自底向上统计信息 (分治思想)最大深度 &#x3D; max(左子树最大深度+右子树最大深度) + 1</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node. </span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int </span></span><br><span class="line"><span class="comment"> *     Left *TreeNode </span></span><br><span class="line"><span class="comment"> *     Right *TreeNode </span></span><br><span class="line"><span class="comment"> * &#125; </span></span><br><span class="line"><span class="comment"> */</span> </span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;math&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxDepth</span><span class="params">(root *TreeNode)</span></span> <span class="type">int</span> &#123;    </span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>   </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">int</span>(math.Max(<span class="type">float64</span>(maxDepth(root.Left)), <span class="type">float64</span>(maxDepth(root.Right)))) + <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h3><p>自顶向下维护信息, 一种写法是维护全局变量, 每递归一层, 令其+1, 需要注意还原现场; 另一种写法是通过函数参数传入, 这种写法每次调用递归函数时, 都会把该参数压栈, 空间上回多消耗一些, 但是更容易编写</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node. </span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123; </span></span><br><span class="line"><span class="comment"> *     Val int </span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode </span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;math&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法一</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxDepth</span><span class="params">(root *TreeNode)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> ans <span class="type">int</span>    </span><br><span class="line">    <span class="keyword">var</span> depth <span class="function"><span class="keyword">func</span><span class="params">(*TreeNode, <span class="type">int</span>)</span></span></span><br><span class="line">    depth = <span class="function"><span class="keyword">func</span> <span class="params">(root *TreeNode, current <span class="type">int</span>)</span></span>  &#123;</span><br><span class="line">        <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;           </span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125; </span><br><span class="line">        ans = <span class="type">int</span>(math.Max(<span class="type">float64</span>(ans), <span class="type">float64</span>(current)))</span><br><span class="line">        depth(root.Left, current+<span class="number">1</span>)</span><br><span class="line">        depth(root.Right, current+<span class="number">1</span>) </span><br><span class="line">    &#125;</span><br><span class="line">    depth(root, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法二</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxDepth</span><span class="params">(root *TreeNode)</span></span> <span class="type">int</span> &#123; </span><br><span class="line">    <span class="keyword">var</span> current, ans <span class="type">int</span> </span><br><span class="line">    <span class="keyword">var</span> depth <span class="function"><span class="keyword">func</span><span class="params">(*TreeNode)</span></span></span><br><span class="line">    depth = <span class="function"><span class="keyword">func</span> <span class="params">(root *TreeNode)</span></span>  &#123;        </span><br><span class="line">        <span class="keyword">if</span> root == <span class="literal">nil</span> &#123; </span><br><span class="line">            <span class="keyword">return</span> </span><br><span class="line">        &#125;</span><br><span class="line">        current++ </span><br><span class="line">        ans = <span class="type">int</span>(math.Max(<span class="type">float64</span>(ans), <span class="type">float64</span>(current)))        </span><br><span class="line">        depth(root.Left) </span><br><span class="line">        depth(root.Right)</span><br><span class="line">        current--        <span class="comment">// 还原现场    </span></span><br><span class="line">        &#125; </span><br><span class="line">        depth(root)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="二叉树的最小深度"><a href="#二叉树的最小深度" class="headerlink" title="二叉树的最小深度"></a>二叉树的最小深度</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/">LeetCode</a><br>给定一个二叉树，找出其最小深度。<br>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。<br>说明：叶子节点是指没有子节点的节点。</p>
+<h3 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h3><p>与前一题最大深度类似, 不同的是递归结束条件为当前节点为叶子节点, 且在存在左或右子树的情况下进行递归</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;math&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">minDepth</span><span class="params">(root *TreeNode)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    <span class="comment">// 判断是否为空树</span></span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ans := math.MaxInt32</span><br><span class="line">    <span class="keyword">var</span> depth <span class="function"><span class="keyword">func</span><span class="params">(*TreeNode, <span class="type">int</span>)</span></span></span><br><span class="line">    depth = <span class="function"><span class="keyword">func</span><span class="params">(root *TreeNode, current <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// 已经保证root不为nil</span></span><br><span class="line">        <span class="keyword">if</span> root.Left == <span class="literal">nil</span> &amp;&amp; root.Right == <span class="literal">nil</span> &#123;      <span class="comment">// 叶子节点</span></span><br><span class="line">            ans = <span class="type">int</span>(math.Min(<span class="type">float64</span>(ans), <span class="type">float64</span>(current)))</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> root.Left != <span class="literal">nil</span> &#123;</span><br><span class="line">            depth(root.Left, current+<span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> root.Right != <span class="literal">nil</span> &#123;</span><br><span class="line">            depth(root.Right, current+<span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    depth(root, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="分治"><a href="#分治" class="headerlink" title="分治"></a>分治</h1><h2 id="Pow-x-n"><a href="#Pow-x-n" class="headerlink" title="Pow(x, n)"></a>Pow(x, n)</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/powx-n/">LeetCode</a><br>实现 pow(x, n) ，即计算 x 的 n 次幂函数（即，xn）。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">myPow</span><span class="params">(x <span class="type">float64</span>, n <span class="type">int</span>)</span></span> <span class="type">float64</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> / myPow(x, -n)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    sub := myPow(x, n / <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> n % <span class="number">2</span> == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> sub * sub</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> sub * sub * x</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="括号生成"><a href="#括号生成" class="headerlink" title="括号生成"></a>括号生成</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/generate-parentheses/">LeetCode</a><br>数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。</p>
+<h3 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h3><p>这题的关键在于子问题的划分, 把原问题划分为<code>(a)b</code>来进行递归求解</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateParenthesis</span><span class="params">(n <span class="type">int</span>)</span></span> []<span class="type">string</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> []<span class="type">string</span>&#123;<span class="string">&quot;&quot;</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ans := <span class="built_in">make</span>([]<span class="type">string</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= n; i++ &#123;</span><br><span class="line">        result_a := generateParenthesis(i - <span class="number">1</span>)</span><br><span class="line">        result_b := generateParenthesis(n - i)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> _, a := <span class="keyword">range</span> result_a &#123;</span><br><span class="line">            <span class="keyword">for</span> _, b := <span class="keyword">range</span> result_b &#123;</span><br><span class="line">                ans = <span class="built_in">append</span>(ans, <span class="string">&quot;(&quot;</span> + a + <span class="string">&quot;)&quot;</span> + b)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2021/07/06/advanced-algorith-06/" data-toggle="tooltip" data-placement="top" title="算法进阶(06) - 树、图">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2021/06/30/advanced-algorithm-04/" data-toggle="tooltip" data-placement="top" title="算法进阶(04) - 哈希、集合、映射">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#算法" title="算法">算法</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2021/07/03/advanced-algorithm-05/";
+    var disqus_url = "https://blog.ranchocooper.com/2021/07/03/advanced-algorithm-05/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>

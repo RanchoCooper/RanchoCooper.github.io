@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Go Hexagonal 项目架构设计与实现深度解析 - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2025/03/20/go-hexagonal/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#六边形架构" title="六边形架构">六边形架构</a>
+                        
+                          <a class="tag" href="/tags/#领域驱动设计" title="领域驱动设计">领域驱动设计</a>
+                        
+                    </div>
+                    <h1>Go Hexagonal 项目架构设计与实现深度解析</h1>
+                    <h2 class="subheading">Go Hexagonal In-Depth Analysis of Project Architecture Design and Implementation</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2025-03-20
+                    </span>
+
+                    <span class="meta">Word Count 1.5k，
+                    6 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><h1 id="Go-Hexagonal-项目架构设计与实现深度解析"><a href="#Go-Hexagonal-项目架构设计与实现深度解析" class="headerlink" title="Go Hexagonal 项目架构设计与实现深度解析"></a>Go Hexagonal 项目架构设计与实现深度解析</h1><h2 id="一、项目概述"><a href="#一、项目概述" class="headerlink" title="一、项目概述"></a>一、项目概述</h2><p>本项目是基于六边形架构（Hexagonal Architecture）构建的Go语言服务框架，通过清晰的层次划分实现了业务逻辑与技术实现的解耦。项目主要功能包括：</p>
+<ol>
+<li>基础CRUD功能实现</li>
+<li>多数据库支持（MySQL&#x2F;PostgreSQL&#x2F;Redis）</li>
+<li>事件驱动架构</li>
+<li>完善的配置管理系统</li>
+<li>分层测试体系</li>
+<li>服务健康监控</li>
+</ol>
+<h2 id="二、架构设计解析"><a href="#二、架构设计解析" class="headerlink" title="二、架构设计解析"></a>二、架构设计解析</h2><h3 id="2-1-六边形架构实现"><a href="#2-1-六边形架构实现" class="headerlink" title="2.1 六边形架构实现"></a>2.1 六边形架构实现</h3><p><img src="https://miro.medium.com/v2/resize:fit:1400/1*KZ9Q0NtS0yB9wAYZNPz0ZQ.png" alt="六边形架构示意图"></p>
+<h4 id="核心层次划分："><a href="#核心层次划分：" class="headerlink" title="核心层次划分："></a>核心层次划分：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── domain        <span class="comment"># 领域模型层</span></span><br><span class="line">├── application   <span class="comment"># 应用服务层</span></span><br><span class="line">├── adapter       <span class="comment"># 适配器层</span></span><br><span class="line">└── api           <span class="comment"># 接口层</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-核心模块交互流程"><a href="#2-2-核心模块交互流程" class="headerlink" title="2.2 核心模块交互流程"></a>2.2 核心模块交互流程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">    participant API as API层</span><br><span class="line">    participant App as 应用层</span><br><span class="line">    participant Domain as 领域层</span><br><span class="line">    participant Adapter as 适配器层</span><br><span class="line">    </span><br><span class="line">    API-&gt;&gt;App: 接收请求</span><br><span class="line">    App-&gt;&gt;Domain: 执行业务逻辑</span><br><span class="line">    Domain-&gt;&gt;Adapter: 数据持久化</span><br><span class="line">    Adapter--&gt;&gt;Domain: 返回数据</span><br><span class="line">    Domain--&gt;&gt;App: 返回结果</span><br><span class="line">    App--&gt;&gt;API: 响应请求</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、核心代码实现解析"><a href="#三、核心代码实现解析" class="headerlink" title="三、核心代码实现解析"></a>三、核心代码实现解析</h2><h3 id="3-1-服务启动流程（cmd-main-go）"><a href="#3-1-服务启动流程（cmd-main-go）" class="headerlink" title="3.1 服务启动流程（cmd&#x2F;main.go）"></a>3.1 服务启动流程（cmd&#x2F;main.go）</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 初始化配置</span></span><br><span class="line">    config.Init(<span class="string">&quot;./config&quot;</span>, <span class="string">&quot;config&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 初始化存储库</span></span><br><span class="line">    repository.Init(repository.WithMySQL())</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 初始化服务</span></span><br><span class="line">    service.Init(ctx)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 启动HTTP服务</span></span><br><span class="line">    <span class="keyword">go</span> http_server.Start(ctx, errChan, httpCloseCh)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 优雅关闭处理</span></span><br><span class="line">    signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)</span><br><span class="line">    <span class="comment">// ... 关闭逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键点说明：</p>
+<ul>
+<li>配置初始化优先于其他组件</li>
+<li>存储库支持多数据库扩展</li>
+<li>服务层依赖领域层实现</li>
+<li>信号处理实现优雅关闭</li>
+</ul>
+<h3 id="3-2-工厂模式实现（application-factory-go）"><a href="#3-2-工厂模式实现（application-factory-go）" class="headerlink" title="3.2 工厂模式实现（application&#x2F;factory.go）"></a>3.2 工厂模式实现（application&#x2F;factory.go）</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> UseCaseFactory <span class="keyword">struct</span> &#123;</span><br><span class="line">    exampleService *service.ExampleService</span><br><span class="line">    eventBus       event.EventBus</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *UseCaseFactory)</span></span> CreateExampleUseCase() *example.CreateExampleUseCase &#123;</span><br><span class="line">    <span class="keyword">return</span> example.NewCreateExampleUseCase(f.exampleService)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设计特点：</p>
+<ul>
+<li>统一管理用例创建</li>
+<li>依赖注入解耦</li>
+<li>支持多事件总线实现</li>
+</ul>
+<h3 id="3-3-配置管理（config-config-go）"><a href="#3-3-配置管理（config-config-go）" class="headerlink" title="3.3 配置管理（config&#x2F;config.go）"></a>3.3 配置管理（config&#x2F;config.go）</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Config <span class="keyword">struct</span> &#123;</span><br><span class="line">    Env          Env</span><br><span class="line">    App          *AppConfig</span><br><span class="line">    HTTPServer   *HttpServerConfig</span><br><span class="line">    MySQL        *MySQLConfig</span><br><span class="line">    <span class="comment">// ... 其他配置</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Load</span><span class="params">(configPath <span class="type">string</span>, configFile <span class="type">string</span>)</span></span> (*Config, <span class="type">error</span>) &#123;</span><br><span class="line">    viper.SetConfigName(configFile)</span><br><span class="line">    viper.AddConfigPath(configPath)</span><br><span class="line">    <span class="comment">// ... 配置加载逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置加载流程：</p>
+<ol>
+<li>读取YAML文件</li>
+<li>环境变量覆盖</li>
+<li>类型安全转换</li>
+<li>全局配置初始化</li>
+</ol>
+<h3 id="3-4-事件驱动实现（domain-event）"><a href="#3-4-事件驱动实现（domain-event）" class="headerlink" title="3.4 事件驱动实现（domain&#x2F;event）"></a>3.4 事件驱动实现（domain&#x2F;event）</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 事件发布</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *ExampleService)</span></span> Create(ctx context.Context, example *model.Example) &#123;</span><br><span class="line">    <span class="comment">// ... 业务逻辑</span></span><br><span class="line">    evt := event.NewExampleCreatedEvent(createdExample.Id, createdExample.Name)</span><br><span class="line">    s.EventBus.Publish(ctx, evt)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 事件处理</span></span><br><span class="line"><span class="keyword">type</span> ExampleEventHandler <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *ExampleEventHandler)</span></span> HandleEvent(ctx context.Context, event Event) <span class="type">error</span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> event.EventName() &#123;</span><br><span class="line">    <span class="keyword">case</span> ExampleCreatedEventName:</span><br><span class="line">        <span class="comment">// 处理创建事件</span></span><br><span class="line">    <span class="keyword">case</span> ExampleUpdatedEventName:</span><br><span class="line">        <span class="comment">// 处理更新事件</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事件总线特性：</p>
+<ul>
+<li>内存总线（InMemoryEventBus）</li>
+<li>Kafka总线实现</li>
+<li>多事件处理器支持</li>
+<li>异步事件处理</li>
+</ul>
+<h2 id="四、关键设计模式应用"><a href="#四、关键设计模式应用" class="headerlink" title="四、关键设计模式应用"></a>四、关键设计模式应用</h2><h3 id="4-1-仓储模式实现"><a href="#4-1-仓储模式实现" class="headerlink" title="4.1 仓储模式实现"></a>4.1 仓储模式实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 领域层接口定义</span></span><br><span class="line"><span class="keyword">type</span> IExampleRepo <span class="keyword">interface</span> &#123;</span><br><span class="line">    Create(ctx context.Context, tr Transaction, example *model.Example) (*model.Example, <span class="type">error</span>)</span><br><span class="line">    <span class="comment">// ... 其他方法</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MySQL实现</span></span><br><span class="line"><span class="keyword">type</span> EntityExample <span class="keyword">struct</span> &#123;</span><br><span class="line">    gorm.Model</span><br><span class="line">    Name  <span class="type">string</span></span><br><span class="line">    Alias <span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e *EntityExample)</span></span> Create(ctx context.Context, tr repo.Transaction, example *model.Example) &#123;</span><br><span class="line">    <span class="comment">// GORM实现细节</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优势分析：</p>
+<ul>
+<li>数据库实现可替换</li>
+<li>业务逻辑与持久化解耦</li>
+<li>统一事务管理</li>
+</ul>
+<h3 id="4-2-CQRS模式实践"><a href="#4-2-CQRS模式实践" class="headerlink" title="4.2 CQRS模式实践"></a>4.2 CQRS模式实践</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询用例</span></span><br><span class="line"><span class="keyword">type</span> GetExampleUseCase <span class="keyword">struct</span> &#123;</span><br><span class="line">    handler core.UseCaseHandler</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 命令用例</span></span><br><span class="line"><span class="keyword">type</span> CreateExampleUseCase <span class="keyword">struct</span> &#123;</span><br><span class="line">    handler core.UseCaseHandler</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现特点：</p>
+<ul>
+<li>读写操作分离</li>
+<li>独立优化路径</li>
+<li>事件溯源支持</li>
+</ul>
+<h2 id="五、测试策略"><a href="#五、测试策略" class="headerlink" title="五、测试策略"></a>五、测试策略</h2><h3 id="5-1-测试金字塔结构"><a href="#5-1-测试金字塔结构" class="headerlink" title="5.1 测试金字塔结构"></a>5.1 测试金字塔结构</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── unit          <span class="comment"># 单元测试 70%</span></span><br><span class="line">├── integration   <span class="comment"># 集成测试 20%</span></span><br><span class="line">└── e2e           <span class="comment"># 端到端测试 10%</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-测试容器应用"><a href="#5-2-测试容器应用" class="headerlink" title="5.2 测试容器应用"></a>5.2 测试容器应用</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SetupPostgreSQL</span><span class="params">(t *testing.T)</span></span> *config.PostgreSQLConfig &#123;</span><br><span class="line">    req := testcontainers.ContainerRequest&#123;</span><br><span class="line">        Image:        <span class="string">&quot;postgres:latest&quot;</span>,</span><br><span class="line">        ExposedPorts: []<span class="type">string</span>&#123;<span class="string">&quot;5432/tcp&quot;</span>&#125;,</span><br><span class="line">        WaitingFor:   wait.ForLog(<span class="string">&quot;database system is ready&quot;</span>),</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ... 容器启动逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优势：</p>
+<ul>
+<li>真实数据库环境</li>
+<li>测试隔离性</li>
+<li>自动化环境准备</li>
+</ul>
+<h2 id="六、部署与监控"><a href="#六、部署与监控" class="headerlink" title="六、部署与监控"></a>六、部署与监控</h2><h3 id="6-1-健康检查端点"><a href="#6-1-健康检查端点" class="headerlink" title="6.1 健康检查端点"></a>6.1 健康检查端点</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router.GET(<span class="string">&quot;/ping&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">    c.String(<span class="number">200</span>, <span class="string">&quot;pong&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-性能监控"><a href="#6-2-性能监控" class="headerlink" title="6.2 性能监控"></a>6.2 性能监控</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterPprof</span><span class="params">(r *gin.Engine)</span></span> &#123;</span><br><span class="line">    pprofGroup := r.Group(<span class="string">&quot;/debug/pprof&quot;</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        pprofGroup.GET(<span class="string">&quot;/&quot;</span>, gin.WrapF(pprof.Index))</span><br><span class="line">        pprofGroup.GET(<span class="string">&quot;/heap&quot;</span>, gin.WrapH(pprof.Handler(<span class="string">&quot;heap&quot;</span>)))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>监控指标：</p>
+<ul>
+<li>CPU Profiling</li>
+<li>内存分析</li>
+<li>Goroutine跟踪</li>
+<li>阻塞分析</li>
+</ul>
+<h2 id="七、最佳实践总结"><a href="#七、最佳实践总结" class="headerlink" title="七、最佳实践总结"></a>七、最佳实践总结</h2><ol>
+<li><p><strong>领域驱动设计</strong>：严格划分领域边界</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 领域模型定义</span></span><br><span class="line"><span class="keyword">type</span> Example <span class="keyword">struct</span> &#123;</span><br><span class="line">    ID        <span class="type">int</span></span><br><span class="line">    Name      <span class="type">string</span></span><br><span class="line">    Alias     <span class="type">string</span></span><br><span class="line">    CreatedAt time.Time</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>依赖倒置</strong>：高层模块不依赖底层实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 领域服务定义</span></span><br><span class="line"><span class="keyword">type</span> ExampleService <span class="keyword">struct</span> &#123;</span><br><span class="line">    Repository repo.IExampleRepo  <span class="comment">// 接口依赖</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>单一职责</strong>：每个用例独立实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> CreateExampleUseCase <span class="keyword">struct</span> &#123;</span><br><span class="line">    handler core.UseCaseHandler</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>开放封闭</strong>：通过适配器扩展功能</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> KafkaEventBus <span class="keyword">struct</span> &#123;</span><br><span class="line">    producer sarama.SyncProducer</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>测试驱动</strong>：分层测试保障质量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestExampleService_Create</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 模拟依赖</span></span><br><span class="line">    mockRepo := <span class="built_in">new</span>(mockExampleRepo)</span><br><span class="line">    mockRepo.On(<span class="string">&quot;Create&quot;</span>).Return(&amp;model.Example&#123;&#125;, <span class="literal">nil</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 测试逻辑</span></span><br><span class="line">    service := service.NewExampleService(mockRepo)</span><br><span class="line">    <span class="comment">// ... 断言验证</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="八、性能优化建议"><a href="#八、性能优化建议" class="headerlink" title="八、性能优化建议"></a>八、性能优化建议</h2><ol>
+<li><p><strong>连接池配置</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mysql:</span></span><br><span class="line">  <span class="attr">max_idle_conns:</span> <span class="number">50</span></span><br><span class="line">  <span class="attr">max_open_conns:</span> <span class="number">100</span></span><br><span class="line">  <span class="attr">max_life_time:</span> <span class="string">&quot;36000s&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>缓存策略</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ExampleCache <span class="keyword">struct</span> &#123;</span><br><span class="line">    redis *redis.Client</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *ExampleCache)</span></span> Get(ctx context.Context, id <span class="type">int</span>) (*model.Example, <span class="type">error</span>) &#123;</span><br><span class="line">    <span class="comment">// Redis缓存实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>批量处理优化</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BatchCreateExamples</span><span class="params">(ctx context.Context, examples []*model.Example)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">    <span class="comment">// 批量插入优化</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>异步处理</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">asyncProcess</span><span class="params">(event Event)</span></span> &#123;</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">// 后台处理逻辑</span></span><br><span class="line">    &#125;()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="九、项目演进路线"><a href="#九、项目演进路线" class="headerlink" title="九、项目演进路线"></a>九、项目演进路线</h2><ol>
+<li><p><strong>服务网格集成</strong></p>
+<ul>
+<li>Istio服务治理</li>
+<li>分布式追踪</li>
+</ul>
+</li>
+<li><p><strong>云原生支持</strong></p>
+<ul>
+<li>Kubernetes部署</li>
+<li>Helm Chart打包</li>
+</ul>
+</li>
+<li><p><strong>可观测性增强</strong></p>
+<ul>
+<li>Prometheus指标</li>
+<li>Grafana监控面板</li>
+</ul>
+</li>
+<li><p><strong>安全加固</strong></p>
+<ul>
+<li>JWT认证</li>
+<li>RBAC授权</li>
+</ul>
+</li>
+</ol>
+<h2 id="十、总结"><a href="#十、总结" class="headerlink" title="十、总结"></a>十、总结</h2><p>本项目的架构设计充分体现了六边形架构的优势，通过清晰的层次划分和严谨的依赖管理，实现了：</p>
+<ul>
+<li>业务核心与技术细节解耦</li>
+<li>快速替换基础设施</li>
+<li>高可测试性</li>
+<li>灵活扩展能力</li>
+</ul>
+<p>代码实现中大量运用了现代软件工程实践，包括：</p>
+<ul>
+<li>领域驱动设计</li>
+<li>依赖注入</li>
+<li>事件驱动架构</li>
+<li>测试驱动开发</li>
+</ul>
+<p>本项目已在GitHub开源<a target="_blank" rel="noopener" href="https://github.com/RanchoCooper/go-hexagonal">Go-Hexagonal</a>，欢迎社区贡献和改进建议。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2021/08/28/interview-2021/" data-toggle="tooltip" data-placement="top" title="2021面试合集">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#六边形架构" title="六边形架构">六边形架构</a>
+                        
+                          <a class="tag" href="/tags/#领域驱动设计" title="领域驱动设计">领域驱动设计</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2025/03/20/go-hexagonal/";
+    var disqus_url = "https://blog.ranchocooper.com/2025/03/20/go-hexagonal/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>

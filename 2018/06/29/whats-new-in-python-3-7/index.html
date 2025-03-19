@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Python3.7新特性概览 - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2018/06/29/whats-new-in-python-3-7/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#Python" title="Python">Python</a>
+                        
+                          <a class="tag" href="/tags/#语言特性" title="语言特性">语言特性</a>
+                        
+                    </div>
+                    <h1>Python3.7新特性概览</h1>
+                    <h2 class="subheading">What&#39;s New In Python3.7</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2018-06-29
+                    </span>
+
+                    <span class="meta">Word Count 1.7k，
+                    6 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><p>Python官方于6.27发布了V3.7.0的更新说明，包含很多新特性和优化。<br>另外值得注意的是，此次更新<strong>不完全向后兼容</strong>。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/3/whatsnew/3.7.html">官方文档</a></p>
+<h2 id="主要亮点"><a href="#主要亮点" class="headerlink" title="主要亮点"></a>主要亮点</h2><ul>
+<li><p>新语法特性：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/whatsnew/3.7.html#whatsnew37-pep563">PEP 563</a>延迟加载类型注解，依赖<code>from __future__ import annotations</code>·</li>
+</ul>
+</li>
+<li><p>向后不兼容的语法更改：</p>
+<ul>
+<li><code>async</code> 和 <code>await</code> 现在是保留关键字，可能部分三方库会受到影响。</li>
+</ul>
+</li>
+<li><p>新的库模块：</p>
+<ul>
+<li>contextvars: PEP 567 – Context Variables</li>
+<li>dataclasses: PEP 557 – Data Classes</li>
+<li>importlib.resources</li>
+</ul>
+</li>
+<li><p>新的built-in特性</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0553/">PEP 553</a>, 添加新的内置函数 <code>breakpoint()</code>，免去了以往使用<code>pdb</code>手动设置断点的麻烦。</li>
+</ul>
+</li>
+<li><p>Python数据模型改进</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0562/">PEP 562</a>, 通过定义<code>__getattr__</code>和<code>__dir__</code>属性，来定制访问模块访问。</li>
+<li><a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0560/">PEP 560</a>, core support for typing module and generic types.</li>
+<li>保留字典的插入顺序已成为官方语言的规范。</li>
+</ul>
+</li>
+<li><p>标准库中的重要改进</p>
+<ul>
+<li><code>asyncio</code> 模块添加了新特性，并做了性能优化。</li>
+<li><code>time</code> 模块做到纳秒级别的支持。</li>
+</ul>
+</li>
+<li><p>CPython 实现的改进</p>
+<ul>
+<li>取消 ASCII 作为默认文本编码(强制<code>UTF-8</code> 的运行时编码环境)<ul>
+<li>PEP 538, legacy C locale coercion</li>
+<li>PEP 540, forced UTF-8 runtime mode</li>
+</ul>
+</li>
+<li>PEP 552, deterministic .pycs</li>
+<li>the new development runtime mode</li>
+<li>PEP 565, 优化<code>DeprecationWarning</code> 处理方式。交互环境或脚本执行方式会直接出发警告，而在框架或库导入时，则会静默处理这些警告。另外提供了三种警告行为供开发者使用：<code>FutureWarning</code>, <code>DeprecationWarning</code>, <code>PendingDeprecationWarning</code></li>
+</ul>
+</li>
+<li><p>C API改进</p>
+<ul>
+<li>PEP 539, new C API for thread-local storage</li>
+</ul>
+</li>
+<li><p>文档改进</p>
+<ul>
+<li>Python官方文档新增日韩法三种语言版本</li>
+</ul>
+</li>
+</ul>
+<p>另外，3.7版本也着重对性能做了优化，更多细节可见<a target="_blank" rel="noopener" href="https://docs.python.org/3/whatsnew/3.7.html#whatsnew37-perf">Optimizations</a></p>
+<h2 id="特性详解"><a href="#特性详解" class="headerlink" title="特性详解"></a>特性详解</h2><h3 id="延迟加载类型注释"><a href="#延迟加载类型注释" class="headerlink" title="延迟加载类型注释"></a>延迟加载类型注释</h3><p>类型注解是Python3.x中引入的新特性，但目前的类型注解特性存在两个明显的可用性问题：</p>
+<ul>
+<li>类型注解只能使用当前作用域内的已有类型，换言之，它不支持类型的前向引用。</li>
+<li>类型注释的实现方式影响了Python的启动时间。</li>
+</ul>
+<p>通过延迟加载类型注释，可以完美解决这两个问题。编译器不是在类型注解的定义处马上编译并执行代码，而是将注解以字符串的形式存储起来(可以理解为是存在表达式对应的AST结构中)。在需要时，可以通过<code>typing.get_type_hints()</code> 在运行时解析注解。由于通常注解都不是运行时所需，所以这种方案通过廉价的存储开销换来启动速度的提升。</p>
+<p>当然，延迟加载最直观的体现是在下面这种情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> typing</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> annotations</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Relation</span>:</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">contact</span>(<span class="params">cls, someone: People, anotherone: People</span>) -&gt; Relation:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(Relation.contact.__annotations__)             <span class="comment"># it works though haven&#x27;t define `People`</span></span><br><span class="line"><span class="built_in">print</span>(typing.get_type_hints(Relation.contact))      <span class="comment"># trigger error cause evaluate type hint at runtime</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">People</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(typing.get_type_hints(Relation.contact))      <span class="comment"># it works too</span></span><br></pre></td></tr></table></figure>
+
+<p>在实际使用时需要通过<code>__future__</code> 手动导入延迟加载特性，未来在Python4.0中将会是默认行为。</p>
+<h3 id="内置breakpoint"><a href="#内置breakpoint" class="headerlink" title="内置breakpoint()"></a>内置breakpoint()</h3><p>内置的<code>breakpoint()</code> 会调用<code>sys.brewkpointhook()</code>。<br>默认情况下后者会导入<code>pdb</code> 然后调用<code>pdb.set_trace()</code>。通过重新绑定<code>sys.breakpointhook</code>，你也可以定制使用其他调试器。实际上绑到任何<code>callable</code> 对象都是可以的。另外，也可以通过配置<code>PYTHONBREAKPOINT</code> 环境变量来设定调试器，当将其设为<code>0</code> 则表示禁用内置的<code>breakpoint()</code></p>
+<h3 id="定制访问模块属性"><a href="#定制访问模块属性" class="headerlink" title="定制访问模块属性"></a>定制访问模块属性</h3><p>在模块级别上支持定义<code>__getattr__()</code>与<code>__dir__()</code>，用武之地的可能就是模块属性的弃用警告和延迟加载。</p>
+<ul>
+<li>模块或库升级的弃用警告</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&#x27;default&#x27;</span>)  <span class="comment"># Python3.2开始会默认隐藏DeprecationWarning</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">new_function</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;[actually] using new function&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">deprecated_map = &#123;</span><br><span class="line">    <span class="string">&#x27;old_function&#x27;</span>: new_function</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">if</span> name <span class="keyword">in</span> deprecated_map:</span><br><span class="line">        switch_to = deprecated_map[name]</span><br><span class="line">        warnings.warn(<span class="string">f&quot;<span class="subst">&#123;name&#125;</span> is deprecated. Switch to <span class="subst">&#123;__name__&#125;</span>.<span class="subst">&#123;switch_to.__name__&#125;</span>&quot;</span>, DeprecationWarning)</span><br><span class="line">        <span class="keyword">return</span> switch_to</span><br><span class="line">    <span class="keyword">raise</span> AttributeError(<span class="string">f&quot;module <span class="subst">&#123;__name__&#125;</span> has no attribute <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from lib import old_function</span><br><span class="line">/Users/rancho/blog/lib.py:22: DeprecationWarning: old_function is deprecated. Switch to lib.new_function</span><br><span class="line">&gt;&gt;&gt; old_function</span><br><span class="line">&lt;<span class="keyword">function</span> lib.new_function(*args, **args)&gt;</span><br><span class="line">&gt;&gt;&gt; old_function(1)</span><br><span class="line">[actually] using new <span class="keyword">function</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>惰性加载</li>
+</ul>
+<blockquote>
+<p>惰性加载有点像linux内核中的写时拷贝。写时拷贝是当fork出的进程发生了数据变更时，才从父进程拷贝数据。类似的，惰性加载就是当导入的对象实际发生调用时才会将其加载到当前内存空间中。这种做法可以避免因过早地导入过大的数据对象但实际上尚未使用而导致的空间浪费。简言之，就是从立即导入变成了用时导入。</p>
+</blockquote>
+<p>按照以往的模块导入方式，必须要等模块里的相关属性&#x2F;函数&#x2F;类都准备妥当了，才完成模块导入的工作。惰性加载在模块导入阶段能大大提升效率</p>
+<p>PEP中演示的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># lib/__init__.py</span></span><br><span class="line"><span class="keyword">import</span> importlib</span><br><span class="line"></span><br><span class="line">__all__ = [<span class="string">&#x27;submod&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">if</span> name <span class="keyword">in</span> __all__:</span><br><span class="line">        <span class="keyword">return</span> importlib.import_module(<span class="string">&quot;.&quot;</span> + name, __name__)</span><br><span class="line">    <span class="keyword">raise</span> AttributeError(<span class="string">f&quot;module <span class="subst">&#123;__name__!r&#125;</span> has no attribute <span class="subst">&#123;name!r&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># lib/submod.py</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;submodule loaded&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># main.py</span></span><br><span class="line"><span class="keyword">import</span> lib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">trigger</span>():</span><br><span class="line">    lib.submod.A</span><br></pre></td></tr></table></figure>
+
+<p>可以发现，只有当main.trigger执行时，才会输出<code>submodule loaded</code></p>
+<h3 id="弃用警告的展示"><a href="#弃用警告的展示" class="headerlink" title="弃用警告的展示"></a>弃用警告的展示</h3><p>自Python3.2起，默认不显示弃用警告。此次更新中，当触发它们的代码直接在<code>__main__</code> 模块中运行便会显示。默认情况下，导入应用程序，库和框架时若触发弃用警告，仍然会被隐藏。</p>
+<p>另外，标准库现在允许开发人员使用以下三种警告行为：</p>
+<ul>
+<li><code>FutureWarning</code>: 默认情况下始终显示，如果你期望警告能被用户看见，那就用这个。</li>
+<li><code>DeprecationWarning</code>: 在运行单测以及<code>__main__</code>中运行会显示，比较适合开发场景。</li>
+<li><code>PendingDeprecationWarning</code>: 只在运行单测时显示。</li>
+</ul>
+<h3 id="充分支持原生类型"><a href="#充分支持原生类型" class="headerlink" title="充分支持原生类型"></a>充分支持原生类型</h3><p>起初按照PEP484的设计，核心CPython解释器是不会随Python社区和语言的演进而变更。随着类型注解和<code>typing</code>模块在社区中的广泛使用，因为这一限制最终被移除。此次引入两个特殊方法：<code>__class_getitem__()</code>和<code>__mro_entries__()</code>。这两个方法主要在<code>typing</code>中被使用，结果是相关操作的性能得到了七倍的提升。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>3.7最大的问题来自把<code>async</code>和<code>await</code>作为了保留字，不少框架&#x2F;库会面临兼容问题。</p>
+<p>抱着尝新的心态，升级了本机Python，基本无痛切换。</p>
+<p>关于多版本管理，可考虑<code>pipenv</code> + <code>pyenv</code>。前者用于管理虚拟环境，后者主要提供Python版本管理的解决方案，当使用<code>pipenv --python special_version</code>来创建虚拟环境时，<code>pipenv</code>会优先从<code>pyenv</code>的<code>~/.pyenv/versions</code>目录下查找匹配的版本。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/11/08/drive-into-java-annotation/" data-toggle="tooltip" data-placement="top" title="深入Java注解">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/06/24/understand-high-performance-python/" data-toggle="tooltip" data-placement="top" title="理解高性能Python">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Python" title="Python">Python</a>
+                        
+                          <a class="tag" href="/tags/#语言特性" title="语言特性">语言特性</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2018/06/29/whats-new-in-python-3-7/";
+    var disqus_url = "https://blog.ranchocooper.com/2018/06/29/whats-new-in-python-3-7/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>

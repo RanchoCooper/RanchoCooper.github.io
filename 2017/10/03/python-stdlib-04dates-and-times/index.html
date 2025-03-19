@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          时间和日期 - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2017/10/03/python-stdlib-04dates-and-times/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                        
+                          <a class="tag" href="/tags/#Python标准库" title="Python标准库">Python标准库</a>
+                        
+                    </div>
+                    <h1>时间和日期</h1>
+                    <h2 class="subheading">Dates and Times</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2017-10-03
+                    </span>
+
+                    <span class="meta">Word Count 1.3k，
+                    5 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><p>不同于int、float和str，Python没有包含对应日期和时间的内置类型，不过提供了3个相应模块，可以采用多种表示管理日期和时间值。</p>
+<ul>
+<li><code>time</code>模块由底层C库提供与时间相关的函数。它包含一些函数用于获取时钟时间和处理器运行时间，还提供了基本的解析和字符串格式化工具。</li>
+<li><code>datetime</code>模块为日期、时间以及日期时间提供了一个高层接口。datetime中的类支持算术、比较和时区配置。</li>
+<li><code>calendar</code>模块可以创建周、月和年的格式化表示。它还可以计算重复事件、给定日期是周几，以及其他基于日历的值。</li>
+</ul>
+<h1 id="时钟时间-time"><a href="#时钟时间-time" class="headerlink" title="时钟时间 - time"></a>时钟时间 - time</h1><p><code>time</code>模块提供了一些用于管理日期和时间的C库函数。由于它绑定到底层C实现，一些细节(比如纪元开始时间和支持的最大日期)会特定于特定平台。</p>
+<h2 id="壁挂钟时间"><a href="#壁挂钟时间" class="headerlink" title="壁挂钟时间"></a>壁挂钟时间</h2><p><code>time</code>函数是time模块的核心函数之一，它会返回一个从纪元开始至今的浮点秒数。浮点数的表示对时间的存储和比较很有用，但是想要生成人类刻度的表示就差强人意了。如果你想记录或者打印时间，<code>ctime</code>可能更有用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">t = time.time()</span><br><span class="line"><span class="built_in">print</span>(t)</span><br><span class="line"><span class="built_in">print</span>(time.ctime())</span><br><span class="line"><span class="built_in">print</span>(time.ctime(t + <span class="number">20</span>))</span><br></pre></td></tr></table></figure>
+
+<h2 id="处理器时间"><a href="#处理器时间" class="headerlink" title="处理器时间"></a>处理器时间</h2><p><code>clock</code>的返回值反映了程序的实际使用CPU(运行)时间，应当用于性能测试、基准测试等。值得注意的是，如果程序什么也没做，这时候处理器时钟是不会走动的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;%s %0.2f %0.2f&quot;</span> % (time.ctime(), time.time(), time.clock()))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;sleeping&quot;</span>, i)</span><br><span class="line">    time.sleep(i)</span><br></pre></td></tr></table></figure>
+<p>在这个例子里，每次循环仅仅进入睡眠，几乎没做什么工作。这样一来，两个挂壁时间在增加，而clock始终没发生变化。</p>
+<h2 id="时间组成"><a href="#时间组成" class="headerlink" title="时间组成"></a>时间组成</h2><p>有些情况下需要将时间存储为过去了多少秒，还有的情况需要访问一个日期的各个字段(年、月等)。time模块定义了<code>struct_time</code>来维护日期和时间值。gmtime函数会返回UTC格式的当前时间，而localtime则会返回应用了当前时区的当前时间。mktime会取一个struct_time实例，并将其转换回浮点数表示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_struct</span>(<span class="params">t</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_year: &#x27;</span>, t.tm_year)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_mon: &#x27;</span>, t.tm_mon)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_mday: &#x27;</span>, t.tm_mday)       <span class="comment"># day in month</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_hour: &#x27;</span>, t.tm_hour)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_min: &#x27;</span>, t.tm_min)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_sec: &#x27;</span>, t.tm_sec)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_wday: &#x27;</span>, t.tm_wday)       <span class="comment"># day in week</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_yday: &#x27;</span>, t.tm_yday)       <span class="comment"># day in year</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_isdst: &#x27;</span>, t.tm_isdst)     <span class="comment"># DST flag</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_zone: &#x27;</span>, t.tm_zone)       <span class="comment"># local time zone</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tm_gmtoff: &#x27;</span>, t.tm_gmtoff)</span><br><span class="line"></span><br><span class="line">show_struct(time.gmtime())</span><br><span class="line">show_struct(time.localtime())</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;mktime: &#x27;</span>, time.mktime(time.localtime()))</span><br></pre></td></tr></table></figure>
+
+<h2 id="处理时区"><a href="#处理时区" class="headerlink" title="处理时区"></a>处理时区</h2><p>确定当前时间的函数有一个前提，即已经设置了时区。时区的设置可能由应用程序设置，也可以使用系统的默认时区。修改时区不会改变具体的当前时间，只是改变了当前时间的表示(仅仅做了转换)。</p>
+<p>要改变时区，需要设置环境变量TZ，然后调用tzset。设置时区时可以指定很多细节，甚至详细到日光的开始和结束时间。不过，通常的做法是使用时区名，并由底层库推导出其他信息。下面我们来简单地修改时区</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_zone_info</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;TZ: &#x27;</span>, os.environ.get(<span class="string">&#x27;TZ&#x27;</span>, <span class="string">&#x27;(not set yet)&#x27;</span>))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;tzname: &#x27;</span>, time.tzname)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;zone: %d (%d)&#x27;</span> % (time.timezone, time.timezone / <span class="number">3600</span>))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;DST: &#x27;</span>, time.daylight)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Time: &#x27;</span>, time.ctime())</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Default:&#x27;</span>)</span><br><span class="line">show_zone_info()</span><br><span class="line"></span><br><span class="line">ZONES = [<span class="string">&#x27;GMT&#x27;</span>, <span class="string">&#x27;Europe/Amsterdam&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> zone <span class="keyword">in</span> ZONES:</span><br><span class="line">    os.environ[<span class="string">&#x27;TZ&#x27;</span>] = zone</span><br><span class="line">    time.tzset()</span><br><span class="line">    <span class="built_in">print</span>(zone, <span class="string">&#x27;: &#x27;</span>)</span><br><span class="line">    show_zone_info()</span><br></pre></td></tr></table></figure>
+
+<h2 id="解析和格式化时间"><a href="#解析和格式化时间" class="headerlink" title="解析和格式化时间"></a>解析和格式化时间</h2><p>工具函数strptime(parsed)和strftime(formatted)可以在struct_time和是兼职字符串表示之间转换</p>
+<h1 id="日期和时间值管理-datetime"><a href="#日期和时间值管理-datetime" class="headerlink" title="日期和时间值管理 - datetime"></a>日期和时间值管理 - datetime</h1><h2 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h2><p>时间值用<code>time</code>类表示，time实例包含hour、minute、second和microsecond属性，还可以包含时区信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">t = datetime.time(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(t)</span><br><span class="line"><span class="built_in">print</span>(t.hour)</span><br><span class="line"><span class="built_in">print</span>(t.minute)</span><br><span class="line"><span class="built_in">print</span>(t.second)</span><br><span class="line"><span class="built_in">print</span>(t.microsecond)</span><br><span class="line"><span class="built_in">print</span>(t.tzinfo)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(datetime.time.<span class="built_in">min</span>, datetime.time.<span class="built_in">max</span>, datetime.time.resolution)</span><br></pre></td></tr></table></figure>
+
+<h2 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h2><p>日历日期值用<code>date</code>类表示，date实例包含year、month和day属性。使用<code>today</code>类方法很容易能穿件一个表示当前日期的日期实例。today类的<code>ctime</code>方法可以获得格式化的时间表示，而<code>timetuple</code>则返回today实例的struct_time结构。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">today = datetime.date.today()</span><br><span class="line"><span class="built_in">print</span>(today)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;ctime: &#x27;</span>, today.ctime())</span><br><span class="line">tt = today.timetuple()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;tuple: tm_year = &#x27;</span>, tt.tm_year)</span><br></pre></td></tr></table></figure>
+
+<p>另外，<code>datetime.date.fromordinal</code>和<code>datetime.date.fromtimestamp</code>分别可以将天数和时戳转换成对应的日期结构。</p>
+<h2 id="timedelta"><a href="#timedelta" class="headerlink" title="timedelta"></a>timedelta</h2><p>通过对两个datetime对象使用算数运算，或者结合使用<code>datetime</code>和<code>timedelta</code>，可以根据得到将来或过去的日期。比如，两个日期相减可以生成一个timedelta，对日期进行timedelta运算可以生成另一个日期。</p>
+<p>实际上，通过<code>datetime.datetime.combine</code>方法，你可以将一个datetime.date实例和一个datetime.time相组合。</p>
+<h1 id="处理日期-calendar"><a href="#处理日期-calendar" class="headerlink" title="处理日期 - calendar"></a>处理日期 - calendar</h1><p>calendar模块实现了一些类来处理日期，管理面向年、月和周的值。通过prmonth方法可以生成一个月的格式化的文本日历输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line"></span><br><span class="line">c = calendar.TextCalendar(calendar.SUNDAY)      <span class="comment"># 配置每周的起始日</span></span><br><span class="line">c.prmonth(<span class="number">2017</span>, <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/02/28/a-simple-object-model/" data-toggle="tooltip" data-placement="top" title="『译』构建基本对象模型">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/10/01/python-stdlib-02array/" data-toggle="tooltip" data-placement="top" title="固定类型数据序列 - Array">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                        
+                          <a class="tag" href="/tags/#Python标准库" title="Python标准库">Python标准库</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2017/10/03/python-stdlib-04dates-and-times/";
+    var disqus_url = "https://blog.ranchocooper.com/2017/10/03/python-stdlib-04dates-and-times/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>

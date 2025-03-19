@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          理解Python协程 - 伯爵在古堡
+        
+    </title>
+
+    <link rel="canonical" href="https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/rss.xml" title="Rancho" type="application/atom+xml">
+</head>
+
+<!-- ga & ba script hoook -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KTG04KL3WB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KTG04KL3WB');
+</script>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">伯爵在古堡</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg');
+        background-size: cover
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        <span class="tags" style="margin: 5px;">
+                            <i class="fa fa-tag"></i>
+                        </span>
+                        
+                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                        
+                          <a class="tag" href="/tags/#Python" title="Python">Python</a>
+                        
+                          <a class="tag" href="/tags/#协程" title="协程">协程</a>
+                        
+                    </div>
+                    <h1>理解Python协程</h1>
+                    <h2 class="subheading">Understand Python Coroutine</h2>
+                    <span class="meta">
+                        Posted by Rancho on
+                        2018-12-27
+                    </span>
+
+                    <span class="meta">Word Count 2.9k，
+                    11 min to read</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <link rel="stylesheet" type="text&#x2F;css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.6.0/hint.min.css"><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>在Python语言的技术书籍里，关于<code>协程(Coroutine)</code>的讨论是相当匮乏的，这也导致协程成为了最鲜为人知的Python特性。到目前为止，笔者只在《Python高级编程》和《Fluent Python》两本书中见到过详细的讨论。前者是一本年代十分久远的书，不是很建议看。</p>
+<p>由于GIL的存在，导致Python多线程的性能甚至可能比单线程还要糟糕。于是就出现了协程，它由程序主动控制切换，没有切换线程的开销，因此执行效率极高。十分适用于IO密集型任务的场景；如果是CPU密集型，推荐多进程+协程的方式。</p>
+<h1 id="协程的演变史"><a href="#协程的演变史" class="headerlink" title="协程的演变史"></a>协程的演变史</h1><ul>
+<li>2006年，实现了协程的底层架构，即在Python2.5中引入yield表达式，详见<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0342/">PEP342</a></li>
+<li>2012年，实现了改良版的生成器句法，即在Python3.3中增加yield from语法，详见<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0380/">PEP380</a></li>
+<li>2016年，Python3.5中增加了<code>await</code>和<code>async</code>关键字，并且<code>asyncio</code>成为标准库一员，即简化协程的使用，详见<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0492/">PEP492</a></li>
+</ul>
+<p>在Python官方内置asyncio之前，只有第三方库对协程的支持，比如<code>gevent</code>和<code>Tornado</code>。而Python对协程的支持，实质是通过<code>generator</code>实现的。可以说，协程在Python中的实现，就是遵循某些规则的生成器。</p>
+<h1 id="生成器简介"><a href="#生成器简介" class="headerlink" title="生成器简介"></a>生成器简介</h1><p><a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0255/">PEP255</a>中所定义的生成器，就是包含yield关键字的函数。当解释器执行到yield语句，就会像return语句那样返回一个值，但不同的是：此时解释器会保存对栈的引用，并在下一次通过<code>next()</code>来调用生成器时，恢复该函数栈的执行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">def</span> <span class="title function_">simple_generator</span>():</span><br><span class="line">   ...:     <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">   ...:     <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">   ...:     <span class="keyword">yield</span> <span class="string">&#x27;rancho&#x27;</span></span><br><span class="line">   ...:</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到生成器对象</span></span><br><span class="line">In [<span class="number">2</span>]: simple_generator()</span><br><span class="line">Out[<span class="number">2</span>]: &lt;generator <span class="built_in">object</span> simple_generator at <span class="number">0x110685de0</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: g = simple_generator()</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: <span class="built_in">next</span>(g)</span><br><span class="line">Out[<span class="number">4</span>]: <span class="number">1</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: <span class="built_in">next</span>(g)</span><br><span class="line">Out[<span class="number">5</span>]: <span class="number">2</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: <span class="built_in">next</span>(g)</span><br><span class="line">Out[<span class="number">6</span>]: <span class="string">&#x27;rancho&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次唤醒, 生成器会抛出StopIteration异常</span></span><br><span class="line">In [<span class="number">7</span>]: <span class="built_in">next</span>(g)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">StopIteration                             Traceback (most recent call last)</span><br><span class="line">&lt;ipython-<span class="built_in">input</span>-<span class="number">7</span>-e734f8aca5ac&gt; <span class="keyword">in</span> &lt;module&gt;()</span><br><span class="line">----&gt; <span class="number">1</span> <span class="built_in">next</span>(g)</span><br><span class="line"></span><br><span class="line">StopIteration:</span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]:</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>inspect.isgeneratorfunction</code>，可以检查一个函数是否是生成器。阅读其源码，也可以洞察生成器函数标识的内部实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">isgeneratorfunction</span>(<span class="params"><span class="built_in">object</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Return true if the object is a user-defined generator function.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Generator function objects provide the same attributes as functions.</span></span><br><span class="line"><span class="string">    See help(isfunction) for a list of attributes.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">bool</span>((isfunction(<span class="built_in">object</span>) <span class="keyword">or</span> ismethod(<span class="built_in">object</span>)) <span class="keyword">and</span></span><br><span class="line">                <span class="built_in">object</span>.__code__.co_flags &amp; CO_GENERATOR)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>另外，生成器还被定义了四种状态，它们分别是<code>GEN_CREATED</code>(创建但未激活), <code>GEN_RUNNING</code>(正被解析器执行), <code>GEN_SUSPENDED</code>(等待调用方唤醒), 以及<code>GEN_CLOSED</code>(已经结束运行).</p>
+<h1 id="生成器的进化"><a href="#生成器的进化" class="headerlink" title="生成器的进化"></a>生成器的进化</h1><p>基于PEP255所定义的生成器, PEP342对其做了改良: 在生成器API中增加了<code>send()</code>, <code>throw()</code>以及<code>close()</code>方法。</p>
+<p>至此，调用方可以通过<code>send()</code>方法向生成器发送数据，并且发送的数据会成为生成器函数中yield表达式的值。这是生成器向协程进化的关键一步，这样一来，生成器可以与调用方协作，产出由调用方提供的值。而throw和close方法，前者的作用是让调用方抛出异常；后者是让调用发直接终止生成器。</p>
+<p>协程的简单使用演示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">8</span>]: <span class="keyword">def</span> <span class="title function_">simple_coroutine</span>():</span><br><span class="line">   ...:     <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine started&#x27;</span>)</span><br><span class="line">   ...:     x = <span class="keyword">yield</span></span><br><span class="line">   ...:     <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine received x: &#x27;</span>, x)</span><br><span class="line">   ...:</span><br><span class="line"></span><br><span class="line"><span class="comment"># 同创建生成器的方式, 调用函数得到生成器对象</span></span><br><span class="line">In [<span class="number">9</span>]: c = simple_coroutine()</span><br><span class="line"></span><br><span class="line">In [<span class="number">10</span>]: c</span><br><span class="line">Out[<span class="number">10</span>]: &lt;generator <span class="built_in">object</span> simple_coroutine at <span class="number">0x1106852a0</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活生成器, 此时解释器会停留在第一个yield语句, 并等待调用方传值</span></span><br><span class="line">In [<span class="number">11</span>]: <span class="built_in">next</span>(c)</span><br><span class="line">-&gt; coroutine started</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过send传值, 此时协程会被唤醒, 协程函数栈继续执行, 直到碰到下一个yield表达式, 或者执行到协程定义体尾部, 抛出异常</span></span><br><span class="line">In [<span class="number">12</span>]: c.send(<span class="number">666</span>)</span><br><span class="line">-&gt; coroutine received x:  <span class="number">666</span></span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">StopIteration                             Traceback (most recent call last)</span><br><span class="line">&lt;ipython-<span class="built_in">input</span>-<span class="number">12</span>-21bbe31479b2&gt; <span class="keyword">in</span> &lt;module&gt;()</span><br><span class="line">----&gt; <span class="number">1</span> c.send(<span class="number">666</span>)</span><br><span class="line"></span><br><span class="line">StopIteration:</span><br></pre></td></tr></table></figure>
+
+<p>同样的, 协程也有生成器的四种状态. 因为send方法的参数会成为暂停的yield表达式的值, 所以, 仅当协程处于暂停状态时, 才能调用send方法. 比如, 如果协程才被创建, 尚未激活, 便会抛错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">14</span>]: sleep = simple_coroutine()</span><br><span class="line"></span><br><span class="line">In [<span class="number">15</span>]: sleep.send(<span class="number">2019</span>)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">TypeError                                 Traceback (most recent call last)</span><br><span class="line">&lt;ipython-<span class="built_in">input</span>-<span class="number">15</span>-b30e05632a4d&gt; <span class="keyword">in</span> &lt;module&gt;()</span><br><span class="line">----&gt; <span class="number">1</span> sleep.send(<span class="number">2019</span>)</span><br><span class="line"></span><br><span class="line">TypeError: can<span class="string">&#x27;t send non-None value to a just-started generator</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你有兴趣仔细探究协程各个时期的状态, 可以结合<code>inspect.getgeneratorstate</code>方法, 自行探究理解协程的行为</p>
+<h2 id="预激协程"><a href="#预激协程" class="headerlink" title="预激协程"></a>预激协程</h2><p>首次调用next()函数, 这一步被称为<code>预激(prime)</code>协程. 我们可以简单地通过装饰器来实现预激</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">coroutine</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">primer</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        gen = func(*args, **kwargs)</span><br><span class="line">        <span class="built_in">next</span>(gen)</span><br><span class="line">        <span class="keyword">return</span> gen</span><br><span class="line">    <span class="keyword">return</span> primer</span><br></pre></td></tr></table></figure>
+<p>其实很多框架都提供了处理协程的特殊装饰器, 比如Tornado提供了<code>tornado.gen</code>, 它除了预激协程, 还会勾入事件循环. 值得注意的是, <code>yield from</code>句法本身就会自动预激, 因此和示例中的装饰器并不兼容. 而Python3.4标准库中的<code>asyncio.coroutine</code>装饰器不会预激协程, 因此兼容<code>yield from</code></p>
+<h2 id="终止协程"><a href="#终止协程" class="headerlink" title="终止协程"></a>终止协程</h2><p>因为协程的运作受调用方控制, 因此可以通过发送某个哨符值, 让协程退出. 内置的<code>None</code>和<code>Ellipsis</code>等常量就是不错的选择<br>另外, 底层的生成器API —- close方法会让生成器在暂停的yield表达式处抛出<code>GeneratorExit</code>异常</p>
+<pre><code>generator.close()
+</code></pre>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>前面提到, PEP255中, 为生成器添加了<code>throw</code>方法</p>
+<pre><code>generator.throw(exc_type[, exc_value[, traceback]])
+</code></pre>
+<p>如果生成器处理了抛出的异常, 代码就会继续执行到下一个yield表达式, 而产出的值就变变成调用<code>generator.throw</code>方法得到的返回值. 如果生成器没有处理抛出的异常, 异常就会向上冒泡, 传到调用方的上下文中</p>
+<h2 id="让协程返回值"><a href="#让协程返回值" class="headerlink" title="让协程返回值"></a>让协程返回值</h2><p>在Python3.3之前, 如果生成器返回值, 解释器就会报错. 按照PEP380中定义的方式, 获取协程的返回值需要绕个圈子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用前面定义的预计装饰器</span></span><br><span class="line">In [<span class="number">19</span>]: @coroutine</span><br><span class="line">    ...: <span class="keyword">def</span> <span class="title function_">simple_demo</span>():</span><br><span class="line">    ...:     <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    ...:         x = <span class="keyword">yield</span></span><br><span class="line">    ...:         <span class="keyword">if</span> x <span class="keyword">is</span> <span class="literal">Ellipsis</span>:</span><br><span class="line">    ...:             <span class="keyword">break</span></span><br><span class="line">    ...:         <span class="built_in">print</span>(<span class="string">&#x27;receive x: &#x27;</span>, x)</span><br><span class="line">    ...:     <span class="keyword">return</span> <span class="string">&#x27;customer return value&#x27;</span></span><br><span class="line">    ...:</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">20</span>]: c = simple_demo()</span><br><span class="line"></span><br><span class="line">In [<span class="number">21</span>]: c.send(<span class="number">3</span>)</span><br><span class="line">receive x:  <span class="number">3</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">22</span>]: c.send(<span class="literal">Ellipsis</span>)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">StopIteration                             Traceback (most recent call last)</span><br><span class="line">&lt;ipython-<span class="built_in">input</span>-<span class="number">22</span>-70d622b4e36a&gt; <span class="keyword">in</span> &lt;module&gt;()</span><br><span class="line">----&gt; <span class="number">1</span> c.send(<span class="literal">Ellipsis</span>)</span><br><span class="line"></span><br><span class="line">StopIteration: customer <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">In [<span class="number">24</span>]: <span class="keyword">try</span>:</span><br><span class="line">    ...:     c.send(<span class="literal">Ellipsis</span>)</span><br><span class="line">    ...: <span class="keyword">except</span> StopIteration <span class="keyword">as</span> exc:</span><br><span class="line">    ...:     result = exc.value</span><br><span class="line">    ...:     <span class="built_in">print</span>(<span class="string">&#x27;got result: &#x27;</span>, result)</span><br><span class="line">    ...:</span><br><span class="line">got result:  <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>不难发现, 当协程返回某个值时, 同样会抛出StopIteration异常, 并且异常的值就是协程返回的值. 对于<code>yield from</code>句法来说, 解释器不仅会捕获<code>StopIteration</code>异常, 还会把value属性的值变成yield from表达式的值</p>
+<h1 id="yield-from-句法"><a href="#yield-from-句法" class="headerlink" title="yield from 句法"></a>yield from 句法</h1><p><code>yield from</code> 是全薪的语言结构, 它的作用比yield关键字多很多.</p>
+<h2 id="专用术语"><a href="#专用术语" class="headerlink" title="专用术语"></a>专用术语</h2><ul>
+<li>调用方: 调用委派生成器的客户端代码</li>
+<li>委派生成器: 包含<code>yield from &lt;iterable&gt;</code>表达式的生成器函数</li>
+<li>子生成器: 委派生成器中所获取的生成器, 也就是PEP380标题中所指的<code>subgenerator</code></li>
+</ul>
+<p><img src="/professional-term.png" alt="术语图解"></p>
+<h2 id="简单示范"><a href="#简单示范" class="headerlink" title="简单示范"></a>简单示范</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">25</span>]: <span class="keyword">def</span> <span class="title function_">gen</span>():</span><br><span class="line">    ...:     <span class="keyword">for</span> c <span class="keyword">in</span> <span class="string">&#x27;rancho&#x27;</span>:</span><br><span class="line">    ...:         <span class="keyword">yield</span> c</span><br><span class="line">    ...:     <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    ...:         <span class="keyword">yield</span> i</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">26</span>]: <span class="built_in">list</span>(gen())</span><br><span class="line">Out[<span class="number">26</span>]: [<span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># yield from结构改写</span></span><br><span class="line">In [<span class="number">27</span>]: <span class="keyword">def</span> <span class="title function_">gen</span>():</span><br><span class="line">    ...:     <span class="keyword">yield</span> <span class="keyword">from</span> <span class="string">&#x27;rancho&#x27;</span></span><br><span class="line">    ...:     <span class="keyword">yield</span> <span class="keyword">from</span> <span class="built_in">range</span>(<span class="number">5</span>)</span><br><span class="line">    ...:</span><br><span class="line"></span><br><span class="line">In [<span class="number">28</span>]: <span class="built_in">list</span>(gen())</span><br><span class="line">Out[<span class="number">28</span>]: [<span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c04/p14_flattening_nested_sequence.html">Cook Book - 展开嵌套的序列</a>有个稍复杂的参考示例.<br>可能是yield from句法太过便捷, 以至于有人在<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/9708902/in-practice-what-are-the-main-uses-for-the-new-yield-from-syntax-in-python-3">StackOverFlow</a>上对该语法特性的用处发出了灵魂质问<br>实际上除了职责委派之外, yield from会在调用方和子生成器之间打开双向通道, 这样二者就可以直接发送和产出值, 并且可以直接传入异常, 而不需要位于中间的委派生成器中添加大量样板代码</p>
+<p>在PEP380中，生成器句法被加以改动，其<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0380/#proposal">proposal</a>一节, 对<code>yield from</code>做了六点阐述</p>
+<ul>
+<li>子生成器传出的值, 都直接传给委派生成器的调用方 (即客户端代码)</li>
+<li>调用方通过<code>send()</code>方法传入的值, 都会直接传给子生成器. 如果发送的是<code>None</code>, 则调用子生成器的<code>__next__()</code>方法, 否则通过调用子生成器的<code>send()</code>方法, 向下传递. 如果子生成器抛出<code>StopIteration</code>异常, 那么委派生产器恢复运行, 如果子生成器抛出其他异常, 都会向上冒泡, 传递给委派生成器</li>
+<li>当生成器退出时, 生成器(或者说子生成器)中的<code>return expr</code> 表达式会触发<code>StopIteration(expr)</code>异常并抛出</li>
+<li><code>yield from</code> 表达式的值是子生成器终止时传给<code>StopIteration</code>异常的第一个参数</li>
+</ul>
+<p>另外提及的两点特性, 与异常和终止有关</p>
+<ul>
+<li>传给委派生成器的异常, 除了<code>GeneratorExit</code>之外都会下发给子生成器的<code>throw()</code>方法. 如果调用<code>throw()</code>方法时抛出<code>StopIteration</code>, 委派生成器恢复运行, 若抛出其他异常, 都会冒泡给委派生成器</li>
+<li>如果把<code>GeneratorExit</code>异常传入委派生成器, 或者调用<code>close()</code>方法, 则会在子生成器上调用<code>close()</code>方法. 如果调用<code>close()</code>导致异常抛出, 那么异常会冒泡, 否则, 委派生成器抛出<code>GeneratorExit</code>异常.</li>
+</ul>
+<p><code>yield from</code>的语义比较难简洁地阐述出来, PEP380中附加了一段<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0380/#formal-semantics">伪代码</a>来演示<code>yield from </code>的行为<br>下面对其做简化, 以描述<code>yield from</code>的运作方式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设解释器碰到下面这行yield from句法</span></span><br><span class="line">RESULT = <span class="keyword">yield</span> <span class="keyword">from</span> EXPR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 那么内部的处理逻辑如下</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># EXPR是可迭代对象, 获取其迭代器</span></span><br><span class="line">_i = <span class="built_in">iter</span>(EXPR)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># 预激子生成器</span></span><br><span class="line">    _y = <span class="built_in">next</span>(_i)</span><br><span class="line"><span class="keyword">except</span> StopIteration <span class="keyword">as</span> _e:</span><br><span class="line">    _r = _e.value</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># 运行这个循环时, 委派生成器会阻塞, 只作为调用方和子生成器间的通道</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 产出子生成器的值, 并等待调用方唤醒</span></span><br><span class="line">        _s = <span class="keyword">yield</span> _y</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 下发调用方的传入值给子生成器</span></span><br><span class="line">            _y = _i.send(_s)</span><br><span class="line">        <span class="comment"># 如果子生成器终止, 获取异常的value属性, 退出循环, 并唤醒委派生成器</span></span><br><span class="line">        <span class="keyword">except</span> StopIteration <span class="keyword">as</span> _e:</span><br><span class="line">            _r = _e.value</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">RESULT = _r</span><br></pre></td></tr></table></figure>
+
+<p>这段简化后的代码不支持<code>throw()</code>和<code>close()</code>方法, 也没有处理传入<code>None</code>的情形, 如果想知道应对实际情况下的实现, 建议查看上面PEP的完整伪代码</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>Guido大叔说生成器有三种代码编写风格: 拉取式(迭代器), 推送式(send), 以及任务式(<a target="_blank" rel="noopener" href="http://www.dabeaz.com/coroutines/">详见</a>).<br>不过在实际应用中, 感觉多数项目都是采用<code>yield from</code>来驱动协程, 而不通过直接在协程上调用<code>send()</code>方法驱动, 这一切都得益于<code>asyncio</code>库的底层处理了<code>next()</code>和<code>send()</code>方法驱动, 用户代码只需使用<code>yield from</code>句法, 便可驱动协程运行</p>
+<p>实际上自Python3.5, 提供了async&#x2F;await关键字后, 基本取代了send + yield from的结构.<br>不过弄明白协程以及<code>yield from</code>句法, 新引入的关键字就很好理解了, 只是简化语法, 隐藏细节</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
+<li>《Fluent Python》 * 主推</li>
+<li>《Python高级编程》</li>
+<li>《Python高手之路》</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/05/29/junit4-customer-runners/" data-toggle="tooltip" data-placement="top" title="在JUnit中定制Runner">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/08/drive-into-java-annotation/" data-toggle="tooltip" data-placement="top" title="深入Java注解">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#编程札记" title="编程札记">编程札记</a>
+                        
+                          <a class="tag" href="/tags/#Python" title="Python">Python</a>
+                        
+                          <a class="tag" href="/tags/#协程" title="协程">协程</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://0v0.link/" target="_blank">七秒不觉梦</a></li>
+                    
+                        <li><a href="https://xlzd.me/" target="_blank">海盗杂谈</a></li>
+                    
+                        <li><a href="https://www.yhspy.com/" target="_blank">Web云端研究所</a></li>
+                    
+                        <li><a href="http://mindhacks.cn/" target="_blank">Mind Hack</a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "ranchocooper";
+    var disqus_identifier = "https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/";
+    var disqus_url = "https://blog.ranchocooper.com/2018/12/27/understand-python-coroutine/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/RanchoCooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/ranchocooper">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Inland hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.coding.me" styles="font-weight: bold">Coding Pages</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-cog fa-spin fa-1x fa-fw"></i>
+                    </span>
+                    Foreign hosted by
+                    <a target="_blank" rel="noopener" href="https://pages.github.com" styles="font-weight: bold">Github Pages</a>
+                    <br>
+                    Designed by <a target="_blank" rel="noopener" href="https://github.com/Huxpro">Hux</a>
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-heart fa-sm"></i>
+                    </span>
+                    Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+                    <br>
+                    <iframe
+                        style="margin-right: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=Huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-github fa-lg"></i>
+                    </span>
+                    <iframe
+                        style="margin-left: 0px; margin-bottom:-5px; width: 105px;"
+                        frameborder="0" scrolling="0" height="20px" allowtransparency="true"
+                        src="https://ghbtns.com/github-btn.html?user=hexojs&repo=hexo&type=star&count=true" >
+                    </iframe>
+                    <br>
+                    Copyright
+                    <span style="display: inline-block; margin: 5px;">
+                        <i class="fa fa-copyright"></i>
+                    </span>
+                    2017-2025
+                    <br>
+                    Rancho.
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://blog.ranchocooper.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '5baf1fd33b6f05a32bd0f48f4efb67a4';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        function retract(index, item) {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav "></li>').append(c);
+            $(selector).append(l);
+            $(".side-catalog li").css("white-space", "nowrap");
+            $("li").css("margin-top", "15px");
+
+            $(".h1_nav").css("list-style-type", "disc");
+            $(".h2_nav").css("list-style-type", "circle");
+            $(".h3_nav").css("list-style-type", "square");
+
+            $(".h1_nav").css("margin-left", -20);
+            $(".h2_nav").css("margin-left", 0);
+            $(".h3_nav").css("margin-left", 20);
+            $(".h4_nav").css("margin-left", 40);
+            $(".h5_nav").css("margin-left", 60);
+            $(".h6_nav").css("margin-left", 80);
+        }
+
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        var a = [];
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        a.each(retract)
+        return true;
+    }
+
+    $(function() {
+        var elm = $('.side-catalog');
+        var startPos = $(elm).offset().top;
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            $(elm).css('position',((p) > startPos) ? 'fixed' : 'relative');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+            $(elm).css('top',((p) > startPos) ? '10%' : '40px');
+        });
+    });
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+<!-- Side Catalog -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://blog.ranchocooper.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?5baf1fd33b6f05a32bd0f48f4efb67a4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</html>
