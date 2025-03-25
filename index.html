@@ -207,20 +207,21 @@
 
     <a href="/2025/03/20/go-hexagonal/">
         <h2 class="post-title">
-            Go Hexagonal 项目架构设计与实现深度解析
+            Go 六边形架构实战项目分析
         </h2>
         <h3 class="post-subtitle">
-            Go Hexagonal In-Depth Analysis of Project Architecture Design and Implementation
+            Go Hexagonal In-Depth
         </h3>
         <div class="post-content-preview">
-            Go Hexagonal 项目架构设计与实现深度解析一、项目概述本项目是基于六边形架构（Hexagonal Architecture）构建的Go语言服务框架，通过清晰的层次划分实现了业务逻辑与技术实现的解耦。项目主要功能包括：
+            Go六边形架构实战详解一、架构详解1. 六边形架构核心概念六边形架构，也称为”端口与适配器”架构，由Alistair Cockburn于2005年提出，其核心理念是：
 
-基础CRUD功能实现
-多数据库支持（MySQL&#x2F;PostgreSQL&#x2F;Redis）
-事件驱动架构
-完善的配置管理系统
-分层测试体系
-服务健康监控......
+内部与外部分离：业务逻辑位于六边形中心，外部系统在边界外
+依赖方向：依赖指向领域核心，外部依赖内部
+端口定义边界：通过端口(接口)定义内外部交互方式
+适配器连接外部：适配器实现端口接口，连接外部系统
+
+
+2. 项目分层结构本......
         </div>
     </a>
     <p class="post-meta">

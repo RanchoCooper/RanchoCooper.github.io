@@ -6,7 +6,7 @@
   <link href="https://blog.ranchocooper.com/rss.xml" rel="self"/>
   
   <link href="https://blog.ranchocooper.com/"/>
-  <updated>2025-03-19T21:19:01.190Z</updated>
+  <updated>2025-03-25T18:29:17.775Z</updated>
   <id>https://blog.ranchocooper.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Go Hexagonal 项目架构设计与实现深度解析</title>
+    <title>Go 六边形架构实战项目分析</title>
     <link href="https://blog.ranchocooper.com/2025/03/20/go-hexagonal/"/>
     <id>https://blog.ranchocooper.com/2025/03/20/go-hexagonal/</id>
     <published>2025-03-19T21:13:11.000Z</published>
-    <updated>2025-03-19T21:19:01.190Z</updated>
+    <updated>2025-03-25T18:29:17.775Z</updated>
     
     
       
